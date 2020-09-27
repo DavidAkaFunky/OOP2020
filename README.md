@@ -1,2 +1,4 @@
 # good_coffee_stuff
-Exercícios e projetos em Java da disciplina de Programação com Objetos
+Todos os meus programas em Java. Enjoy :)
+
+Disciplina de **Programação com Objetos**, LEIC-A, IS Técnico, **1º Sem. 2020/21** - **A decorrer**

@@ -11,7 +11,6 @@ public class Store implements Serializable {
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202009192006L;
   private ArrayList<Transaction> _transactions = new ArrayList<Transaction>();
-
   // FIXME define attributes
   // FIXME define contructor(s)
   // FIXME define methods

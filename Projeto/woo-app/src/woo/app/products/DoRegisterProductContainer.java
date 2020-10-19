@@ -7,7 +7,12 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoRegisterProductContainer extends Command<Storefront> {
 
-  //FIXME add input fields
+  Input<Integer> _supplierID;
+  Input<Integer> _productID;
+  Input<Integer> _price;
+  Input<Integer> _criticalLevel;
+  Input<String> _serviceType;
+  Input<String> _serviceLevel;
 
   public DoRegisterProductContainer(Storefront receiver) {
     super(Label.REGISTER_CONTAINER, receiver);

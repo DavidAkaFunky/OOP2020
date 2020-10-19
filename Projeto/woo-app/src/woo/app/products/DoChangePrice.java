@@ -7,7 +7,8 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoChangePrice extends Command<Storefront> {
 
-  //FIXME add input fields
+  Input<Integer> _id;
+  Input<Integer> _newPrice;
   
   public DoChangePrice(Storefront receiver) {
     super(Label.CHANGE_PRICE, receiver);

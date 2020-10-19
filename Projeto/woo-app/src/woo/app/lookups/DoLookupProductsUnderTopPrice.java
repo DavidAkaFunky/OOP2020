@@ -7,7 +7,7 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoLookupProductsUnderTopPrice extends Command<Storefront> {
 
-  //FIXME add input fields
+  Input<Integer> _topPrice;
 
   public DoLookupProductsUnderTopPrice(Storefront storefront) {
     super(Label.PRODUCTS_UNDER_PRICE, storefront);

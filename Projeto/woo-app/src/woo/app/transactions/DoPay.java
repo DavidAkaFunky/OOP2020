@@ -7,7 +7,7 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoPay extends Command<Storefront> {
 
-  //FIXME add input fields
+  Input<Integer> _id;
   
   public DoPay(Storefront storefront) {
     super(Label.PAY, storefront);

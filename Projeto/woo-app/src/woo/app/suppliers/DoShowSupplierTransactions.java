@@ -7,7 +7,7 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoShowSupplierTransactions extends Command<Storefront> {
 
-  //FIXME add input fields
+  Input<Integer> _id;
 
   public DoShowSupplierTransactions(Storefront receiver) {
     super(Label.SHOW_SUPPLIER_TRANSACTIONS, receiver);

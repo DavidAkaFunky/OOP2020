@@ -7,7 +7,9 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoRegisterClient extends Command<Storefront> {
 
-  //FIXME add input fields
+  Input<Integer> _id;
+  Input<String> _name;
+  Input<String> _address;
 
   public DoRegisterClient(Storefront storefront) {
     super(Label.REGISTER_CLIENT, storefront);

@@ -1,6 +1,8 @@
 package woo;
 
-public class Order extends Transaction{
+import java.util.HashMap;
+
+public class Order extends Transaction {
     
     private Supplier _supplier;
     private Map<Product,Integer> _productMap = new HashMap<>();

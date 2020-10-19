@@ -7,7 +7,9 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoRegisterSaleTransaction extends Command<Storefront> {
 
-  //FIXME add input fields
+  Input<Integer> _id;
+  Input<Integer> _limitDate;
+  Input<Integer> _amount;
 
   public DoRegisterSaleTransaction(Storefront receiver) {
     super(Label.REGISTER_SALE_TRANSACTION, receiver);

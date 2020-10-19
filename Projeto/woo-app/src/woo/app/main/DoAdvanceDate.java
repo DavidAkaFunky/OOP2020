@@ -7,7 +7,7 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoAdvanceDate extends Command<Storefront> {
   
-  //FIXME add input fields
+  Input<Integer> _dayAmount;
 
   public DoAdvanceDate(Storefront receiver) {
     super(Label.ADVANCE_DATE, receiver);

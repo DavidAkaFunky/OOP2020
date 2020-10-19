@@ -6,7 +6,7 @@ public class Sale {
     private int _limitDate;
     private int _amount;
 
-    public Order(int limitDate, int _amount){
+    public Order(int limitDate, int amount){
         super();
         _limitDate = limitDate;
         _amount = amount;

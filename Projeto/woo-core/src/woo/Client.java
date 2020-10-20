@@ -6,6 +6,7 @@ public class Client {
     private String _name;
     private String _address;
     private int _score = 0;
+    private Status _status;
 
     public Client(int id, String name, String address){
         _id = id;
@@ -27,6 +28,14 @@ public class Client {
 
     public int getScore(){
         return _score;
+    }
+
+    public String getStatus() {
+        return _status.toString();
+    }
+
+    public void setStatus(Status status) {
+        this._status = status;
     }
 
 }

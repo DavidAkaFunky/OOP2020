@@ -33,15 +33,15 @@ public class Store implements Serializable {
     return "";
   }
 
-  public void registerBook(int id, String title, String author, String isbn, int price, int cValue, int sId) {
+  public void registerBook(int id, String title, String author, String isbn, int price, int cValue, int sID) {
     
   }
 
-  public void registerBox(int id, int price, int cValue, int sId) {
+  public void registerBox(int id, int price, int cValue, int sID) {
     
   }
 
-  public void registerContainer(int id, int price, int cValue, int sId) {
+  public void registerContainer(int id, int price, int cValue, int sID) {
     
   }
 
@@ -105,11 +105,11 @@ public class Store implements Serializable {
 
   }
 
-  public void registerOrderTransaction(int supId, int pId, int amt){
+  public void registerOrderTransaction(int supID, int pID, int amt){
 
   }
 
-  public void registerSaleTransaction(int cId, int limDate, int pId, int qty){
+  public void registerSaleTransaction(int cID, int limDate, int pID, int qty){
 
   }
 

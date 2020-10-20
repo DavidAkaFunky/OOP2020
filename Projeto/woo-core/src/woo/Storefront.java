@@ -19,23 +19,23 @@ public class Storefront {
   //FIXME define other methods
 
   public String showAllProducts() {
-    return _store.showAllProducts;
+    return _store.showAllProducts();
   }
 
-  public void registerBook(int id, String title, String author, String isbn, int price, int cValue, int sId) {
-    return _store.registerBook;
+  public void registerBook(int id, String title, String author, String isbn, int price, int cValue, int sID) {
+    return _store.registerBook(id, title, author, isbn, price, cValue, sID);
   }
 
-  public void registerBox(int id, int price, int cValue, int sId) {
-    return _store.registerBox;
+  public void registerBox(int id, int price, int cValue, int sID) {
+    return _store.registerBox(id, price, cValue, sID);
   }
 
-  public void registerContainer(int id, int price, int cValue, int sId) {
-    return _store.registerContainer;
+  public void registerContainer(int id, int price, int cValue, int sID) {
+    return _store.registerContainer(id, price, cValue, sID);
   }
 
   public void changeProductPrice(int id, int newPrice) {
-    return _store.changeProductPrice;
+    return _store.changeProductPrice(id, newPrice);
   }
 
   /* PARTE DOS CLIENTES */
@@ -45,19 +45,19 @@ public class Storefront {
   }
 
   public String showClient(int id) {
-    return _store.showClient;
+    return _store.showClient(id);
   }
 
   public void registerClient(int id, String name, String address) {
-    return _store.registerClient;
+    return _store.registerClient(id, name, address);
   }
 
   public void toggleClientProductNotifications(int id){
-    return _store.toggleClientProductNotifications;
+    return _store.toggleClientProductNotifications(id);
   }
   
   public String showAllClientAcquisitions(int id){
-    return _store.showAllClientAcquisitions;
+    return _store.showAllClientAcquisitions(id);
   }
 
   /* PARTE DOS FORNECEDORES */
@@ -67,37 +67,37 @@ public class Storefront {
   }
 
   public String showSupplier(int id) {
-    return _store.showSupplier;
+    return _store.showSupplier(id);
   }
 
   public void registerSupplier(int id, String name, String address) {
-    return _store.registerSupplier;
+    return _store.registerSupplier(id, name, address);
   }
 
   public void toggleTransactions(int id){
-    return _store.toggleTransactions;
+    return _store.toggleTransactions(id);
   }
   
   public String showAllSupplierTransactions(int id){
-    return _store.showAllSupplierTransactions;
+    return _store.showAllSupplierTransactions(id);
   }
 
   /* PARTE DAS TRANSAÇÕES */
 
   public void pay(int id){
-    return _store.pay;
+    return _store.pay(id);
   }
 
-  public void registerOrderTransaction(int supId, int pId, int amt){
-    return _store.registerOrderTransaction;
+  public void registerOrderTransaction(int supID, int pID, int amt){
+    return _store.registerOrderTransaction(supID, pID, amt);
   }
 
-  public void registerSaleTransaction(int cId, int limDate, int pId, int qty){
-    return _store.registerSaleTransaction;
+  public void registerSaleTransaction(int cID, int limDate, int pID, int qty){
+    return _store.registerSaleTransaction(cID, limDate, pID, qty);
   }
 
   public String showTransaction(int id){
-    return _store.showTransaction;
+    return _store.showTransaction(id);
   }
 
   /**

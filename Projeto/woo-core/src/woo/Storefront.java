@@ -9,7 +9,7 @@ import woo.exceptions.*;
 public class Storefront {
 
   /** Current filename. */
-  private String _filename = "";
+  private String _filename;
 
   /** The actual store. */
   private Store _store = new Store();

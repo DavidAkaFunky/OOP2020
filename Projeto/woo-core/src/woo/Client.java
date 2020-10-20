@@ -2,14 +2,20 @@ package woo;
 
 public class Client {
 
+    private int _id;
     private String _name;
     private String _address;
     private int _score = 0;
-    private Status _status;
+    private Status _status = new Normal();
 
-    public Client(String name, String address){
+    public Client(int id, String name, String address){
+        _id = id;
         _name = name;
         _address = address;
+    }
+
+    public int getID(){
+        return _id;
     }
     
     public String getName(){
@@ -29,7 +35,16 @@ public class Client {
     }
 
     public void setStatus(Status status) {
-        this._status = status;
+        _status = status;
+    }
+
+    public void changeStatus() {
+        if (_client.getScore() > 2000) {
+            _client.setStatus(new Selection(_client));
+        }
+        if (_client.getScore() > 25000) {
+            _client.setStatus(new Elite(_client));
+        }
     }
 
 }

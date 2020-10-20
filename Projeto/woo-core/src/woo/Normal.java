@@ -1,10 +1,8 @@
 package woo;
 
-public class Normal extends Status {
+public class Normal implements Status {
     
-    public Normal(Client client){
-        super(client);
-    }
+    public Normal(){ }
 
     @Override
     public String toString() {

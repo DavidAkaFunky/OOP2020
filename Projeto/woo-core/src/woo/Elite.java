@@ -1,10 +1,8 @@
 package woo;
 
-public class Elite extends Status {
+public class Elite implements Status {
     
-    public Elite(Client client){
-        super(client);
-    }
+    public Elite(){ }
 
     @Override
     public String toString() {

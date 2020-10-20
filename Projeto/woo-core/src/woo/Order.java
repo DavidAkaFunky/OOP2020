@@ -5,13 +5,13 @@ import java.util.HashMap;
 
 public class Order extends Transaction {
     
-    private Supplier _supplier;
+    private int _supplierID;
     private Map<Product,Integer> _productMap = new HashMap<>();
     private int _totalPrice = 0;
 
-    public Order(Supplier supplier){
+    public Order(int supplierID){
         super();
-        _supplier = supplier;
+        _supplierID = supplierID;
     }
 
 }

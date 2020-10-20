@@ -1,10 +1,8 @@
 package woo;
 
-public class Selection extends Status {
+public class Selection implements Status {
     
-    public Selection(Client client){
-        super(client);
-    }
+    public Selection(){ }
 
     @Override
     public String toString() {

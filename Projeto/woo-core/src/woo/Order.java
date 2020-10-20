@@ -14,7 +14,4 @@ public class Order extends Transaction {
         _supplier = supplier;
     }
 
-    public void addProduct(Product product, int amount){
-        _productMap.put(product, amount);
-    }
 }

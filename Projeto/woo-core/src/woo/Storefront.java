@@ -22,19 +22,19 @@ public class Storefront {
     return _store.showAllProducts();
   }
 
-  public void registerBook(int id, String title, String author, String isbn, int price, int cValue, int sID) {
+  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, int sID) {
     return _store.registerBook(id, title, author, isbn, price, cValue, sID);
   }
 
-  public void registerBox(int id, int price, int cValue, int sID) {
+  public void registerBox(String id, int price, int cValue, int sID) {
     return _store.registerBox(id, price, cValue, sID);
   }
 
-  public void registerContainer(int id, int price, int cValue, int sID) {
+  public void registerContainer(String id, int price, int cValue, int sID) {
     return _store.registerContainer(id, price, cValue, sID);
   }
 
-  public void changeProductPrice(int id, int newPrice) {
+  public void changeProductPrice(String id, int newPrice) {
     return _store.changeProductPrice(id, newPrice);
   }
 
@@ -44,19 +44,19 @@ public class Storefront {
     return _store.showAllClients;
   }
 
-  public String showClient(int id) {
+  public String showClient(String id) {
     return _store.showClient(id);
   }
 
-  public void registerClient(int id, String name, String address) {
+  public void registerClient(String id, String name, String address) {
     return _store.registerClient(id, name, address);
   }
 
-  public void toggleClientProductNotifications(int id){
+  public void toggleClientProductNotifications(String id){
     return _store.toggleClientProductNotifications(id);
   }
   
-  public String showAllClientAcquisitions(int id){
+  public String showAllClientAcquisitions(String id){
     return _store.showAllClientAcquisitions(id);
   }
 
@@ -66,19 +66,19 @@ public class Storefront {
     return _store.showAllSuppliers;
   }
 
-  public String showSupplier(int id) {
+  public String showSupplier(String id) {
     return _store.showSupplier(id);
   }
 
-  public void registerSupplier(int id, String name, String address) {
+  public void registerSupplier(String id, String name, String address) {
     return _store.registerSupplier(id, name, address);
   }
 
-  public void toggleTransactions(int id){
+  public void toggleTransactions(String id){
     return _store.toggleTransactions(id);
   }
   
-  public String showAllSupplierTransactions(int id){
+  public String showAllSupplierTransactions(String id){
     return _store.showAllSupplierTransactions(id);
   }
 
@@ -100,6 +100,15 @@ public class Storefront {
     return _store.showTransaction(id);
   }
 
+  /* PARTE DAS PESQUISAS */
+
+  public String showProductsPrice(int price){
+    return _store.showProductsPrice(price);
+  }
+
+  public String showClientBills (int cID){
+    return _store.showClientBills(cID);
+  }
   /**
    * @throws IOException
    * @throws FileNotFoundException

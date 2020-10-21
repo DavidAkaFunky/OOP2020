@@ -14,8 +14,9 @@ public class Store implements Serializable {
   private static final long serialVersionUID = 202009192006L;
   private Map<Integer, Sale> _sales = new TreeMap<Integer, Sales>();
   private Map<Integer, Order> _orders = new TreeMap<Integer, Orders>();
-  private Map<Integer, Client> _clients = new TreeMap<Integer, Client>();
-  private Map<Integer, Product> _products = new TreeMap<Integer, Product>();
+  private Map<String, Client> _clients = new TreeMap<String, Client>();
+  private Map<String, Product> _products = new TreeMap<String, Product>();
+  private Map<String, Supplier> _suppliers = new TreeMap<String, Supplier>();
 
   /**
    * @param txtfile filename to be loaded.
@@ -33,19 +34,19 @@ public class Store implements Serializable {
     return "";
   }
 
-  public void registerBook(int id, String title, String author, String isbn, int price, int cValue, int sID) {
+  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, int sID) {
     
   }
 
-  public void registerBox(int id, int price, int cValue, int sID) {
+  public void registerBox(String id, int price, int cValue, int sID) {
     
   }
 
-  public void registerContainer(int id, int price, int cValue, int sID) {
+  public void registerContainer(String id, int price, int cValue, int sID) {
     
   }
 
-  public void changeProductPrice(int id, int newPrice) {
+  public void changeProductPrice(String id, int newPrice) {
     
   }
 
@@ -56,21 +57,21 @@ public class Store implements Serializable {
     return "";
   }
 
-  public String showClient(int id) {
+  public String showClient(String id) {
     /* IDEIA: A partir do id, ir buscar ao TreeMap o cliente a partir do ID e chamar o toString */
     return "";
   }
 
-  public void registerClient(int id, String name, String address) {
+  public void registerClient(String id, String name, String address) {
     /* IDEIA: Criar cliente e adicioná-lo à TreeMap de clientes */
     /* Lançar exceção se o id é repetido */
   }
 
-  public void toggleClientProductNotifications(int id){
+  public void toggleClientProductNotifications(String id){
     /* IDEIA: Self-explanatory */
   }
   
-  public String showAllClientAcquisitions(int id){
+  public String showAllClientAcquisitions(String id){
     /* IDEIA: Ir ao TreeMap de vendas e ver quais têm o id do cliente (usar o getter do cliente??)  */
   }
 
@@ -81,21 +82,21 @@ public class Store implements Serializable {
     return "";
   }
 
-  public String showSupplier(int id) {
+  public String showSupplier(String id) {
     /* IDEIA: A partir do id, ir buscar ao TreeMap o fornecedor a partir do ID e chamar o toString */
     return "";
   }
 
-  public void registerSupplier(int id, String name, String address) {
+  public void registerSupplier(String id, String name, String address) {
     /* IDEIA: Criar fornecedor e adicioná-lo à TreeMap de fornecedores */
     /* Lançar exceção se o id é repetido */
   }
 
-  public void toggleTransactions(int id){
+  public void toggleTransactions(String id){
     /* IDEIA: Self-explanatory */
   }
   
-  public String showAllSupplierTransactions(int id){
+  public String showAllSupplierTransactions(String id){
     /* IDEIA: Ir ao TreeMap de encomendas e ver quais têm o id do fornecedor (usar o getter do fornecedor??)  */
   }
 
@@ -115,5 +116,15 @@ public class Store implements Serializable {
 
   public String showTransaction(int id){
 
+  }
+
+  /* PARTE DAS PESQUISAS */
+
+  public String showProductsPrice (int price){
+
+  }
+
+  public String showClientBills (int cID){
+    
   }
 }

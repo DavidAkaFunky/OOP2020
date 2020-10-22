@@ -7,7 +7,9 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoRegisterSupplier extends Command<Storefront> {
 
-  Input<Integer> _id;
+  Input<String> _id;
+  Input<String> _name;
+  Input<String> _address;
 
   public DoRegisterSupplier(Storefront receiver) {
     super(Label.REGISTER_SUPPLIER, receiver);

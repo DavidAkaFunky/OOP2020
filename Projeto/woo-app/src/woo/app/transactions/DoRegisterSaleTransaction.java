@@ -7,7 +7,8 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoRegisterSaleTransaction extends Command<Storefront> {
 
-  Input<Integer> _id;
+  Input<String> _clientID;
+  Input<Integer> _transactionID;
   Input<Integer> _limitDate;
   Input<Integer> _amount;
 

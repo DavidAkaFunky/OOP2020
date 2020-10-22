@@ -7,6 +7,8 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoShowClient extends Command<Storefront> {
 
+  Input<String> _id;
+  
   //FIXME add input fields
 
   public DoShowClient(Storefront storefront) {

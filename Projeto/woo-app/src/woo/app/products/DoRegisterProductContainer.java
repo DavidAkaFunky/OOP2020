@@ -7,8 +7,8 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoRegisterProductContainer extends Command<Storefront> {
 
-  Input<Integer> _supplierID;
-  Input<Integer> _productID;
+  Input<String> _supplierID;
+  Input<String> _productID;
   Input<Integer> _price;
   Input<Integer> _criticalLevel;
   Input<String> _serviceType;

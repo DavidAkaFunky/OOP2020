@@ -7,7 +7,8 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoToggleProductNotifications extends Command<Storefront> {
 
-  //FIXME add input fields
+  Input<String> _pID;
+  Input<String> _cID;
 
   public DoToggleProductNotifications(Storefront storefront) {
     super(Label.TOGGLE_PRODUCT_NOTIFICATIONS, storefront);

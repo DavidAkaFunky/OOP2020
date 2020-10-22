@@ -7,7 +7,7 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoSave extends Command<Storefront> {
 
-  //FIXME add input fields
+  Input<String> _fileName;
 
   /** @param receiver */
   public DoSave(Storefront receiver) {

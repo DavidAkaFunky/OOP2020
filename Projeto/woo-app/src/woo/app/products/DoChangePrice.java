@@ -7,7 +7,7 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoChangePrice extends Command<Storefront> {
 
-  Input<Integer> _id;
+  Input<String> _id;
   Input<Integer> _newPrice;
   
   public DoChangePrice(Storefront receiver) {

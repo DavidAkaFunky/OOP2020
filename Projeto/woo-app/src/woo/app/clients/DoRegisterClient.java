@@ -7,7 +7,7 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoRegisterClient extends Command<Storefront> {
 
-  Input<Integer> _id;
+  Input<String> _id;
   Input<String> _name;
   Input<String> _address;
 

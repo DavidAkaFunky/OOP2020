@@ -7,7 +7,7 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoLookupPaymentsByClient extends Command<Storefront> {
 
-  Input<Integer> _id;
+  Input<String> _id;
 
   public DoLookupPaymentsByClient(Storefront storefront) {
     super(Label.PAID_BY_CLIENT, storefront);

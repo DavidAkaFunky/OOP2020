@@ -6,6 +6,8 @@ public class Client {
     private String _name;
     private String _address;
     private int _score = 0;
+    private boolean _notifiable = true;
+    private ArrayList<Notification> _notifications = new ArrayList();
     private Status _status = new Normal();
 
     public Client(int id, String name, String address){
@@ -30,6 +32,15 @@ public class Client {
         return _score;
     }
 
+    public boolean isNotifiable(){
+        return _notifiable;
+    }
+
+    public void getNotifications(){
+        for (Notification n: _notifications)
+            system.out.println(n.toString());
+    }
+
     public String getStatus() {
         return _status.toString();
     }
@@ -38,12 +49,20 @@ public class Client {
         _status = status;
     }
 
+    public void setNotifiability(boolean n){
+        _notifiable = n;
+    }
+
+    public void clearNotifications(){
+        _notifications.clear();
+    }
+
     public void changeStatus() {
-        if (_client.getScore() > 2000) {
-            _client.setStatus(new Selection(_client));
-        }
         if (_client.getScore() > 25000) {
             _client.setStatus(new Elite(_client));
+        }
+        else if (_client.getScore() > 2000) {
+            _client.setStatus(new Selection(_client));
         }
     }
 

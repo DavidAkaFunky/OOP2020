@@ -1,3 +1,5 @@
+package woo;
+
 public class Notification {
     
     private String _type;
@@ -11,7 +13,7 @@ public class Notification {
     }
 
     public void notify(Client c){
-        c._notifications.add(this);
+        c.getNotifications().add(this);
     }
     
 }

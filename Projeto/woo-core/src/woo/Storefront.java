@@ -23,25 +23,25 @@ public class Storefront {
   }
 
   public void registerBook(String id, String title, String author, String isbn, int price, int cValue, int sID) {
-    return _store.registerBook(id, title, author, isbn, price, cValue, sID);
+    _store.registerBook(id, title, author, isbn, price, cValue, sID);
   }
 
   public void registerBox(String id, int price, int cValue, int sID) {
-    return _store.registerBox(id, price, cValue, sID);
+    _store.registerBox(id, price, cValue, sID);
   }
 
   public void registerContainer(String id, int price, int cValue, int sID) {
-    return _store.registerContainer(id, price, cValue, sID);
+    _store.registerContainer(id, price, cValue, sID);
   }
 
   public void changeProductPrice(String id, int newPrice) {
-    return _store.changeProductPrice(id, newPrice);
+    _store.changeProductPrice(id, newPrice);
   }
 
   /* PARTE DOS CLIENTES */
 
   public String showAllClients() {
-    return _store.showAllClients;
+    return _store.showAllClients();
   }
 
   public String showClient(String id) {
@@ -49,11 +49,11 @@ public class Storefront {
   }
 
   public void registerClient(String id, String name, String address) {
-    return _store.registerClient(id, name, address);
+    _store.registerClient(id, name, address);
   }
 
   public void toggleClientProductNotifications(String id){
-    return _store.toggleClientProductNotifications(id);
+    _store.toggleClientProductNotifications(id);
   }
   
   public String showAllClientAcquisitions(String id){
@@ -63,7 +63,7 @@ public class Storefront {
   /* PARTE DOS FORNECEDORES */
 
   public String showAllSuppliers() {
-    return _store.showAllSuppliers;
+    return _store.showAllSuppliers();
   }
 
   public String showSupplier(String id) {
@@ -71,11 +71,11 @@ public class Storefront {
   }
 
   public void registerSupplier(String id, String name, String address) {
-    return _store.registerSupplier(id, name, address);
+    _store.registerSupplier(id, name, address);
   }
 
   public void toggleTransactions(String id){
-    return _store.toggleTransactions(id);
+    _store.toggleTransactions(id);
   }
   
   public String showAllSupplierTransactions(String id){
@@ -85,15 +85,15 @@ public class Storefront {
   /* PARTE DAS TRANSAÇÕES */
 
   public void pay(int id){
-    return _store.pay(id);
+    _store.pay(id);
   }
 
   public void registerOrderTransaction(int supID, int pID, int amt){
-    return _store.registerOrderTransaction(supID, pID, amt);
+    _store.registerOrderTransaction(supID, pID, amt);
   }
 
   public void registerSaleTransaction(int cID, int limDate, int pID, int qty){
-    return _store.registerSaleTransaction(cID, limDate, pID, qty);
+    _store.registerSaleTransaction(cID, limDate, pID, qty);
   }
 
   public String showTransaction(int id){

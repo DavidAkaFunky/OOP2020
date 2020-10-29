@@ -1,5 +1,7 @@
 package woo;
 
+import java.util.ArrayList;
+
 public class Client {
 
     private int _id;
@@ -32,13 +34,17 @@ public class Client {
         return _score;
     }
 
+    public ArrayList<Notification> getNotifications(){
+        return _notifications;
+    }
+
     public boolean isNotifiable(){
         return _notifiable;
     }
 
-    public void getNotifications(){
+    public void printNotifications(){
         for (Notification n: _notifications)
-            system.out.println(n.toString());
+            System.out.println(n.toString());
     }
 
     public String getStatus() {
@@ -58,11 +64,11 @@ public class Client {
     }
 
     public void changeStatus() {
-        if (_client.getScore() > 25000) {
-            _client.setStatus(new Elite(_client));
+        if (getScore() > 25000) {
+            setStatus(new Elite());
         }
-        else if (_client.getScore() > 2000) {
-            _client.setStatus(new Selection(_client));
+        else if (getScore() > 2000) {
+            setStatus(new Selection());
         }
     }
 

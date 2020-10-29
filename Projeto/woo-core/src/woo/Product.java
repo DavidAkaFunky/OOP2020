@@ -8,7 +8,7 @@ public class Product {
     private int _amount = 0;
     private int _criticalLevel;
 
-    public Product(int id, Supplier supplier, int price, int amount, int criticalLevel){
+    public Product(Supplier supplier, int id, int price, int amount, int criticalLevel){
         _id = id;
         _supplier = supplier;
         _price = price;

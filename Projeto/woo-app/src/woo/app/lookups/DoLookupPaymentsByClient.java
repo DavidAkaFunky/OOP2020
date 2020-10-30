@@ -7,7 +7,7 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoLookupPaymentsByClient extends Command<Storefront> {
 
-  Input<String> _id;
+  //FIXME add input fields
 
   public DoLookupPaymentsByClient(Storefront storefront) {
     super(Label.PAID_BY_CLIENT, storefront);

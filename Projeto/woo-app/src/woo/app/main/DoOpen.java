@@ -11,7 +11,7 @@ import woo.Storefront;
  */
 public class DoOpen extends Command<Storefront> {
 
-  Input<String> _fileName;
+  //FIXME add input fields
 
   /** @param receiver */
   public DoOpen(Storefront receiver) {

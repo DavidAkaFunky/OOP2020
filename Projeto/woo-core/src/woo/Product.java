@@ -2,20 +2,20 @@ package woo;
 
 public class Product {
     
-    private int _id;
+    private String _id;
     private Supplier _supplier;
     private int _price;
     private int _amount = 0;
     private int _criticalLevel;
 
-    public Product(Supplier supplier, int id, int price, int amount, int criticalLevel){
+    public Product(Supplier supplier, String id, int price, int amount, int criticalLevel){
         _id = id;
         _supplier = supplier;
         _price = price;
         _criticalLevel = criticalLevel;
     }
 
-    public int getID(){
+    public String getID(){
         return _id;
     }
     

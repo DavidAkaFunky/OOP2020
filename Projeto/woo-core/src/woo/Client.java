@@ -1,24 +1,28 @@
 package woo;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
-public class Client {
+public class Client{
 
-    private int _id;
+    private String _id;
     private String _name;
     private String _address;
     private int _score = 0;
     private boolean _notifiable = true;
+    private Map<String,Boolean> _notifiability = new TreeMap<String,Boolean>();
     private ArrayList<Notification> _notifications = new ArrayList();
+    private ArrayList<Sale> _sales = new ArrayList();
     private Status _status = new Normal();
 
-    public Client(int id, String name, String address){
+    public Client(String id, String name, String address){
         _id = id;
         _name = name;
         _address = address;
     }
 
-    public int getID(){
+    public String getID(){
         return _id;
     }
     
@@ -38,13 +42,20 @@ public class Client {
         return _notifications;
     }
 
-    public boolean isNotifiable(){
-        return _notifiable;
+    public boolean isNotifiable(String pID){
+        return _notifiability.get(pID);
     }
 
-    public void printNotifications(){
-        for (Notification n: _notifications)
-            System.out.println(n.toString());
+    public void showNotifications(){
+        //for (Notification n: _notifications)
+            //TO DO
+    }
+
+    public String showSales(){
+        String str = "";
+        for (Sale s: _sales)
+            str += String.format("%d|%s|%s|%d|%d|%d|%d|%d\n", s.getID(), _id, s.getProductID(), s.getAmount(), s.getBasePrice(), s.getTotalPrice(), s.getLimitDate(), s.getPaymentDate());
+        return str;
     }
 
     public String getStatus() {
@@ -55,8 +66,8 @@ public class Client {
         _status = status;
     }
 
-    public void setNotifiability(boolean n){
-        _notifiable = n;
+    public void setNotifiability(boolean n, String pID){
+        _notifiability.put(pID, n);
     }
 
     public void clearNotifications(){

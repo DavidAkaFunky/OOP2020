@@ -2,18 +2,18 @@ package woo;
 
 public class Supplier {
     
-    private int _id;
+    private String _id;
     private String _name;
     private String _address;
     private boolean _active = true;
 
-    public Supplier(int id,String name, String address){
+    public Supplier(String id,String name, String address){
         _id = id;
         _name = name;
         _address = address;
     }
     
-    public int getID(){
+    public String getID(){
         return _id;
     }
     

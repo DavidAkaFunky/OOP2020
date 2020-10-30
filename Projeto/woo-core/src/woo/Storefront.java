@@ -1,7 +1,10 @@
 package woo;
 
-import java.io.*;
 import woo.exceptions.*;
+import woo.app.exceptions.*;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Storefront: façade for the core classes.
@@ -44,20 +47,20 @@ public class Storefront {
     return _store.showAllClients();
   }
 
-  public String showClient(String id) {
+  public String showClient(String id) throws UnknownClientKeyException {
     return _store.showClient(id);
   }
 
-  public void registerClient(String id, String name, String address) {
+  public void registerClient(String id, String name, String address) throws DuplicateClientKeyException {
     _store.registerClient(id, name, address);
   }
 
-  public void toggleClientProductNotifications(String id){
-    _store.toggleClientProductNotifications(id);
+  public void toggleClientProductNotifications(String pid, String cid) throws UnknownClientKeyException, UnknownProductKeyException{
+    _store.toggleClientProductNotifications(pid, cid);
   }
   
-  public String showAllClientAcquisitions(String id){
-    return _store.showAllClientAcquisitions(id);
+  public String showClientTransactions(String id) throws UnknownClientKeyException {
+    return _store.showClientTransactions(id);
   }
 
   /* PARTE DOS FORNECEDORES */

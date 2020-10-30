@@ -1,23 +1,33 @@
 package woo.app.clients;
 
 import pt.tecnico.po.ui.Command;                                                                                                              import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
+import woo.app.exceptions.UnknownClientKeyException;
+import woo.app.exceptions.UnknownProductKeyException;
 
 /**
  * Toggle product-related notifications.
  */
 public class DoToggleProductNotifications extends Command<Storefront> {
 
-  Input<String> _pID;
-  Input<String> _cID;
+  private Input<String> _pID;
+  private Input<String> _cID;
 
   public DoToggleProductNotifications(Storefront storefront) {
     super(Label.TOGGLE_PRODUCT_NOTIFICATIONS, storefront);
-    //FIXME init input fields
+    _pID = _form.addStringInput(Message.requestProductKey());
+    _cID = _form.addStringInput(Message.requestClientKey());
   }
 
   @Override
   public void execute() throws DialogException {
-    //FIXME implement command
+    _form.parse();
+    try {
+      _receiver.toggleClientProductNotifications(_pID.value(), _cID.value());
+    } catch (UnknownClientKeyException e) {
+      throw new UnknownClientKeyException(_cID.value());
+    } catch (UnknownProductKeyException e) {
+      throw new UnknownProductKeyException(_pID.value());
+    }
   }
 
 }

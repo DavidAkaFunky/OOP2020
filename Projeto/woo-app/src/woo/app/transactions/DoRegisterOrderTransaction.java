@@ -7,7 +7,7 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoRegisterOrderTransaction extends Command<Storefront> {
 
-  Input<Integer> _id;
+  //FIXME add input fields
 
   public DoRegisterOrderTransaction(Storefront receiver) {
     super(Label.REGISTER_ORDER_TRANSACTION, receiver);

@@ -7,15 +7,13 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoShowAllClients extends Command<Storefront> {
 
-  //FIXME add input fields
-
   public DoShowAllClients(Storefront storefront) {
     super(Label.SHOW_ALL_CLIENTS, storefront);
-                //FIXME init input fields
   }
 
   @Override
   public void execute() throws DialogException {
-    //FIXME implement command
+    _display.addLine(_receiver.showAllClients());
+    _display.display();
   }
 }

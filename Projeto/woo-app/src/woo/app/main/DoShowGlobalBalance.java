@@ -7,8 +7,7 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoShowGlobalBalance extends Command<Storefront> {
 
-  Input<Float> _availableBalance;
-  Input<Float> _countabilisticBalance;
+  //FIXME add input fields
 
   public DoShowGlobalBalance(Storefront receiver) {
     super(Label.SHOW_BALANCE, receiver);

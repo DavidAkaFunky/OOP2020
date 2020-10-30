@@ -1,7 +1,11 @@
 package woo;
 
-import java.io.*;
-import woo.exceptions.*;
+import woo.exceptions.BadEntryException;
+import woo.exceptions.ImportFileException;
+import woo.app.exceptions.*;
+
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -12,8 +16,7 @@ public class Store implements Serializable {
 
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202009192006L;
-  private Map<Integer, Sale> _sales = new TreeMap<Integer, Sale>();
-  private Map<Integer, Order> _orders = new TreeMap<Integer, Order>();
+  private Map<Integer, Transaction> _transactions = new TreeMap<Integer, Transaction>();
   private Map<String, Client> _clients = new TreeMap<String, Client>();
   private Map<String, Product> _products = new TreeMap<String, Product>();
   private Map<String, Supplier> _suppliers = new TreeMap<String, Supplier>();
@@ -76,25 +79,39 @@ public class Store implements Serializable {
     return "";
   }
 
-  public String showClient(String id) {
+  public String showClient(String id) throws UnknownClientKeyException {
     /* IDEIA: A partir do id, ir buscar ao TreeMap o cliente a partir do ID e chamar o toString */
-    return "";
+    if (_clients.containsValue(id)) {
+      return _clients.get(id).toString();
+    }
+    throw new UnknownClientKeyException(id);
   }
 
-  public void registerClient(String id, String name, String address) {
+  public void registerClient (String id, String name, String address) throws DuplicateClientKeyException {
     /* IDEIA: Criar cliente e adicioná-lo à TreeMap de clientes */
     /* Lançar exceção se o id é repetido */
-    return ;
+    if (_clients.containsValue(id)) {
+      throw new DuplicateClientKeyException(id);
+    }
+    _clients.put(id, new Client(id, name, address));
   }
 
-  public void toggleClientProductNotifications(String id){
-    /* IDEIA: Self-explanatory */
-    return ;
+  public void toggleClientProductNotifications(String pid, String cid) throws UnknownClientKeyException, UnknownProductKeyException{
+    if (_clients.containsValue(cid) && _products.containsValue(pid))
+      _clients.get(cid).setNotifiability(!_clients.get(cid).isNotifiable(pid), pid);
+    else{
+      if (!_clients.containsValue(cid))
+        throw new UnknownClientKeyException(cid);
+      if (!_products.containsValue(pid))
+        throw new UnknownProductKeyException(cid);
+    }
+      
   }
   
-  public String showAllClientAcquisitions(String id){
-    /* IDEIA: Ir ao TreeMap de vendas e ver quais têm o id do cliente (usar o getter do cliente??)  */
-    return "";
+  public String showClientTransactions(String id) throws UnknownClientKeyException {
+    if (_clients.containsValue(id))
+      return _clients.get(id).showSales();
+    throw new UnknownClientKeyException(id);
   }
 
   /* PARTE DOS FORNECEDORES */

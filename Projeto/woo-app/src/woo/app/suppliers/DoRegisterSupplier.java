@@ -7,9 +7,7 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoRegisterSupplier extends Command<Storefront> {
 
-  Input<String> _id;
-  Input<String> _name;
-  Input<String> _address;
+  //FIXME add input fields
 
   public DoRegisterSupplier(Storefront receiver) {
     super(Label.REGISTER_SUPPLIER, receiver);

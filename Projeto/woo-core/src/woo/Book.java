@@ -6,7 +6,7 @@ public class Book extends Product{
     private String _author;
     private String _isbn;
 
-    public Book(Supplier supplier, int id, int price, int amount, int criticalLevel, String title, String author, String isbn){
+    public Book(Supplier supplier, String id, int price, int amount, int criticalLevel, String title, String author, String isbn){
         super(supplier, id, price, amount, criticalLevel);
         _title = title;
         _author = author;

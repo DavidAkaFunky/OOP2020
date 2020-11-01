@@ -102,9 +102,9 @@ public class Store implements Serializable {
     if (_clients.containsValue(cid) && _products.containsValue(pid)){
       _clients.get(cid).setNotifiability(!_clients.get(cid).isNotifiable(pid), pid);
       if (_clients.get(cid).isNotifiable(pid))
-        return "SIM";
+        return "notificationsOn()";
       else
-        return "NÃO";
+        return "notificationsOff()";
     }
     else{
       if (!_clients.containsValue(cid))
@@ -112,7 +112,7 @@ public class Store implements Serializable {
       if (!_products.containsValue(pid))
         throw new UnknownProductException(cid);
     }
-      
+    return "";
   }
   
   public String showClientTransactions(String id) throws UnknownClientException {

@@ -60,8 +60,8 @@ public class Client{
         return str;
     }
 
-    public String getStatus() {
-        return _status.toString();
+    public Status getStatus() {
+        return _status;
     }
 
     public void setStatus(Status status) {
@@ -92,6 +92,6 @@ public class Client{
             paidPrice += s.getBasePrice();
             totalPrice += s.getTotalPrice();
         }
-        return getID() + "|" + getName() + "|" + getAddress() + "|" + getStatus.toString() + "|" + totalPrice + "|" + paidPrice;
+        return getID() + "|" + getName() + "|" + getAddress() + "|" + getStatus().toString() + "|" + totalPrice + "|" + paidPrice;
     }
 }

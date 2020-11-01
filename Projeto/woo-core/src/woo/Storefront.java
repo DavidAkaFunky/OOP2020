@@ -1,7 +1,6 @@
 package woo;
 
 import woo.exceptions.*;
-import woo.app.exceptions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

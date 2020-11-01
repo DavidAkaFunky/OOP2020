@@ -16,7 +16,8 @@ public class DoShowAllProducts extends Command<Storefront> {
 
   @Override
   public final void execute() throws DialogException {
-    //FIXME implement command
+    _display.addLine(_receiver.showAllProducts());
+    _display.display();
   }
 
 }

@@ -1,8 +1,6 @@
 package woo;
 
-import woo.exceptions.BadEntryException;
-import woo.exceptions.ImportFileException;
-import woo.app.exceptions.*;
+import woo.exceptions.*;
 
 import java.io.IOException;
 import java.io.Serializable;

@@ -3,7 +3,8 @@ package woo.app.clients;
 import pt.tecnico.po.ui.Command;
 import pt.tecnico.po.ui.DialogException;
 import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
-import woo.app.exceptions.UnknownClientKeyException;
+import woo.app.exceptions.UnknownClientException;
+import woo.exceptions.UnknownClientKeyException;
 import woo.Client;
 import woo.Storefront;
 
@@ -26,7 +27,7 @@ public class DoShowClient extends Command<Storefront> {
       _display.addLine(_receiver.showClient(_key.value()));
       _display.display();
     } catch (UnknownClientKeyException e) {
-      throw new UnknownClientKeyException(_key.value());
+      throw new UnknownClientException(_key.value());
     }
   }
 

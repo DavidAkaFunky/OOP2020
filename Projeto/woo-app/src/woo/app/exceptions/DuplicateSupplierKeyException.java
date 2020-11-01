@@ -3,7 +3,7 @@ package woo.app.exceptions;
 import pt.tecnico.po.ui.DialogException;
 
 /** Exception thrown when a supplier key is duplicated. */
-public class DuplicateSupplierException extends DialogException {
+public class DuplicateSupplierKeyException extends DialogException {
 
   /** Serial number for serialization. */
   private static final long serialVersionUID = 201709021324L;
@@ -12,7 +12,7 @@ public class DuplicateSupplierException extends DialogException {
   private String _key;
 
   /** @param key the duplicated key */
-  public DuplicateSupplierException(String key) {
+  public DuplicateSupplierKeyException(String key) {
     _key = key;
   }
 

@@ -2,24 +2,24 @@ package woo.app.exceptions;
 
 import pt.tecnico.po.ui.DialogException;
 
-/** Exception for unknown transaction keys. */
-public class UnknownTransactionException extends DialogException {
+/** Exception for unknown product keys. */
+public class UnknownProductKeyException extends DialogException {
 
   /** Serial number for serialization. */
-  private static final long serialVersionUID = 202009192008L;
+  private static final long serialVersionUID = 202009192335L;
 
   /** Unknown key. */
-  private int _key;
+  String _key;
 
   /** @param key Unknown key to report. */
-  public UnknownTransactionException(int key) {
+  public UnknownProductKeyException(String key) {
     _key = key;
   }
 
   /** @see pt.tecnico.po.ui.DialogException#getMessage() */
   @Override
   public String getMessage() {
-    return Message.unknownTransactionKey(_key);
+    return Message.unknownProductKey(_key);
   }
 
 }

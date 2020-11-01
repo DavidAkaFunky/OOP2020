@@ -1,7 +1,7 @@
 package woo.exceptions;
 
 /** Exception for unknown product keys. */
-public class UnknownProductKeyException extends Exception {
+public class UnknownProductException extends Exception {
 
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202009192335L;
@@ -10,7 +10,7 @@ public class UnknownProductKeyException extends Exception {
   String _key;
 
   /** @param key Unknown key to report. */
-  public UnknownProductKeyException(String key) {
+  public UnknownProductException(String key) {
     _key = key;
   }
 

@@ -77,39 +77,39 @@ public class Store implements Serializable {
     return "";
   }
 
-  public String showClient(String id) throws UnknownClientKeyException {
+  public String showClient(String id) throws UnknownClientException {
     /* IDEIA: A partir do id, ir buscar ao TreeMap o cliente a partir do ID e chamar o toString */
     if (_clients.containsValue(id)) {
       return _clients.get(id).toString();
     }
-    throw new UnknownClientKeyException(id);
+    throw new UnknownClientException(id);
   }
 
-  public void registerClient (String id, String name, String address) throws DuplicateClientKeyException {
+  public void registerClient (String id, String name, String address) throws DuplicateClientException {
     /* IDEIA: Criar cliente e adicioná-lo à TreeMap de clientes */
     /* Lançar exceção se o id é repetido */
     if (_clients.containsValue(id)) {
-      throw new DuplicateClientKeyException(id);
+      throw new DuplicateClientException(id);
     }
     _clients.put(id, new Client(id, name, address));
   }
 
-  public void toggleClientProductNotifications(String pid, String cid) throws UnknownClientKeyException, UnknownProductKeyException{
+  public void toggleClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
     if (_clients.containsValue(cid) && _products.containsValue(pid))
       _clients.get(cid).setNotifiability(!_clients.get(cid).isNotifiable(pid), pid);
     else{
       if (!_clients.containsValue(cid))
-        throw new UnknownClientKeyException(cid);
+        throw new UnknownClientException(cid);
       if (!_products.containsValue(pid))
-        throw new UnknownProductKeyException(cid);
+        throw new UnknownProductException(cid);
     }
       
   }
   
-  public String showClientTransactions(String id) throws UnknownClientKeyException {
+  public String showClientTransactions(String id) throws UnknownClientException {
     if (_clients.containsValue(id))
       return _clients.get(id).showSales();
-    throw new UnknownClientKeyException(id);
+    throw new UnknownClientException(id);
   }
 
   /* PARTE DOS FORNECEDORES */

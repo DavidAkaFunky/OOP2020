@@ -1,7 +1,9 @@
-package woo.exceptions;
+package woo.app.exceptions;
+
+import pt.tecnico.po.ui.DialogException;
 
 /** Exception for unknown client keys. */
-public class UnknownClientKeyException extends Exception {
+public class UnknownClientKeyException extends DialogException {
 
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202009192335L;
@@ -14,8 +16,10 @@ public class UnknownClientKeyException extends Exception {
     _key = key;
   }
 
-  public String getKey() {
-    return _key;
+  /** @see pt.tecnico.po.ui.DialogException#getMessage() */
+  @Override
+  public String getMessage() {
+    return Message.unknownClientKey(_key);
   }
 
 }

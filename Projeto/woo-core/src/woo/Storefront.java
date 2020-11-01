@@ -46,19 +46,19 @@ public class Storefront {
     return _store.showAllClients();
   }
 
-  public String showClient(String id) throws UnknownClientKeyException {
+  public String showClient(String id) throws UnknownClientException {
     return _store.showClient(id);
   }
 
-  public void registerClient(String id, String name, String address) throws DuplicateClientKeyException {
+  public void registerClient(String id, String name, String address) throws DuplicateClientException {
     _store.registerClient(id, name, address);
   }
 
-  public void toggleClientProductNotifications(String pid, String cid) throws UnknownClientKeyException, UnknownProductKeyException{
+  public void toggleClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
     _store.toggleClientProductNotifications(pid, cid);
   }
   
-  public String showClientTransactions(String id) throws UnknownClientKeyException {
+  public String showClientTransactions(String id) throws UnknownClientException {
     return _store.showClientTransactions(id);
   }
 

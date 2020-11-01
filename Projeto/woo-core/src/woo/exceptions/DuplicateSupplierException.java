@@ -1,16 +1,16 @@
 package woo.exceptions;
 
-/** Exception thrown when a client key is duplicated. */
-public class DuplicateClientKeyException extends Exception {
+/** Exception thrown when a supplier key is duplicated. */
+public class DuplicateSupplierException extends Exception {
 
   /** Serial number for serialization. */
   private static final long serialVersionUID = 201709021324L;
 
-  /** Client key. */
+  /** Supplier key. */
   private String _key;
 
   /** @param key the duplicated key */
-  public DuplicateClientKeyException(String key) {
+  public DuplicateSupplierException(String key) {
     _key = key;
   }
 

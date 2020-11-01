@@ -1,7 +1,9 @@
-package woo.exceptions;
+package woo.app.exceptions;
+
+import pt.tecnico.po.ui.DialogException;
 
 /** Exception for unknown supplier keys. */
-public class UnknownSupplierKeyException extends Exception {
+public class UnknownSupplierKeyException extends DialogException {
 
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202009200054L;
@@ -14,8 +16,10 @@ public class UnknownSupplierKeyException extends Exception {
     _key = id;
   }
 
-  public String getKey() {
-    return _key;
+  /** @see pt.tecnico.po.ui.DialogException#getMessage() */
+  @Override
+  public String getMessage() {
+    return Message.unknownSupplierKey(_key);
   }
 
 }

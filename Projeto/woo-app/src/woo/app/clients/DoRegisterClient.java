@@ -1,8 +1,8 @@
 package woo.app.clients;
 
 import pt.tecnico.po.ui.Command;                                                                                                              import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
-import woo.app.exceptions.DuplicateClientException;
-import woo.exceptions.DuplicateClientKeyException;
+import woo.app.exceptions.DuplicateClientKeyException;
+import woo.exceptions.DuplicateClientException;
 
 /**
  * Register new client.
@@ -25,8 +25,8 @@ public class DoRegisterClient extends Command<Storefront> {
     _form.parse();
     try {
       _receiver.registerClient(_key.value(), _name.value(), _address.value());
-    } catch (DuplicateClientKeyException e) {
-      throw new DuplicateClientException(_key.value());
+    } catch (DuplicateClientException e) {
+      throw new DuplicateClientKeyException(_key.value());
     }
   }
 

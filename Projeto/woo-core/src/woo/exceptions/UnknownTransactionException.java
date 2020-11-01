@@ -1,7 +1,7 @@
 package woo.exceptions;
 
 /** Exception for unknown transaction keys. */
-public class UnknownTransactionKeyException extends Exception {
+public class UnknownTransactionException extends Exception {
 
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202009192008L;
@@ -10,7 +10,7 @@ public class UnknownTransactionKeyException extends Exception {
   private int _key;
 
   /** @param key Unknown key to report. */
-  public UnknownTransactionKeyException(int key) {
+  public UnknownTransactionException(int key) {
     _key = key;
   }
 

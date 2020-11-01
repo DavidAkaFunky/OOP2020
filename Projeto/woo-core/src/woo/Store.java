@@ -54,20 +54,42 @@ public class Store implements Serializable {
     return "";
   }
 
-  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, int sID) {
+  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID) throws DuplicateProductException, UnknownSupplierException {
+    if (_products.containsValue(id)) {
+      throw new DuplicateProductException(id);
+    }
+    else if (!_suppliers.containsValue(sID)) {
+      throw new UnknownSupplierException(sID);
+    }
+    else {
+      Supplier supplier = _suppliers.get(sID);
+      _products.put(id, new Book(supplier, id, price, cValue, title, author, isbn));
+    }
+  }
+
+  public void registerBox(String id, int price, int cValue, String sID, String serviceType) throws DuplicateProductException, UnknownSupplierException{
+    if (_products.containsValue(id)) {
+      throw new DuplicateProductException(id);
+    }
+    else if (!_suppliers.containsValue(sID)) {
+      throw new UnknownSupplierException(sID);
+    }
+    else {
+      Supplier supplier = _suppliers.get(sID);
+      _products.put(id, new Box(supplier, id, price, cValue, serviceType));
+    }
+  }
+
+  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel) {
     return ;
   }
 
-  public void registerBox(String id, int price, int cValue, int sID) {
-    return ;
-  }
-
-  public void registerContainer(String id, int price, int cValue, int sID) {
-    return ;
-  }
-
-  public void changeProductPrice(String id, int newPrice) {
-    return ;
+  public void changeProductPrice(String id, int newPrice) throws UnknownProductException {
+    if (_products.containsValue(id)) {
+      _products.get(id).setPrice(newPrice);
+    } else {
+      throw new UnknownProductException(id);
+    }
   }
 
   /* PARTE DOS CLIENTES */
@@ -82,10 +104,8 @@ public class Store implements Serializable {
 
   public String showClient(String id) throws UnknownClientException {
     /* IDEIA: A partir do id, ir buscar ao TreeMap o cliente a partir do ID e chamar o toString */
-    if (_clients.containsValue(id)){
-      String str = _clients.get(id).toString() + _clients.get(id).showNotifications();
-      _clients.get(id).clearNotifications();
-      return str;
+    if (_clients.containsValue(id)) {
+      return _clients.get(id).toString();
     }
     throw new UnknownClientException(id);
   }
@@ -93,18 +113,19 @@ public class Store implements Serializable {
   public void registerClient (String id, String name, String address) throws DuplicateClientException {
     /* IDEIA: Criar cliente e adicioná-lo à TreeMap de clientes */
     /* Lançar exceção se o id é repetido */
-    if (_clients.containsValue(id))
+    if (_clients.containsValue(id)) {
       throw new DuplicateClientException(id);
+    }
     _clients.put(id, new Client(id, name, address));
   }
 
   public String toggleClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
     if (_clients.containsValue(cid) && _products.containsValue(pid)){
       _clients.get(cid).setNotifiability(!_clients.get(cid).isNotifiable(pid), pid);
-      if (_clients.get(cid).isNotifiable(pid))
-        return "notificationsOn()";
-      else
-        return "notificationsOff()";
+      //if (_clients.get(cid).isNotifiable(pid))
+        //return Message.notificationsOn();
+      //else
+        //return Message.notificationsOff();
     }
     else{
       if (!_clients.containsValue(cid))
@@ -125,7 +146,9 @@ public class Store implements Serializable {
 
   public String showAllSuppliers() {
     /* IDEIA: Iterar por todos os fornecedores do TreeMap carregado a partir do file */
-    return "";
+    String str = "";
+    //for (Supplier )
+    return str;
   }
 
   public String showSupplier(String id) {

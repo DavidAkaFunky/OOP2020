@@ -15,28 +15,24 @@ public class Storefront {
 
   /** The actual store. */
   private Store _store = new Store();
-
-  //FIXME define other attributes
-  //FIXME define constructor(s)
-  //FIXME define other methods
-
+  
   public String showAllProducts() {
     return _store.showAllProducts();
   }
 
-  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, int sID) {
+  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID) throws DuplicateProductException, UnknownSupplierException {
     _store.registerBook(id, title, author, isbn, price, cValue, sID);
   }
 
-  public void registerBox(String id, int price, int cValue, int sID) {
-    _store.registerBox(id, price, cValue, sID);
+  public void registerBox(String id, int price, int cValue, String sID, String serviceType) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException {
+    _store.registerBox(id, price, cValue, sID, serviceType);
   }
 
-  public void registerContainer(String id, int price, int cValue, int sID) {
-    _store.registerContainer(id, price, cValue, sID);
+  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel) {
+    _store.registerContainer(id, price, cValue, sID, serviceType, serviceLevel);
   }
 
-  public void changeProductPrice(String id, int newPrice) {
+  public void changeProductPrice(String id, int newPrice) throws UnknownProductException {
     _store.changeProductPrice(id, newPrice);
   }
 

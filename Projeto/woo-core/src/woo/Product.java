@@ -5,10 +5,9 @@ public class Product {
     private String _id;
     private Supplier _supplier;
     private int _price;
-    private int _amount = 0;
     private int _criticalLevel;
 
-    public Product(Supplier supplier, String id, int price, int amount, int criticalLevel){
+    public Product(Supplier supplier, String id, int price, int criticalLevel){
         _id = id;
         _supplier = supplier;
         _price = price;
@@ -27,12 +26,11 @@ public class Product {
         return _price;
     }
 
-    public int getAmount(){
-        return _amount;
-    }
-
     public int getCriticalLevel(){
         return _criticalLevel;
     }
     
+    public void setPrice(int price){
+        _price = price;
+    }
 }

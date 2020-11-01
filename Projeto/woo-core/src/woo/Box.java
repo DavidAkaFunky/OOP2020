@@ -4,8 +4,8 @@ public class Box extends Product{
     
     private String _serviceType;
 
-    public Box(Supplier supplier, String id, int price, int amount, int criticalLevel, String serviceType){
-        super(supplier, id, price, amount, criticalLevel);
+    public Box(Supplier supplier, String id, int price, int criticalLevel, String serviceType){
+        super(supplier, id, price, criticalLevel);
         _serviceType = serviceType;
     }
     

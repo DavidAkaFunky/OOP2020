@@ -12,8 +12,23 @@ public class Notification {
         _productPrice = pPrice;
     }
 
+    public String getType(){
+        return _type;
+    }
+
+    public String getPID(){
+        return _productID;
+    }
+
+    public int getProductPrice(){
+        return _productPrice;
+    }
+
     public void notify(Client c){
         c.getNotifications().add(this);
     }
     
+    public String toString(){
+        return getType() + "|" + getPID() + "|" + getProductPrice();
+    }
 }

@@ -46,9 +46,11 @@ public class Client{
         return _notifiability.get(pID);
     }
 
-    public void showNotifications(){
-        //for (Notification n: _notifications)
-            //TO DO
+    public String showNotifications(){
+        String str + "";
+        for (Notification n: _notifications)
+            str += n.toString() + "\n";
+        return str;
     }
 
     public String showSales(){
@@ -83,4 +85,13 @@ public class Client{
         }
     }
 
+    public String toString(){
+        int totalPrice = 0;
+        int paidPrice = 0;
+        for (Sale s: _sales){
+            paidPrice += s.getBasePrice();
+            totalPrice += s.getTotalPrice();
+        }
+        return getID() + "|" + getName() + "|" + getAddress() + "|" + getStatus.toString() + "|" + totalPrice + "|" + paidPrice;
+    }
 }

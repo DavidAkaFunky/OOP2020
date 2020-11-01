@@ -74,13 +74,18 @@ public class Store implements Serializable {
 
   public String showAllClients() {
     /* IDEIA: Iterar por todos os clientes do TreeMap carregado a partir do file */
-    return "";
+    String str = "";
+    for (Map.Entry<String, Client> client : _clients.entrySet())
+      str += client.getValue().toString() + "\n";
+    return str;
   }
 
   public String showClient(String id) throws UnknownClientException {
     /* IDEIA: A partir do id, ir buscar ao TreeMap o cliente a partir do ID e chamar o toString */
-    if (_clients.containsValue(id)) {
-      return _clients.get(id).toString();
+    if (_clients.containsValue(id)){
+      String str = _clients.get(id).toString() + _clients.get(id).showNotifications();
+      _clients.get(id).clearNotifications();
+      return str;
     }
     throw new UnknownClientException(id);
   }
@@ -88,15 +93,19 @@ public class Store implements Serializable {
   public void registerClient (String id, String name, String address) throws DuplicateClientException {
     /* IDEIA: Criar cliente e adicioná-lo à TreeMap de clientes */
     /* Lançar exceção se o id é repetido */
-    if (_clients.containsValue(id)) {
+    if (_clients.containsValue(id))
       throw new DuplicateClientException(id);
-    }
     _clients.put(id, new Client(id, name, address));
   }
 
-  public void toggleClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
-    if (_clients.containsValue(cid) && _products.containsValue(pid))
+  public String toggleClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
+    if (_clients.containsValue(cid) && _products.containsValue(pid)){
       _clients.get(cid).setNotifiability(!_clients.get(cid).isNotifiable(pid), pid);
+      if (_clients.get(cid).isNotifiable(pid))
+        return "SIM";
+      else
+        return "NÃO";
+    }
     else{
       if (!_clients.containsValue(cid))
         throw new UnknownClientException(cid);

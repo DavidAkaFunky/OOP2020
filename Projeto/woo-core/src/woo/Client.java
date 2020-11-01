@@ -47,7 +47,7 @@ public class Client{
     }
 
     public String showNotifications(){
-        String str + "";
+        String str = "";
         for (Notification n: _notifications)
             str += n.toString() + "\n";
         return str;

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Client{
-
+    enum Status {NORMAL, SELECTION, ELITE}
     private String _id;
     private String _name;
     private String _address;
@@ -14,7 +14,7 @@ public class Client{
     private Map<String,Boolean> _notifiability = new TreeMap<String,Boolean>();
     private ArrayList<Notification> _notifications = new ArrayList();
     private ArrayList<Sale> _sales = new ArrayList();
-    private Status _status = new Normal();
+    private Status _status = Status.NORMAL;
 
     public Client(String id, String name, String address){
         _id = id;
@@ -78,10 +78,10 @@ public class Client{
 
     public void changeStatus() {
         if (getScore() > 25000) {
-            setStatus(new Elite());
+            setStatus(Status.ELITE);
         }
         else if (getScore() > 2000) {
-            setStatus(new Selection());
+            setStatus(Status.SELECTION);
         }
     }
 
@@ -92,6 +92,6 @@ public class Client{
             paidPrice += s.getBasePrice();
             totalPrice += s.getTotalPrice();
         }
-        return getID() + "|" + getName() + "|" + getAddress() + "|" + getStatus().toString() + "|" + totalPrice + "|" + paidPrice;
+        return getID() + "|" + getName() + "|" + getAddress() + "|" + getStatus() + "|" + totalPrice + "|" + paidPrice;
     }
 }

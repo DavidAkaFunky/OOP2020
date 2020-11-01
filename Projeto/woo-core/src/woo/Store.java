@@ -80,8 +80,17 @@ public class Store implements Serializable {
     }
   }
 
-  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel) {
-    return ;
+  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel) throws DuplicateProductException, UnknownSupplierException{
+    if (_products.containsValue(id)) {
+      throw new DuplicateProductException(id);
+    }
+    else if (!_suppliers.containsValue(sID)) {
+      throw new UnknownSupplierException(sID);
+    }
+    else {
+      Supplier supplier = _suppliers.get(sID);
+      _products.put(id, new Container(supplier, id, price, cValue, serviceType, serviceLevel));
+    }
   }
 
   public void changeProductPrice(String id, int newPrice) throws UnknownProductException {

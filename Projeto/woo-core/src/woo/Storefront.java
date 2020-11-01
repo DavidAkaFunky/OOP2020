@@ -28,7 +28,7 @@ public class Storefront {
     _store.registerBox(id, price, cValue, sID, serviceType);
   }
 
-  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel) {
+  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel) throws DuplicateProductException, UnknownSupplierException{
     _store.registerContainer(id, price, cValue, sID, serviceType, serviceLevel);
   }
 

@@ -25,7 +25,7 @@ public class Notification {
     }
 
     public void notify(Client c){
-        c.getNotifications().add(this);
+        // c.getNotifications().add(this);
     }
     
     public String toString(){

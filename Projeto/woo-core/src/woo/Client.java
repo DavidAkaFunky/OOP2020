@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.management.Notification;
+
 public class Client{
     enum Status {NORMAL, SELECTION, ELITE}
     private String _id;
@@ -12,8 +14,8 @@ public class Client{
     private int _score = 0;
     private boolean _notifiable = true;
     private Map<String,Boolean> _notifiability = new TreeMap<String,Boolean>();
-    private ArrayList<Notification> _notifications = new ArrayList();
-    private ArrayList<Sale> _sales = new ArrayList();
+    private ArrayList<Notification> _notifications = new ArrayList<Notification>();
+    private ArrayList<Sale> _sales = new ArrayList<Sale>();
     private Status _status = Status.NORMAL;
 
     public Client(String id, String name, String address){

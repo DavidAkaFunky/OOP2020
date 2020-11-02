@@ -29,4 +29,11 @@ public class Supplier {
         return _active;
     }
 
+    @Override
+    public String toString() {
+        // To Fix? How the fuck a app terá acesso ao estado de atividade?
+        String active = isActive() ? "SIM" : "NÃO";
+        return getID() + "|" + getName() + "|" + getAddress() + "|" + active;
+    } 
+
 }

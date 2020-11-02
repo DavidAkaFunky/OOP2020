@@ -4,31 +4,32 @@ import pt.tecnico.po.ui.Command;
 import pt.tecnico.po.ui.DialogException;
 import pt.tecnico.po.ui.Input;
 import woo.Storefront;
+import woo.app.exceptions.FileOpenFailedException;
 //FIXME import other classes
+import woo.exceptions.UnavailableFileException;
 
 /**
  * Open existing saved state.
  */
 public class DoOpen extends Command<Storefront> {
 
-  //FIXME add input fields
+  private Input<String> _filename;
 
   /** @param receiver */
   public DoOpen(Storefront receiver) {
     super(Label.OPEN, receiver);
-    //FIXME init input fields
+    _filename = _form.addStringInput(Message.openFile());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
   @Override
   public final void execute() throws DialogException {
-    /*
     try {
-      //FIXME implement command
-    } catch (UnavailableFileException ufe) {
-      throw new FileOpenFailedException(ufe.getFilename());
+      _form.parse();
+      _receiver.load(_filename.value());
+    } catch(UnavailableFileException e) {
+      throw new FileOpenFailedException(_filename.value());
     }
-    */
   }
 
 }

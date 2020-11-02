@@ -2,8 +2,11 @@ package woo;
 
 import woo.exceptions.*;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 /**
  * Storefront: façade for the core classes.
@@ -20,16 +23,16 @@ public class Storefront {
     return _store.showAllProducts();
   }
 
-  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID) throws DuplicateProductException, UnknownSupplierException {
-    _store.registerBook(id, title, author, isbn, price, cValue, sID);
+  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID, int amount) throws DuplicateProductException, UnknownSupplierException {
+    _store.registerBook(id, title, author, isbn, price, cValue, sID, amount);
   }
 
-  public void registerBox(String id, int price, int cValue, String sID, String serviceType) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException {
-    _store.registerBox(id, price, cValue, sID, serviceType);
+  public void registerBox(String id, int price, int cValue, String sID, String serviceType, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException {
+    _store.registerBox(id, price, cValue, sID, serviceType, amount);
   }
 
-  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel) throws DuplicateProductException, UnknownSupplierException{
-    _store.registerContainer(id, price, cValue, sID, serviceType, serviceLevel);
+  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException, UnknownServLevelException{
+    _store.registerContainer(id, price, cValue, sID, serviceType, serviceLevel, amount);
   }
 
   public void changeProductPrice(String id, int newPrice) throws UnknownProductException {
@@ -64,11 +67,7 @@ public class Storefront {
     return _store.showAllSuppliers();
   }
 
-  public String showSupplier(String id) {
-    return _store.showSupplier(id);
-  }
-
-  public void registerSupplier(String id, String name, String address) {
+  public void registerSupplier(String id, String name, String address) throws DuplicateSupplierException {
     _store.registerSupplier(id, name, address);
   }
 
@@ -113,7 +112,6 @@ public class Storefront {
    * @throws MissingFileAssociationException
    */
   public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
-    //FIXME implement serialization method
   }
 
   /**
@@ -132,7 +130,14 @@ public class Storefront {
    * @throws UnavailableFileException
    */
   public void load(String filename) throws UnavailableFileException {
-    //FIXME implement serialization method
+    try {
+      ObjectInputStream inputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filename)));
+      _store = (Store) inputStream.readObject();
+      inputStream.close();
+      _filename = filename;
+    } catch (Exception e) {
+      throw new UnavailableFileException(filename);
+    }
   }
 
   /**
@@ -142,9 +147,15 @@ public class Storefront {
   public void importFile(String textfile) throws ImportFileException {
     try {
       _store.importFile(textfile);
-    } catch (IOException | BadEntryException /* FIXME maybe other exceptions */ e) {
+    } catch (IOException | BadEntryException | DuplicateSupplierException
+             | DuplicateClientException | DuplicateProductException | UnknownSupplierException
+             | UnknownServTypeException | UnknownServLevelException e) {
       throw new ImportFileException(textfile);
     }
+  }
+
+  public String getFilename() {
+    return _filename;
   }
 
 }

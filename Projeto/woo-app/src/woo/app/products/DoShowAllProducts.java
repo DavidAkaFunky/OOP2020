@@ -7,11 +7,8 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoShowAllProducts extends Command<Storefront> {
 
-  //FIXME add input fields
-
   public DoShowAllProducts(Storefront receiver) {
     super(Label.SHOW_ALL_PRODUCTS, receiver);
-    //FIXME init input fields
   }
 
   @Override

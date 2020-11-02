@@ -2,10 +2,13 @@ package woo;
 
 import woo.exceptions.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.FileReader;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 /**
  * Class Store implements a store.
@@ -24,77 +27,99 @@ public class Store implements Serializable {
    * @throws IOException
    * @throws BadEntryException
    */
-  void importFile(String txtfile) throws IOException, BadEntryException, ImportFileException /* FIXME maybe other exceptions */ {
-    /* BufferedReader reader = new BufferedReader(new FileReader(name));
-    String line;
-    while ((line = reader.readLine()) != null) {
-      String[] fields = line.split("\\|");
-      try {
-        registerFromFields(fields);
-      } catch (UnknownDataException e) {
-        System.err.printf("WARNING: unknown data %s\n", e.getMessage());
-        e.printStackTrace();
-      } catch (PublicationExistsException e) {
-        e.printStackTrace();
-      } catch (UnknownAgentException e) {
-        e.printStackTrace();
-      } catch (ClientExistsException e) {
-        e.printStackTrace();
-      } catch (InvalidIdentifierException e) {
-        e.printStackTrace();
+  void importFile(String txtfile) throws IOException, BadEntryException, ImportFileException, DuplicateSupplierException, DuplicateClientException, DuplicateProductException, UnknownSupplierException, UnknownServTypeException, UnknownServLevelException {
+    try {
+      BufferedReader reader = new BufferedReader(new FileReader(txtfile));
+      Store store;
+      String line;
+      while ((line = reader.readLine()) != null) {
+        Pattern pSupplier = Pattern.compile("^(SUPPLIER)");
+        Pattern pClient = Pattern.compile("^(CLIENT)");
+        Pattern pBox = Pattern.compile("^(BOX)");
+        Pattern pContainer = Pattern.compile("^(CONTAINER)");
+        Pattern pBook = Pattern.compile("^(BOOK)");
+        String[] input = line.split("\\|");
+        if (pSupplier.matcher(input[0]).matches()) {
+          registerSupplier(input[1], input[2], input[3]);
+        }
+        else if (pClient.matcher(input[0]).matches()) {
+          registerClient(input[1], input[2], input[3]);
+        }
+        else if (pBox.matcher(input[0]).matches()) {
+          int price = Integer.parseInt(input[4]);
+          int cValue = Integer.parseInt(input[5]);
+          int amount = Integer.parseInt(input[6]);
+          registerBox(input[1], price, cValue, input[3], input[2], amount);
+        }
+        else if (pContainer.matcher(input[0]).matches()) {
+          int price = Integer.parseInt(input[5]);
+          int cValue = Integer.parseInt(input[6]);
+          int amount = Integer.parseInt(input[7]);
+          registerContainer(input[1], price, cValue, input[4], input[2], input[3], amount);
+        }
+        else if (pBook.matcher(input[0]).matches()) {
+          int price = Integer.parseInt(input[6]);
+          int cValue = Integer.parseInt(input[7]);
+          int amount = Integer.parseInt(input[8]);
+          registerBook(input[1], input[2], input[3], input[4], price, cValue, input[5], amount);
+        }
       }
+    } catch (IOException e) {
+      throw new ImportFileException();
     }
-    reader.close();*/
-  }
+   }
 
   /* PARTE DOS PRODUTOS */
 
   public String showAllProducts() {
     /* IDEIA: Iterar por todos os produtos do TreeMap carregado a partir do file */
-    return "";
+    String str = "";
+    for (Map.Entry<String, Product> product : _products.entrySet())
+      str += product.getValue().toString() + "\n";
+    return str;
   }
 
-  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID) throws DuplicateProductException, UnknownSupplierException {
-    if (_products.containsValue(id)) {
+  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID, int amount) throws DuplicateProductException, UnknownSupplierException {
+    if (_products.containsKey(id)) {
       throw new DuplicateProductException(id);
     }
-    else if (!_suppliers.containsValue(sID)) {
+    else if (!_suppliers.containsKey(sID)) {
       throw new UnknownSupplierException(sID);
     }
     else {
       Supplier supplier = _suppliers.get(sID);
-      _products.put(id, new Book(supplier, id, price, cValue, title, author, isbn));
+      _products.put(id, new Book(supplier, id, price, cValue, title, author, isbn, amount));
     }
   }
 
-  public void registerBox(String id, int price, int cValue, String sID, String serviceType) throws DuplicateProductException, UnknownSupplierException{
-    if (_products.containsValue(id)) {
+  public void registerBox(String id, int price, int cValue, String sID, String serviceType, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException {
+    if (_products.containsKey(id)) {
       throw new DuplicateProductException(id);
     }
-    else if (!_suppliers.containsValue(sID)) {
+    else if (!_suppliers.containsKey(sID)) {
       throw new UnknownSupplierException(sID);
     }
     else {
       Supplier supplier = _suppliers.get(sID);
-      _products.put(id, new Box(supplier, id, price, cValue, serviceType));
+      _products.put(id, new Box(supplier, id, price, cValue, serviceType, amount));
     }
   }
 
-  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel) throws DuplicateProductException, UnknownSupplierException{
-    if (_products.containsValue(id)) {
+  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException, UnknownServLevelException{
+    if (_products.containsKey(id)) {
       throw new DuplicateProductException(id);
     }
-    else if (!_suppliers.containsValue(sID)) {
+    else if (!_suppliers.containsKey(sID)) {
       throw new UnknownSupplierException(sID);
     }
     else {
       Supplier supplier = _suppliers.get(sID);
-      _products.put(id, new Container(supplier, id, price, cValue, serviceType, serviceLevel));
+      _products.put(id, new Container(supplier, id, price, cValue, amount, serviceType, serviceLevel));
     }
   }
 
   public void changeProductPrice(String id, int newPrice) throws UnknownProductException {
-    if (_products.containsValue(id)) {
+    if (_products.containsKey(id)) {
       _products.get(id).setPrice(newPrice);
     } else {
       throw new UnknownProductException(id);
@@ -113,7 +138,7 @@ public class Store implements Serializable {
 
   public String showClient(String id) throws UnknownClientException {
     /* IDEIA: A partir do id, ir buscar ao TreeMap o cliente a partir do ID e chamar o toString */
-    if (_clients.containsValue(id)) {
+    if (_clients.containsKey(id)) {
       return _clients.get(id).toString();
     }
     throw new UnknownClientException(id);
@@ -122,14 +147,14 @@ public class Store implements Serializable {
   public void registerClient (String id, String name, String address) throws DuplicateClientException {
     /* IDEIA: Criar cliente e adicioná-lo à TreeMap de clientes */
     /* Lançar exceção se o id é repetido */
-    if (_clients.containsValue(id)) {
+    if (_clients.containsKey(id)) {
       throw new DuplicateClientException(id);
     }
     _clients.put(id, new Client(id, name, address));
   }
 
   public String toggleClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
-    if (_clients.containsValue(cid) && _products.containsValue(pid)){
+    if (_clients.containsKey(cid) && _products.containsKey(pid)){
       _clients.get(cid).setNotifiability(!_clients.get(cid).isNotifiable(pid), pid);
       //if (_clients.get(cid).isNotifiable(pid))
         //return Message.notificationsOn();
@@ -137,16 +162,16 @@ public class Store implements Serializable {
         //return Message.notificationsOff();
     }
     else{
-      if (!_clients.containsValue(cid))
+      if (!_clients.containsKey(cid))
         throw new UnknownClientException(cid);
-      if (!_products.containsValue(pid))
+      if (!_products.containsKey(pid))
         throw new UnknownProductException(cid);
     }
     return "";
   }
   
   public String showClientTransactions(String id) throws UnknownClientException {
-    if (_clients.containsValue(id))
+    if (_clients.containsKey(id))
       return _clients.get(id).showSales();
     throw new UnknownClientException(id);
   }
@@ -154,21 +179,17 @@ public class Store implements Serializable {
   /* PARTE DOS FORNECEDORES */
 
   public String showAllSuppliers() {
-    /* IDEIA: Iterar por todos os fornecedores do TreeMap carregado a partir do file */
     String str = "";
-    //for (Supplier )
+    for (Map.Entry<String, Supplier> supplier : _suppliers.entrySet())
+      str += supplier.getValue().toString() + "\n";
     return str;
   }
 
-  public String showSupplier(String id) {
-    /* IDEIA: A partir do id, ir buscar ao TreeMap o fornecedor a partir do ID e chamar o toString */
-    return "";
-  }
-
-  public void registerSupplier(String id, String name, String address) {
-    /* IDEIA: Criar fornecedor e adicioná-lo à TreeMap de fornecedores */
-    /* Lançar exceção se o id é repetido */
-    return ;
+  public void registerSupplier(String id, String name, String address) throws DuplicateSupplierException {
+    if (_suppliers.containsKey(id)) {
+      throw new DuplicateSupplierException(id);
+    }
+    _suppliers.put(id, new Supplier(id, name, address));
   }
 
   public void toggleTransactions(String id){

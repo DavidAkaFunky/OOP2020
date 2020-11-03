@@ -13,7 +13,8 @@ public class DoShowSuppliers extends Command<Storefront> {
 
   @Override
   public void execute() throws DialogException {
-    _display.addLine(_receiver.showAllSuppliers());
+    for (Supplier s: _receiver.getSuppliers())
+      _display.addLine(s.toString());
     _display.display();
   }
 }

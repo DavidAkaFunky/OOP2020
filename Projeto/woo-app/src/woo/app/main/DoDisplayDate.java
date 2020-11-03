@@ -7,15 +7,13 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoDisplayDate extends Command<Storefront> {
 
-  //FIXME add input fields
-
   public DoDisplayDate(Storefront receiver) {
     super(Label.SHOW_DATE, receiver);
-    //FIXME init input fields
   }
 
   @Override
   public final void execute() throws DialogException {
-    //FIXME implement command
+    _display.addLine(Message.currentDate(_receiver.getDate()));
+    _display.display();
   }
 }

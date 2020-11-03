@@ -9,19 +9,19 @@ public class Cat{
         this.weight = weight;
     }
 
-    public void setName(String name){this.name = name;}
-    public void setAge(int age){this.age = age;}
-    public void setWeight(double weight){this.weight = weight;}
+    public void setName(String name) {this.name = name;}
+    public void setAge(int age) {this.age = age;}
+    public void setWeight(double weight) {this.weight = weight;}
 
-    public String getName(){return this.name;}
-    public int getAge(){return this.age;}
-    public double getWeight(){return this.weight;}
+    public String getName () {return this.name;}
+    public int getAge() {return this.age;}
+    public double getWeight() {return this.weight;}
 
     @Override
     public boolean equals(Object other){
         if (other instanceof Cat){
             Cat cat = (Cat) other;
-            return this.name.equals(cat.name) && this.age == cat.age && this.weight == cat.weight;
+            return this.getName().equals(cat.getName()) && this.getAge() == cat.getAge() && this.getWeight() == cat.getWeight();
         }
         return false;
     }

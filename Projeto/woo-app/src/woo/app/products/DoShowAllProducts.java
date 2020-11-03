@@ -13,7 +13,8 @@ public class DoShowAllProducts extends Command<Storefront> {
 
   @Override
   public final void execute() throws DialogException {
-    _display.addLine(_receiver.showAllProducts());
+    for (Product p: _receiver.getProducts())
+      _display.addLine(p.toString());
     _display.display();
   }
 

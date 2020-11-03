@@ -24,7 +24,8 @@ public class DoShowClient extends Command<Storefront> {
   public void execute() throws DialogException {
     _form.parse();
     try {
-      _display.addLine(_receiver.showClient(_key.value()));
+      Client client = _receiver.getClient(_key.value());
+      _display.addLine(client.toString());
       _display.display();
     } catch (UnknownClientException e) {
       throw new UnknownClientKeyException(_key.value());

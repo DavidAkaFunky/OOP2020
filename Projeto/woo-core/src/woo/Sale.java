@@ -1,5 +1,7 @@
 package woo;
 
+import java.util.ArrayList;
+
 public class Sale extends Transaction{
     
     private String _clientID;
@@ -10,12 +12,16 @@ public class Sale extends Transaction{
     private int _amount;
     private int _paymentDate;
 
-    public Sale(String clientID, String productID, int limitDate, int amount){
+    public Sale(String clientID, String productID, int id, int limitDate, int amount){
         super();
         _clientID = clientID;
         _productID = productID; 
         _limitDate = limitDate;
         _amount = amount;
+    }
+
+    String getClientID(){
+        return _productID;
     }
 
     String getProductID(){
@@ -40,5 +46,9 @@ public class Sale extends Transaction{
 
     int getPaymentDate(){
         return _paymentDate;
+    }
+
+    public String toString(){
+        return getID() + "|" + getClientID() + "|" + getProductID() + "|" + getAmount() + "|" + getBasePrice() + "|" + getTotalPrice() + "|" + getLimitDate() + "|" + getPaymentDate();
     }
 }

@@ -1,12 +1,13 @@
 package woo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
 import javax.management.Notification;
 
-public class Client{
+public class Client implements Serializable {
     enum Status {NORMAL, SELECTION, ELITE}
     private String _id;
     private String _name;
@@ -55,11 +56,8 @@ public class Client{
         return str;
     }
 
-    public String showSales(){
-        String str = "";
-        for (Sale s: _sales)
-            str += String.format("%d|%s|%s|%d|%d|%d|%d|%d\n", s.getID(), _id, s.getProductID(), s.getAmount(), s.getBasePrice(), s.getTotalPrice(), s.getLimitDate(), s.getPaymentDate());
-        return str;
+    public ArrayList<Sale> getSales(){
+        return _sales;
     }
 
     public Status getStatus() {

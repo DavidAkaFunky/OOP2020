@@ -13,7 +13,8 @@ public class DoShowAllClients extends Command<Storefront> {
 
   @Override
   public void execute() throws DialogException {
-    _display.addLine(_receiver.showAllClients());
+    for (Client c: _receiver.getClients())
+      _display.addLine(c.toString());
     _display.display();
   }
 }

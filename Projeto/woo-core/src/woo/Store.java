@@ -9,6 +9,8 @@ import java.io.FileReader;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
+import java.util.Set;
+import java.util.ArrayList;
 
 /**
  * Class Store implements a store.
@@ -21,13 +23,14 @@ public class Store implements Serializable {
   private Map<String, Client> _clients = new TreeMap<String, Client>();
   private Map<String, Product> _products = new TreeMap<String, Product>();
   private Map<String, Supplier> _suppliers = new TreeMap<String, Supplier>();
+  private int _date = 0;
 
   /**
    * @param txtfile filename to be loaded.
    * @throws IOException
    * @throws BadEntryException
    */
-  void importFile(String txtfile) throws IOException, BadEntryException, ImportFileException, DuplicateSupplierException, DuplicateClientException, DuplicateProductException, UnknownSupplierException, UnknownServTypeException, UnknownServLevelException {
+  void importFile(String txtfile) throws ImportFileException {
     try {
       BufferedReader reader = new BufferedReader(new FileReader(txtfile));
       Store store;
@@ -66,17 +69,26 @@ public class Store implements Serializable {
       }
     } catch (IOException e) {
       throw new ImportFileException();
+    } catch (DuplicateSupplierException e) {
+      throw new ImportFileException();
+    } catch (DuplicateClientException e) {
+      throw new ImportFileException();
+    } catch (DuplicateProductException e) {
+      throw new ImportFileException();
+    } catch (UnknownSupplierException e) {
+      throw new ImportFileException();
+    } catch (UnknownServTypeException e) {
+      throw new ImportFileException();
+    } catch (UnknownServLevelException e) {
+      throw new ImportFileException();
     }
    }
 
   /* PARTE DOS PRODUTOS */
 
-  public String showAllProducts() {
+  public Set<Map.Entry<String,Product>> getProducts() {
     /* IDEIA: Iterar por todos os produtos do TreeMap carregado a partir do file */
-    String str = "";
-    for (Map.Entry<String, Product> product : _products.entrySet())
-      str += product.getValue().toString() + "\n";
-    return str;
+    return _products.entrySet();
   }
 
   public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID, int amount) throws DuplicateProductException, UnknownSupplierException {
@@ -128,18 +140,15 @@ public class Store implements Serializable {
 
   /* PARTE DOS CLIENTES */
 
-  public String showAllClients() {
+  public Set<Map.Entry<String,Client>> getClients() {
     /* IDEIA: Iterar por todos os clientes do TreeMap carregado a partir do file */
-    String str = "";
-    for (Map.Entry<String, Client> client : _clients.entrySet())
-      str += client.getValue().toString() + "\n";
-    return str;
+    return _clients.entrySet();
   }
 
-  public String showClient(String id) throws UnknownClientException {
+  public Client getClient(String id) throws UnknownClientException {
     /* IDEIA: A partir do id, ir buscar ao TreeMap o cliente a partir do ID e chamar o toString */
     if (_clients.containsKey(id)) {
-      return _clients.get(id).toString();
+      return _clients.get(id);
     }
     throw new UnknownClientException(id);
   }
@@ -170,19 +179,17 @@ public class Store implements Serializable {
     return "";
   }
   
-  public String showClientTransactions(String id) throws UnknownClientException {
+  public ArrayList<Sale> getClientTransactions(String id) throws UnknownClientException {
     if (_clients.containsKey(id))
-      return _clients.get(id).showSales();
+      return _clients.get(id).getSales();
     throw new UnknownClientException(id);
   }
 
   /* PARTE DOS FORNECEDORES */
 
-  public String showAllSuppliers() {
-    String str = "";
-    for (Map.Entry<String, Supplier> supplier : _suppliers.entrySet())
-      str += supplier.getValue().toString() + "\n";
-    return str;
+  public Set<Map.Entry<String,Supplier>> getSuppliers() {
+    /* IDEIA: Iterar por todos os produtos do TreeMap carregado a partir do file */
+    return _suppliers.entrySet();
   }
 
   public void registerSupplier(String id, String name, String address) throws DuplicateSupplierException {
@@ -228,5 +235,17 @@ public class Store implements Serializable {
 
   public String showClientBills (int cID){
     return "";
+  }
+
+  public int getDate() {
+    return _date;
+  }
+
+  public void advanceDate(int days) throws InvalidDaysException {
+    if (days > 0) {
+      _date += days;
+    } else {
+      throw new InvalidDaysException(days);
+    }
   }
 }

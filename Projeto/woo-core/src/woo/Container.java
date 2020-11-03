@@ -35,7 +35,7 @@ public class Container extends Box {
     @Override
     public String toString() {
         return "CONTAINER|" + super.getID() + "|" + super.getSupplier().getID() 
-        + "|" + super.getPrice() + "|" + super.getCriticalValue() + super.getStock() + "|" +
+        + "|" + super.getPrice() + "|" + super.getCriticalValue() + "|" + super.getStock() + "|" +
         super.getServiceType() + "|" + getServiceLevel();
     }
 }

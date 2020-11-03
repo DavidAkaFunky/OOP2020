@@ -21,7 +21,8 @@ public class DoShowClientTransactions extends Command<Storefront> {
   public void execute() throws DialogException {
     _form.parse();
     try {
-      _display.addLine(_receiver.showClientTransactions(_key.value()));
+      for (Sale s: _receiver.getClientTransactions())
+        _display.addLine(s.toString());
       _display.display();
     } catch (UnknownClientException e) {
       throw new UnknownClientKeyException(_key.value());

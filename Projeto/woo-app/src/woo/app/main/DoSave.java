@@ -1,7 +1,11 @@
 package woo.app.main;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import pt.tecnico.po.ui.Command;                                                                                                              import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
 import woo.app.exceptions.FileOpenFailedException;
+import woo.exceptions.MissingFileAssociationException;
 
 /**
  * Save current state to file under current name (if unnamed, query for name).
@@ -14,7 +18,7 @@ public class DoSave extends Command<Storefront> {
   public DoSave(Storefront receiver) {
     super(Label.SAVE, receiver);
     if (_receiver.getFilename() == null) {
-      _form.addStringInput(Message.newSaveAs());
+      _filename = _form.addStringInput(Message.newSaveAs());
     }
   }
 
@@ -23,16 +27,17 @@ public class DoSave extends Command<Storefront> {
    * @see pt.tecnico.po.ui.Command#execute()
    */
   @Override
-  public final void execute() throws FileOpenFailedException {
+  public final void execute() {
     try {
       if (_receiver.getFilename() == null) {
         _form.parse();
         _receiver.saveAs(_filename.value());
       }
-      _receiver.save();
-    } catch (Exception e) {
-      /* what exception to throw ? */
-      throw new FileOpenFailedException(_filename.value());
+      else {
+        _receiver.save();
+      }
+    } catch (IOException | MissingFileAssociationException e) {
+      e.fillInStackTrace();
     }
   }
 }

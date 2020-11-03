@@ -1,6 +1,8 @@
 package woo;
 
-public class Supplier {
+import java.io.Serializable;
+
+public class Supplier implements Serializable {
     
     private String _id;
     private String _name;

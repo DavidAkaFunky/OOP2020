@@ -3,10 +3,16 @@ package woo;
 import woo.exceptions.*;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Set;
+import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * Storefront: façade for the core classes.
@@ -19,8 +25,8 @@ public class Storefront {
   /** The actual store. */
   private Store _store = new Store();
   
-  public String showAllProducts() {
-    return _store.showAllProducts();
+  public Set<Map.Entry<String,Product>> getProducts() {
+    return _store.getProducts();
   }
 
   public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID, int amount) throws DuplicateProductException, UnknownSupplierException {
@@ -41,13 +47,17 @@ public class Storefront {
 
   /* PARTE DOS CLIENTES */
 
-  public String showAllClients() {
-    return _store.showAllClients();
+  public Set<Map.Entry<String,Client>> getClients() {
+    return _store.getClients();
   }
 
-  public String showClient(String id) throws UnknownClientException {
-    return _store.showClient(id);
+  public Client getClient(String id) throws UnknownClientException {
+    return _store.getClient(id);
   }
+
+  /* public String showClient(String id) throws UnknownClientException {
+    return _store.showClient(id);
+  } */
 
   public void registerClient(String id, String name, String address) throws DuplicateClientException {
     _store.registerClient(id, name, address);
@@ -57,14 +67,14 @@ public class Storefront {
     _store.toggleClientProductNotifications(pid, cid);
   }
   
-  public String showClientTransactions(String id) throws UnknownClientException {
-    return _store.showClientTransactions(id);
+  public ArrayList<Sale> getClientTransactions(String id) throws UnknownClientException {
+    return _store.getClientTransactions(id);
   }
 
   /* PARTE DOS FORNECEDORES */
 
-  public String showAllSuppliers() {
-    return _store.showAllSuppliers();
+  public Set<Map.Entry<String,Supplier>> getSuppliers() {
+    return _store.getSuppliers();
   }
 
   public void registerSupplier(String id, String name, String address) throws DuplicateSupplierException {
@@ -106,12 +116,25 @@ public class Storefront {
   public String showClientBills (int cID){
     return _store.showClientBills(cID);
   }
+
+  public int getDate() {
+    return _store.getDate();
+  }
+
+  public void advanceDate(int days) throws InvalidDaysException {
+    _store.advanceDate(days);
+  }
+
+
   /**
    * @throws IOException
    * @throws FileNotFoundException
    * @throws MissingFileAssociationException
    */
   public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
+    ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(getFilename())));
+    out.writeObject(_store);
+    out.close();
   }
 
   /**
@@ -128,16 +151,15 @@ public class Storefront {
   /**
    * @param filename
    * @throws UnavailableFileException
+   * @throws IOException
+   * @throws FileNotFoundException
+   * @throws ClassNotFoundException
    */
-  public void load(String filename) throws UnavailableFileException {
-    try {
-      ObjectInputStream inputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filename)));
-      _store = (Store) inputStream.readObject();
-      inputStream.close();
-      _filename = filename;
-    } catch (Exception e) {
-      throw new UnavailableFileException(filename);
-    }
+  public void load(String filename) throws UnavailableFileException, FileNotFoundException, IOException, ClassNotFoundException {
+    ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filename)));
+    _store = (Store) in.readObject();
+    in.close();
+    _filename = filename;
   }
 
   /**
@@ -145,13 +167,7 @@ public class Storefront {
    * @throws ImportFileException
    */
   public void importFile(String textfile) throws ImportFileException {
-    try {
-      _store.importFile(textfile);
-    } catch (IOException | BadEntryException | DuplicateSupplierException
-             | DuplicateClientException | DuplicateProductException | UnknownSupplierException
-             | UnknownServTypeException | UnknownServLevelException e) {
-      throw new ImportFileException(textfile);
-    }
+    _store.importFile(textfile);
   }
 
   public String getFilename() {

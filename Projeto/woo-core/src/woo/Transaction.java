@@ -1,8 +1,10 @@
 package woo;
 
-public class Transaction {
+import java.io.Serializable;
+
+public class Transaction implements Serializable {
     
-    private static int _id = 0;
+    private int _id = 0;
 
     public Transaction(){
         _id++;

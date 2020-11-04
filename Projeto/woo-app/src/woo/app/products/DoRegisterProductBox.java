@@ -1,12 +1,15 @@
 package woo.app.products;
 
-import pt.tecnico.po.ui.Command;  
 import woo.exceptions.DuplicateProductException;
 import woo.exceptions.UnknownServTypeException;
 import woo.app.exceptions.DuplicateProductKeyException;
 import woo.app.exceptions.UnknownServiceTypeException;
 import woo.exceptions.UnknownSupplierException;
-import woo.app.exceptions.UnknownSupplierKeyException;                                                                                                            import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
+import woo.app.exceptions.UnknownSupplierKeyException;    
+import pt.tecnico.po.ui.Command;                                                                                                          
+import pt.tecnico.po.ui.DialogException;                                                                                                      
+import pt.tecnico.po.ui.Input;                                                                                                                
+import woo.Storefront;
 
 /**
  * Register box.

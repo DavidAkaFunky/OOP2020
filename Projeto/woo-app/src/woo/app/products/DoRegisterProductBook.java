@@ -1,6 +1,9 @@
 package woo.app.products;
 
-import pt.tecnico.po.ui.Command;                                                                                                              import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
+import pt.tecnico.po.ui.Command;                                                                                                              
+import pt.tecnico.po.ui.DialogException;                                                                                                      
+import pt.tecnico.po.ui.Input;                                                                                                                
+import woo.Storefront;
 import woo.exceptions.DuplicateProductException;
 import woo.app.exceptions.DuplicateProductKeyException;
 import woo.exceptions.UnknownSupplierException;

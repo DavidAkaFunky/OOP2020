@@ -1,7 +1,7 @@
 package woo.app.products;
 
+import pt.tecnico.po.ui.Input;  
 import pt.tecnico.po.ui.Command;      
-
 import pt.tecnico.po.ui.DialogException;
 import woo.exceptions.DuplicateProductException;
 import woo.app.exceptions.DuplicateProductKeyException;
@@ -10,7 +10,8 @@ import woo.app.exceptions.UnknownSupplierKeyException;
 import woo.exceptions.UnknownServLevelException;
 import woo.exceptions.UnknownServTypeException;
 import woo.app.exceptions.UnknownServiceLevelException;
-import woo.app.exceptions.UnknownServiceTypeException;                                                                                                import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
+import woo.app.exceptions.UnknownServiceTypeException;                                                                                                
+import woo.Storefront;
 
 /**
  * Register container.

@@ -1,6 +1,11 @@
 package woo.app.products;
 
-import pt.tecnico.po.ui.Command;                                                                                                              import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
+import woo.Product;
+import woo.Storefront;
+import java.util.Map.Entry;
+import pt.tecnico.po.ui.Command;                                                                                                              
+import pt.tecnico.po.ui.DialogException;                                                                                                      
+import pt.tecnico.po.ui.Input;
 
 /**
  * Show all products.
@@ -13,8 +18,8 @@ public class DoShowAllProducts extends Command<Storefront> {
 
   @Override
   public final void execute() throws DialogException {
-    for (Product p: _receiver.getProducts())
-      _display.addLine(p.toString());
+    for (Entry<String, Product> p: _receiver.getProducts())
+      _display.addLine(p.getValue().toString());
     _display.display();
   }
 

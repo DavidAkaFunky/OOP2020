@@ -6,7 +6,6 @@ import pt.tecnico.po.ui.Input;
 import woo.Storefront;   
 import woo.Sale;
 import woo.app.exceptions.UnknownClientKeyException;
-import woo.app.exceptions.UnknownProductKeyException;
 import woo.exceptions.UnknownClientException;
 
 /**
@@ -23,6 +22,7 @@ public class DoShowClientTransactions extends Command<Storefront> {
 
   @Override
   public void execute() throws DialogException {
+    /*
     _form.parse();
     try {
       for (Sale s: _receiver.getClientTransactions(_key.value()))
@@ -31,6 +31,7 @@ public class DoShowClientTransactions extends Command<Storefront> {
     } catch (UnknownClientException e) {
       throw new UnknownClientKeyException(_key.value());
     }
+    */
   }
 
 }

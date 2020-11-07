@@ -1,11 +1,11 @@
 package woo.app.clients;
 
-import woo.Client;
-import woo.Storefront;
 import java.util.Map.Entry;
 import pt.tecnico.po.ui.Command;
-import pt.tecnico.po.ui.DialogException;                                                                                                      
-import pt.tecnico.po.ui.Input;                                                                                                                
+import pt.tecnico.po.ui.DialogException;
+import pt.tecnico.po.ui.Input;
+import woo.Client;
+import woo.Storefront;
 
 /**
  * Show all clients.

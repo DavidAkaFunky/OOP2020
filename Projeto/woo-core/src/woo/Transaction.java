@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class Transaction implements Serializable {
     
-    private int _id = 0;
+    private int _id;
 
-    public Transaction(){
-        _id++;
+    public Transaction(int id){
+        _id = id;
     }
     
     public int getID(){

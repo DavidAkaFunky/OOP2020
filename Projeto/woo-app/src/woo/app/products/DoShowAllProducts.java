@@ -1,11 +1,18 @@
 package woo.app.products;
 
+<<<<<<< DoShowAllProducts.java
 import woo.Product;
 import woo.Storefront;
 import java.util.Map.Entry;
 import pt.tecnico.po.ui.Command;                                                                                                              
 import pt.tecnico.po.ui.DialogException;                                                                                                      
 import pt.tecnico.po.ui.Input;
+=======
+import pt.tecnico.po.ui.Command;  
+import java.util.Map.Entry;   
+import woo.Product;
+import woo.Storefront;                                                                                                         import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
+>>>>>>> 1.3
 
 /**
  * Show all products.

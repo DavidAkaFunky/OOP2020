@@ -36,7 +36,6 @@ public class Store implements Serializable {
                                          DuplicateClientException, UnknownServTypeException, DuplicateProductException, UnknownServLevelException {
     try {
       BufferedReader reader = new BufferedReader(new FileReader(txtfile));
-      Store store;
       String line;
       while ((line = reader.readLine()) != null) {
         Pattern pSupplier = Pattern.compile("^(SUPPLIER)");

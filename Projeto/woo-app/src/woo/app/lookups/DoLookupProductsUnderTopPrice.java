@@ -1,9 +1,6 @@
 package woo.app.lookups;
 
-import pt.tecnico.po.ui.Command;                                                                                                              
-import pt.tecnico.po.ui.DialogException;                                                                                                      
-import pt.tecnico.po.ui.Input;                                                                                                                
-import woo.Storefront;
+import pt.tecnico.po.ui.Command;                                                                                                              import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
 
 /**
  * Lookup products cheaper than a given price.

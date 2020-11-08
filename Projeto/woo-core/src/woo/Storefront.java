@@ -19,12 +19,11 @@ import java.util.ArrayList;
  */
 public class Storefront {
 
-  /** Current filename. */
   private String _filename;
 
   /** The actual store. */
   private Store _store = new Store();
-  
+
   public Set<Map.Entry<String,Product>> getProducts() {
     return _store.getProducts();
   }
@@ -45,8 +44,6 @@ public class Storefront {
     _store.changeProductPrice(id, newPrice);
   }
 
-  /* PARTE DOS CLIENTES */
-
   public Set<Map.Entry<String,Client>> getClients() {
     return _store.getClients();
   }
@@ -54,10 +51,6 @@ public class Storefront {
   public Client getClient(String id) throws UnknownClientException {
     return _store.getClient(id);
   }
-
-  /* public String showClient(String id) throws UnknownClientException {
-    return _store.showClient(id);
-  } */
 
   public void registerClient(String id, String name, String address) throws DuplicateClientException {
     _store.registerClient(id, name, address);
@@ -71,8 +64,6 @@ public class Storefront {
     return _store.getClientTransactions(id);
   }
 
-  /* PARTE DOS FORNECEDORES */
-
   public Set<Map.Entry<String,Supplier>> getSuppliers() {
     return _store.getSuppliers();
   }
@@ -84,38 +75,22 @@ public class Storefront {
   public void toggleTransactions(String id){
     _store.toggleTransactions(id);
   }
-  
-  public String showAllSupplierTransactions(String id){
-    return _store.showAllSupplierTransactions(id);
-  }
-
-  /* PARTE DAS TRANSAÇÕES */
 
   public void pay(int id){
     _store.pay(id);
   }
 
-  public void registerOrderTransaction(int supID, int pID, int amt){
+  public void registerOrderTransaction(String supID, String pID, int amt){
     _store.registerOrderTransaction(supID, pID, amt);
   }
 
-  public void registerSaleTransaction(int cID, int limDate, int pID, int qty){
+  public void registerSaleTransaction(String cID, int limDate, String pID, int qty){
     _store.registerSaleTransaction(cID, limDate, pID, qty);
   }
 
-  public String showTransaction(int id){
-    return _store.showTransaction(id);
-  }
+  public void showTransaction(int id){ _store.showTransaction(id); }
 
-  /* PARTE DAS PESQUISAS */
-
-  public String showProductsPrice(int price){
-    return _store.showProductsPrice(price);
-  }
-
-  public String showClientBills (int cID){
-    return _store.showClientBills(cID);
-  }
+  public void showProductsPrice(int price){ }
 
   public int getDate() {
     return _store.getDate();
@@ -163,13 +138,22 @@ public class Storefront {
   }
 
   /**
-   * @param textfile
-   * @throws ImportFileException
+   * @param textfile the file to be imported
+   * @throws ImportFileException if something went wrong while importing
    */
   public void importFile(String textfile) throws ImportFileException {
-    _store.importFile(textfile);
+    try {
+      _store.importFile(textfile);
+    } catch (IOException | BadEntryException | DuplicateSupplierException | 
+             UnknownSupplierException | DuplicateClientException | DuplicateProductException | 
+             UnknownServTypeException | UnknownServLevelException e) {
+      throw new ImportFileException(textfile);
+    }
   }
 
+  /**
+   * @return the given file's name
+   */
   public String getFilename() {
     return _filename;
   }

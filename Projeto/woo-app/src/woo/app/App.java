@@ -2,8 +2,11 @@ package woo.app;
 
 import static pt.tecnico.po.ui.Dialog.IO;
 
+import java.io.IOException;
+
 import pt.tecnico.po.ui.Menu;
 import woo.Storefront;
+import woo.exceptions.BadEntryException;
 import woo.exceptions.ImportFileException;
 
 /** Main driver for the management application. */
@@ -18,7 +21,6 @@ public class App {
       try {
         storefront.importFile(datafile);
       } catch (ImportFileException e) {
-        // no behavior described: just present the problem
         e.printStackTrace();
       }
     }

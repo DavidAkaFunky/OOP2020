@@ -1,11 +1,13 @@
 package woo.app.suppliers;
 
-import woo.Supplier;
-import woo.Storefront;
 import java.util.Map.Entry;
-import pt.tecnico.po.ui.Command; 
+
+import pt.tecnico.po.ui.Command;
 import pt.tecnico.po.ui.DialogException;
 import pt.tecnico.po.ui.Input;
+import java.util.Map.Entry;
+import woo.Supplier;
+import woo.Storefront;
 
 /**
  * Show all suppliers.
@@ -18,8 +20,10 @@ public class DoShowSuppliers extends Command<Storefront> {
 
   @Override
   public void execute() throws DialogException {
-    for (Entry<String, Supplier> s: _receiver.getSuppliers())
-      _display.addLine(s.getValue().toString());
+    for (Entry<String, Supplier> s: _receiver.getSuppliers()) {
+      String active = s.getValue().isActive() ? Message.yes() : Message.no();
+      _display.addLine(s.getValue().toString() + active);
+    }
     _display.display();
   }
 }

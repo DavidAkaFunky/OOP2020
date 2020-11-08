@@ -1,10 +1,6 @@
 package woo.app.clients;
 
-import pt.tecnico.po.ui.Command;                                                                                                              
-import pt.tecnico.po.ui.DialogException;                                                                                                      
-import pt.tecnico.po.ui.Input;                                                                                                                
-import woo.Storefront;   
-import woo.Sale;
+import pt.tecnico.po.ui.Command;                                                                                                              import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
 import woo.app.exceptions.UnknownClientKeyException;
 import woo.exceptions.UnknownClientException;
 
@@ -25,8 +21,7 @@ public class DoShowClientTransactions extends Command<Storefront> {
     /*
     _form.parse();
     try {
-      for (Sale s: _receiver.getClientTransactions(_key.value()))
-        _display.addLine(s.toString());
+      _display.addLine(_receiver.showClientTransactions(_key.value()));
       _display.display();
     } catch (UnknownClientException e) {
       throw new UnknownClientKeyException(_key.value());

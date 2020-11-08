@@ -1,6 +1,7 @@
 package woo.app.clients;
 
 import java.util.Map.Entry;
+
 import pt.tecnico.po.ui.Command;
 import pt.tecnico.po.ui.DialogException;
 import pt.tecnico.po.ui.Input;

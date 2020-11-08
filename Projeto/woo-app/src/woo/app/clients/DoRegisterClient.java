@@ -1,9 +1,6 @@
 package woo.app.clients;
 
-import pt.tecnico.po.ui.Command;                                                                                                              
-import pt.tecnico.po.ui.DialogException;                                                                                                      
-import pt.tecnico.po.ui.Input;                                                                                                                
-import woo.Storefront;
+import pt.tecnico.po.ui.Command;                                                                                                              import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
 import woo.app.exceptions.DuplicateClientKeyException;
 import woo.exceptions.DuplicateClientException;
 

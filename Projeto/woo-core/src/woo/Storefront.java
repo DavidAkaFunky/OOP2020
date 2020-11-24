@@ -24,23 +24,30 @@ public class Storefront {
   /** The actual store. */
   private Store _store = new Store();
 
+  /** A flag to know if store was modified after save */
+  private boolean _save = true;
+
   public Set<Map.Entry<String,Product>> getProducts() {
     return _store.getProducts();
   }
 
   public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID, int amount) throws DuplicateProductException, UnknownSupplierException {
+    _save = true;
     _store.registerBook(id, title, author, isbn, price, cValue, sID, amount);
   }
 
   public void registerBox(String id, int price, int cValue, String sID, String serviceType, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException {
+    _save = true;
     _store.registerBox(id, price, cValue, sID, serviceType, amount);
   }
 
-  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException, UnknownServLevelException{
+  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException, UnknownServLevelException {
+    _save = true;
     _store.registerContainer(id, price, cValue, sID, serviceType, serviceLevel, amount);
   }
 
   public void changeProductPrice(String id, int newPrice) throws UnknownProductException {
+    _save = true;
     _store.changeProductPrice(id, newPrice);
   }
 
@@ -53,10 +60,12 @@ public class Storefront {
   }
 
   public void registerClient(String id, String name, String address) throws DuplicateClientException {
+    _save = true;
     _store.registerClient(id, name, address);
   }
 
   public void toggleClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
+    _save = true;
     _store.toggleClientProductNotifications(pid, cid);
   }
   
@@ -69,22 +78,27 @@ public class Storefront {
   }
 
   public void registerSupplier(String id, String name, String address) throws DuplicateSupplierException {
+    _save = true;
     _store.registerSupplier(id, name, address);
   }
 
-  public void toggleTransactions(String id){
+  public void toggleTransactions(String id) {
+    _save = true;
     _store.toggleTransactions(id);
   }
 
   public void pay(int id){
+    _save = true;
     _store.pay(id);
   }
 
-  public void registerOrderTransaction(String supID, String pID, int amt){
+  public void registerOrderTransaction(String supID, String pID, int amt) {
+    _save = true;
     _store.registerOrderTransaction(supID, pID, amt);
   }
 
-  public void registerSaleTransaction(String cID, int limDate, String pID, int qty){
+  public void registerSaleTransaction(String cID, int limDate, String pID, int qty) {
+    _save = true;
     _store.registerSaleTransaction(cID, limDate, pID, qty);
   }
 
@@ -97,6 +111,7 @@ public class Storefront {
   }
 
   public void advanceDate(int days) throws InvalidDaysException {
+    _save = true;
     _store.advanceDate(days);
   }
 
@@ -107,9 +122,11 @@ public class Storefront {
    * @throws MissingFileAssociationException
    */
   public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
-    ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(getFilename())));
-    out.writeObject(_store);
-    out.close();
+    if (getSave()) {
+      ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(getFilename())));
+      out.writeObject(_store);
+      out.close();
+    }
   }
 
   /**
@@ -156,6 +173,13 @@ public class Storefront {
    */
   public String getFilename() {
     return _filename;
+  }
+
+  /**
+   * @return the Store save status (true -> store has been modified since last save)
+   */
+  public boolean getSave() {
+    return _save;
   }
 
 }

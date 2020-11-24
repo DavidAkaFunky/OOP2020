@@ -2,7 +2,7 @@ package woo;
 
 import java.io.Serializable;
 
-public class Product implements Serializable {
+public abstract class Product implements Serializable {
     
     private String _id;
     private Supplier _supplier;
@@ -59,6 +59,11 @@ public class Product implements Serializable {
     public int getStock() {
         return _stock;
     }
+
+    /**
+     * @return the product's N (used in other methods)
+     */
+    public abstract int getN();
 
     /**
      * @param remove represents the amount of units to remove from stock

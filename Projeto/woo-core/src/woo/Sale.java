@@ -2,9 +2,8 @@ package woo;
 
 public class Sale extends Transaction{
     
-    private String _clientID;
-    private String _productID;
-    private int _basePrice = 0;
+    private Client _client;
+    private Product _product;
     private int _limitDate;
     private int _amount;
     private int _paymentDate;
@@ -12,23 +11,31 @@ public class Sale extends Transaction{
     /**
      * @param id represents the new sale's ID
      * @param clientID represents the new sale's client ID
-     * @param productID represents the new sale's product ID
+     * @param product represents the new sale's product
      * @param limitDate represents the new sale's limit payment date
      * @param amount represents the new sale's amount of products from the given ID
      */
-    public Sale(int id, String clientID, String productID, int limitDate, int amount){
+    public Sale(int id, Client client, Product product, int limitDate, int amount){
         super(id);
-        _clientID = clientID;
-        _productID = productID; 
+        _client = client;
+        _product = product; 
         _limitDate = limitDate;
         _amount = amount;
     }
 
     /**
-     * @return the sale's original price (without added taxes)
+     * @return the sale's real price (after taxes)
      */
-    public int getBasePrice(){
-        return _basePrice;
+    public double getTotalPrice(){
+        int paymentGap = getLimitDateGap();
+        int N = _product.getN();
+        if (paymentGap <= -N)
+            return getBasePrice() * _client.getStatus().p1Modifier();
+        else if (-N < paymentGap && paymentGap <= 0)
+            return getBasePrice() * _client.getStatus().p2Modifier(paymentGap);
+        else if (0 < paymentGap && paymentGap <= N)
+            return getBasePrice() * _client.getStatus().p3Modifier(paymentGap);
+        return getBasePrice() * _client.getStatus().p3Modifier(paymentGap);
     }
 
     /**
@@ -50,5 +57,9 @@ public class Sale extends Transaction{
      */
     public int getPaymentDate(){
         return _paymentDate;
+    }
+
+    public int getLimitDateGap(){
+        return _paymentDate - _limitDate;
     }
 }

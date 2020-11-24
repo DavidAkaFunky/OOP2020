@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Transaction implements Serializable {
 
     private int _id;
-    private int _totalPrice = 0;
+    private int _basePrice = 0;
 
     /**
      * @param id represents the new transaction's ID
@@ -22,10 +22,10 @@ public class Transaction implements Serializable {
     }
 
     /**
-     * @return the transaction's real price (after taxes)
+     * @return the transaction's original price (without added taxes)
      */
-    public int getTotalPrice(){
-        return _totalPrice;
+    public int getBasePrice(){
+        return _basePrice;
     }
     
 }

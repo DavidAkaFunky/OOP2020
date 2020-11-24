@@ -15,21 +15,23 @@ public class UnavailableProductException extends DialogException {
   int _requested;
   
   /** Available amount. */
-  int _avaliable;
+  int _available;
   
   /** 
    * @param key the requested key
    * @param requested
-   * @param avaliable
+   * @param available
    */
-  public UnavailableProductException(String key, int requested, int avaliable) {
+  public UnavailableProductException(String key, int requested, int available) {
     _key = key;
+    _requested = requested;
+    _available = available;
   }
 
   /** @see pt.tecnico.po.ui.DialogException#getMessage() */
   @Override
   public String getMessage() {
-    return Message.unavailable(_key, _requested, _avaliable);
+    return Message.unavailable(_key, _requested, _available);
   }
 
 }

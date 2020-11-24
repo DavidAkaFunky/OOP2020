@@ -25,6 +25,8 @@ public class Book extends Product {
         return _isbn;
     }
 
+    public int getN() { return 3; }
+
     @Override
     public String toString() {
         return "BOOK|" + super.getID() + "|" + super.getSupplier().getID() 

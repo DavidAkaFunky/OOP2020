@@ -28,16 +28,15 @@ public class DoSave extends Command<Storefront> {
    */
   @Override
   public final void execute() {
-    try {
-      if (_receiver.getFilename() == null) {
-        _form.parse();
-        _receiver.saveAs(_filename.value());
+      try {
+        if (_receiver.getFilename() == null) {
+          _form.parse();
+          _receiver.saveAs(_filename.value());
+        } else {
+          _receiver.save();
+        }
+      } catch (IOException | MissingFileAssociationException e) {
+        e.fillInStackTrace();
       }
-      else {
-        _receiver.save();
-      }
-    } catch (IOException | MissingFileAssociationException e) {
-      e.fillInStackTrace();
-    }
   }
 }

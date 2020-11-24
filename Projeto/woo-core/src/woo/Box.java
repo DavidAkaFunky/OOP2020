@@ -5,7 +5,7 @@ import woo.exceptions.UnknownServTypeException;
 public class Box extends Product {
 
     private String _serviceType;
-    enum ServiceTypes {NORMAL, AIR, EXPRESS, PERSONAL};
+    private enum ServiceTypes {NORMAL, AIR, EXPRESS, PERSONAL};
 
     /**
      * @param supplier represents the new box's supplier
@@ -31,6 +31,8 @@ public class Box extends Product {
     public String getServiceType(){
         return _serviceType;
     }
+
+    public int getN() { return 5; }
 
     /**
      * @param serviceType represents the given service type

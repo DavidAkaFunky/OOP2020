@@ -5,10 +5,9 @@ import woo.exceptions.UnknownServLevelException;
 
 public class Container extends Box {
     
-    private String _serviceType;
     private String _serviceLevel;
 
-    enum ServiceLevels {B4, C4, C5, DL};
+    private enum ServiceLevels {B4, C4, C5, DL};
 
     /**
      * @param supplier represents the new container's supplier
@@ -36,6 +35,8 @@ public class Container extends Box {
     public String getServiceLevel(){
         return _serviceLevel;
     }
+
+    public int getN() { return 8; }
 
     /**
      * @param level represents the given service level

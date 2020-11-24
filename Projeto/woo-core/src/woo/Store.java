@@ -20,9 +20,9 @@ public class Store implements Serializable {
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202009192006L;
   private Map<Integer, Transaction> _transactions = new TreeMap<Integer, Transaction>();
-  private Map<String, Client> _clients = new TreeMap<String, Client>();
-  private Map<String, Product> _products = new TreeMap<String, Product>();
-  private Map<String, Supplier> _suppliers = new TreeMap<String, Supplier>();
+  private Map<String, Client> _clients = new TreeMap<String, Client>(String.CASE_INSENSITIVE_ORDER);
+  private Map<String, Product> _products = new TreeMap<String, Product>(String.CASE_INSENSITIVE_ORDER);
+  private Map<String, Supplier> _suppliers = new TreeMap<String, Supplier>(String.CASE_INSENSITIVE_ORDER);
   private int _date = 0;
   private int _transactionID = 0;
 
@@ -36,7 +36,6 @@ public class Store implements Serializable {
                                          DuplicateClientException, UnknownServTypeException, DuplicateProductException, UnknownServLevelException {
     try {
       BufferedReader reader = new BufferedReader(new FileReader(txtfile));
-      Store store;
       String line;
       while ((line = reader.readLine()) != null) {
         Pattern pSupplier = Pattern.compile("^(SUPPLIER)");

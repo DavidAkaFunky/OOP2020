@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import javax.management.Notification;
 
 public class Client implements Serializable {
-    enum Status {NORMAL, SELECTION, ELITE}
+    private Status _status = new NormalClient(this);
     private String _id;
     private String _name;
     private String _address;
@@ -17,7 +17,6 @@ public class Client implements Serializable {
     private Map<String,Boolean> _notifiability = new TreeMap<String,Boolean>();
     private ArrayList<Notification> _notifications = new ArrayList<Notification>();
     private ArrayList<Sale> _sales = new ArrayList<Sale>();
-    private Status _status = Status.NORMAL;
 
     /**
      * @param id represents the new client's ID
@@ -113,6 +112,13 @@ public class Client implements Serializable {
     }
 
     /**
+     * @param score the new client's score
+     */
+    public void setScore(int score){
+        _score = score;
+    }
+
+    /**
      * Clears all notifications
      */
     public void clearNotifications(){
@@ -120,15 +126,11 @@ public class Client implements Serializable {
     }
 
     /**
-     * Changes status depending on the client's score
+     * Makes client pay for a sale
      */
-    public void changeStatus() {
-        if (getScore() > 25000) {
-            setStatus(Status.ELITE);
-        }
-        else if (getScore() > 2000) {
-            setStatus(Status.SELECTION);
-        }
+    public void pay(Sale s) {
+        //Calcular o valor final da encomenda
+        _status.pay(s); //Alterar o estatuto
     }
 
     public String toString(){

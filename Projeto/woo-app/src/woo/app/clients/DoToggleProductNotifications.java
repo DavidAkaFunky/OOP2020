@@ -22,6 +22,7 @@ public class DoToggleProductNotifications extends Command<Storefront> {
 
   @Override
   public void execute() throws DialogException {
+    /*
     _form.parse();
     try {
       _receiver.toggleClientProductNotifications(_pID.value(), _cID.value());
@@ -30,6 +31,7 @@ public class DoToggleProductNotifications extends Command<Storefront> {
     } catch (UnknownProductException e) {
       throw new UnknownProductKeyException(_pID.value());
     }
+    */
   }
 
 }

@@ -1,27 +1,38 @@
 package woo;
 
-import java.util.Map;
-import java.util.HashMap;
-
 public class Order extends Transaction {
     
-    private String _supplierID;
-    private Map<Product,Integer> _productMap = new HashMap<Product,Integer>();
+    private Supplier _supplier;
+    private int _totalCost;
 
     /**
      * @param id represents the new order's ID
      * @param supplierID represents the new order's supplier ID
      */
-    public Order(int id, String supplierID){
+    public Order(int id, Supplier supplier){
         super(id);
-        _supplierID = supplierID;
+        _supplier = supplier;
     }
 
     /**
      * @return the order's supplier ID
      */
-    public String getSupplierID(){
-        return _supplierID;
+    public Supplier getSupplier(){
+        return _supplier;
+    }
+
+    public int getTotalCost() {
+        return _totalCost;
+    }
+
+    public void setTotalCost(int totalCost) {
+        _totalCost = totalCost;
+    }
+
+    @Override
+    public String toString() {
+        return getID() + "|" + getSupplier().getID() + "|" + getBasePrice() + "|" +
+        getPaymentDate();
     }
 
 }

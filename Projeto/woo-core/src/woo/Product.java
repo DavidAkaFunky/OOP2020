@@ -1,14 +1,19 @@
 package woo;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
-public abstract class Product implements Serializable {
+public abstract class Product implements Serializable, Observable {
     
     private String _id;
     private Supplier _supplier;
     private int _price;
     private int _criticalValue;
     private int _stock;
+    
+    private List<Observer> observers = new ArrayList<Observer>();
 
     /**
      * @param supplier represents the new product's supplier
@@ -65,17 +70,51 @@ public abstract class Product implements Serializable {
      */
     public abstract int getN();
 
+
+    public void addStock(int qty) {
+        _stock += qty;
+        if (_stock == qty) {
+            notifyObservers("NEW");
+        }
+    }
     /**
      * @param remove represents the amount of units to remove from stock
      */
-    public void removeStock(int remove) {
-        _stock -= remove;
+    public void removeStock(int qty) {
+        _stock -= qty;
     }
 
     /**
      * @param price represents the product's new price
      */
-    public void setPrice(int price){
+    public void setPrice(int price) {
+        int old = _price;
         _price = price;
+        if (price < old) {
+            notifyObservers("BARGAIN");
+        }
     }
+
+    public void registerObserver(Observer o) {
+        observers.add(o);
+    }
+
+    public void removeObserver(Observer o) {
+        int i = observers.indexOf(o);
+        if (i >= 0) {
+            observers.remove(i);
+        }
+    }
+
+    public List<Observer> getObservers() {
+        return Collections.unmodifiableList(observers);
+    }
+
+    public void notifyObservers(String event) {
+        for (int i = 0; i < observers.size(); ++i) {
+            Observer observer = (Observer) observers.get(i);
+            observer.update(_id, event, _price);
+        }
+    }
+
 }

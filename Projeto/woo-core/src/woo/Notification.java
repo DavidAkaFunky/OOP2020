@@ -1,36 +1,23 @@
 package woo;
 
-import java.io.Serializable;
+public class Notification {
 
-public class Notification implements Serializable{
-    
-    private String _type;
     private String _productID;
-    private int _productPrice;
+    private String _event;
+    private int _price;
 
-    public Notification(String type, String pID, int pPrice){
-        _type = type;
-        _productID = pID;
-        _productPrice = pPrice;
+    public Notification(String productID, String event, int price) {
+        _productID = productID;
+        _event = event;
+        _price = price;
     }
 
-    public String getType(){
-        return _type;
-    }
+    public String getPID() { return _productID; }
+    public String getEvent() { return _event; }
+    public int getPrice() { return _price; }
 
-    public String getPID(){
-        return _productID;
-    }
-
-    public int getProductPrice(){
-        return _productPrice;
-    }
-
-    public void notify(Client c){
-        // c.getNotifications().add(this);
-    }
-    
-    public String toString(){
-        return getType() + "|" + getPID() + "|" + getProductPrice();
+    @Override
+    public String toString() {
+        return getPID() + "|" + getEvent() + "|" + getPrice();
     }
 }

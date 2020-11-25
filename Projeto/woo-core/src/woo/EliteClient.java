@@ -1,6 +1,6 @@
 package woo;
 
-public class EliteClient extends Status{
+public class EliteClient extends ClientStatus {
     
     public EliteClient(Client c) { super(c); }
 
@@ -14,6 +14,11 @@ public class EliteClient extends Status{
             _client.setScore(_client.getScore() + 10 * (int) s.getTotalPrice());
         else if (paymentGap > 15)
             _client.setStatus(new SelectionClient(_client));
+    }
+
+    @Override
+    public String toString() {
+        return "NORMAL";
     }
 
 }

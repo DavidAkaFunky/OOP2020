@@ -26,7 +26,7 @@ public class DoRegisterClient extends Command<Storefront> {
     try {
       _receiver.registerClient(_key.value(), _name.value(), _address.value());
     } catch (DuplicateClientException e) {
-      throw new DuplicateClientKeyException(_key.value());
+      throw new DuplicateClientKeyException(e.getKey());
     }
   }
 

@@ -6,6 +6,7 @@ import pt.tecnico.po.ui.Input;                                                  
 import woo.app.exceptions.UnknownClientKeyException;
 import woo.exceptions.UnknownClientException;
 import woo.Client;
+import woo.Notification;
 import woo.Storefront;
 
 /**
@@ -26,9 +27,13 @@ public class DoShowClient extends Command<Storefront> {
     try {
       Client client = _receiver.getClient(_key.value());
       _display.addLine(client.toString());
+      for (Notification n: client.getNotifications()) {
+        _display.addLine(n.toString());
+      }
+      /* LOOK AFTER */ client.clearNotifications();
       _display.display();
     } catch (UnknownClientException e) {
-      throw new UnknownClientKeyException(_key.value());
+      throw new UnknownClientKeyException(e.getKey());
     }
   }
 

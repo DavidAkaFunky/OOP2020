@@ -10,9 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Set;
-import java.util.Map;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Storefront: façade for the core classes.
@@ -27,7 +26,7 @@ public class Storefront {
   /** A flag to know if store was modified after save */
   private boolean _save = true;
 
-  public Set<Map.Entry<String,Product>> getProducts() {
+  public Collection<Product> getProducts() {
     return _store.getProducts();
   }
 
@@ -51,7 +50,7 @@ public class Storefront {
     _store.changeProductPrice(id, newPrice);
   }
 
-  public Set<Map.Entry<String,Client>> getClients() {
+  public Collection<Client> getClients() {
     return _store.getClients();
   }
 
@@ -64,16 +63,16 @@ public class Storefront {
     _store.registerClient(id, name, address);
   }
 
-  public void toggleClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
+  public void changeClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
     _save = true;
-    _store.toggleClientProductNotifications(pid, cid);
+    _store.changeClientProductNotifications(pid, cid);
   }
   
-  public ArrayList<Sale> getClientTransactions(String id) throws UnknownClientException {
+  public List<Sale> getClientTransactions(String id) throws UnknownClientException {
     return _store.getClientTransactions(id);
   }
 
-  public Set<Map.Entry<String,Supplier>> getSuppliers() {
+  public Collection<Supplier> getSuppliers() {
     return _store.getSuppliers();
   }
 
@@ -82,32 +81,48 @@ public class Storefront {
     _store.registerSupplier(id, name, address);
   }
 
-  public void toggleTransactions(String id) {
+  public boolean toggleSupplierTransactions(String id) throws UnknownSupplierException {
     _save = true;
-    _store.toggleTransactions(id);
+    return _store.toggleSupplierTransactions(id);
   }
 
-  public void pay(int id){
+  public List<Order> getSupplierTransactions(String sID) throws UnknownSupplierException {
+    return _store.getSupplierTransactions(sID);
+  }
+
+  public void pay(int id) throws UnknownTransactionException {
     _save = true;
     _store.pay(id);
   }
 
-  public void registerOrderTransaction(String supID, String pID, int amt) {
+  public void registerOrderTransaction(String supID, String pID, int qty)
+      throws UnknownSupplierException, UnknownProductException, InactiveSupplierException, IncorrectSupplierException {
     _save = true;
-    _store.registerOrderTransaction(supID, pID, amt);
+    _store.registerOrderTransaction(supID, pID, qty);
   }
 
-  public void registerSaleTransaction(String cID, int limDate, String pID, int qty) {
+  public void registerSaleTransaction(String cID, int limDate, String pID, int qty)
+      throws UnknownClientException, UnknownProductException, NoEnoughStockProductException {
     _save = true;
     _store.registerSaleTransaction(cID, limDate, pID, qty);
   }
 
-  public void showTransaction(int id){ _store.showTransaction(id); }
+  public Transaction getTransaction(int id) throws UnknownTransactionException {
+    return _store.getTransaction(id);
+  }
 
   public void showProductsPrice(int price){ }
 
   public int getDate() {
     return _store.getDate();
+  }
+
+  public int getAvailableBalance() {
+    return _store.getAvailableBalance();
+  }
+
+  public int getAccountingBalance() {
+    return _store.getAccountingBalance();
   }
 
   public void advanceDate(int days) throws InvalidDaysException {

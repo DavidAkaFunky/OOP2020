@@ -7,11 +7,15 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoRegisterOrderTransaction extends Command<Storefront> {
 
-  //FIXME add input fields
+  private Input<String> _supplierID;
+  private Input<String> _productID;
+  private Input<Integer> _qty;
 
   public DoRegisterOrderTransaction(Storefront receiver) {
     super(Label.REGISTER_ORDER_TRANSACTION, receiver);
-    //FIXME init input fields
+    _supplierID = _form.addStringInput(Message.requestSupplierKey());
+    _productID = _form.addStringInput(Message.requestProductKey());
+    _qty = _form.addIntegerInput(Message.requestAmount());
   }
 
   @Override

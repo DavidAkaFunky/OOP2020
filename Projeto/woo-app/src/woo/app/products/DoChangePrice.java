@@ -24,7 +24,7 @@ public class DoChangePrice extends Command<Storefront> {
     try {
       _receiver.changeProductPrice(_key.value(), _newPrice.value());
     } catch (UnknownProductException e) {
-      throw new UnknownProductKeyException(_key.value());
+      throw new UnknownProductKeyException(e.getKey());
     }
   }
 }

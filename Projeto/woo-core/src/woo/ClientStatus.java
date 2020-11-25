@@ -1,9 +1,9 @@
 package woo;
 
-public abstract class Status {
+public abstract class ClientStatus {
     protected Client _client;
 
-    public Status(Client c) { _client = c; }
+    public ClientStatus(Client c) { _client = c; }
 
     public double p1Modifier(){ return 0.9; }
     public abstract double p2Modifier(int paymentGap);

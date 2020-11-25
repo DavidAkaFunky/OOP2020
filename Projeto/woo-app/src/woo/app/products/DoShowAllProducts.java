@@ -17,8 +17,9 @@ public class DoShowAllProducts extends Command<Storefront> {
 
   @Override
   public final void execute() throws DialogException {
-    for (Entry<String, Product> p: _receiver.getProducts())
-      _display.addLine(p.getValue().toString());
+    for (Product p: _receiver.getProducts()) {
+      _display.addLine(p.toString());
+    }
     _display.display();
   }
 

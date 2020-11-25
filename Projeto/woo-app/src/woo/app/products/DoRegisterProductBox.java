@@ -35,11 +35,11 @@ public class DoRegisterProductBox extends Command<Storefront> {
       _receiver.registerBox(_key.value(), _price.value(), _cValue.value(), 
                              _sID.value(), _sType.value(), 1);
     } catch (DuplicateProductException e) {
-      throw new DuplicateProductKeyException(_key.value());
+      throw new DuplicateProductKeyException(e.getKey());
     } catch (UnknownSupplierException e) {
-      throw new UnknownSupplierKeyException(_sID.value());
+      throw new UnknownSupplierKeyException(e.getKey());
     } catch (UnknownServTypeException e) {
-      throw new UnknownServiceTypeException(_sType.value());
+      throw new UnknownServiceTypeException(e.getType());
     }
   }
 }

@@ -21,12 +21,12 @@ public class DoRegisterSupplier extends Command<Storefront> {
   }
 
   @Override
-  public void execute() throws DialogException {
+  public void execute() throws DialogException, DuplicateSupplierKeyException {
     _form.parse();
     try {
       _receiver.registerSupplier(_key.value(), _name.value(), _address.value());
     } catch (DuplicateSupplierException e) {
-      throw new DuplicateSupplierKeyException(_key.value());
+      throw new DuplicateSupplierKeyException(e.getKey());
     }
   }
 

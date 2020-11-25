@@ -1,6 +1,9 @@
 package woo;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Supplier implements Serializable {
     
@@ -8,6 +11,7 @@ public class Supplier implements Serializable {
     private String _name;
     private String _address;
     private boolean _active = true;
+    private List<Order> _transactions = new ArrayList<Order>();
 
     /**
      * @param id represents the new supplier's ID
@@ -48,9 +52,27 @@ public class Supplier implements Serializable {
         return _active;
     }
 
+    public boolean toggleTransactions() {
+        if (isActive()) {
+            _active = false;
+            return false;
+        } else {
+            _active = true;
+            return true;
+        }
+    } 
+    
+    public List<Order> getTransactions() {
+        return Collections.unmodifiableList(_transactions);
+    } 
+
+    public void addOrder(Order t) {
+        _transactions.add(t);
+    }
+
     @Override
     public String toString() {
         return getID() + "|" + getName() + "|" + getAddress() + "|";
-    } 
+    }
 
 }

@@ -22,7 +22,7 @@ public class DoAdvanceDate extends Command<Storefront> {
     try {
       _receiver.advanceDate(_days.value());
     } catch (InvalidDaysException e) {
-      throw new InvalidDateException(_days.value());
+      throw new InvalidDateException(e.getDate());
     }
   }
 }

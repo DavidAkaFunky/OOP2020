@@ -9,8 +9,9 @@ import java.io.FileReader;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
-import java.util.Set;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Class Store implements a store.
@@ -23,9 +24,13 @@ public class Store implements Serializable {
   private Map<String, Client> _clients = new TreeMap<String, Client>(String.CASE_INSENSITIVE_ORDER);
   private Map<String, Product> _products = new TreeMap<String, Product>(String.CASE_INSENSITIVE_ORDER);
   private Map<String, Supplier> _suppliers = new TreeMap<String, Supplier>(String.CASE_INSENSITIVE_ORDER);
+
   private int _date = 0;
+
   private int _transactionID = 0;
 
+  private float availableBalance;
+  private float accountingBalance;
 
   /**
    * @param txtfile a filename on which data will be imported onto the store
@@ -78,10 +83,10 @@ public class Store implements Serializable {
    }
 
   /**
-   * @return a Set with all Products available in store
+   * @return a Collection with all Products available in store
    */
-  public Set<Map.Entry<String,Product>> getProducts() {
-    return _products.entrySet();
+  public Collection<Product> getProducts() {
+    return Collections.unmodifiableCollection(_products.values());
   }
 
 
@@ -98,15 +103,18 @@ public class Store implements Serializable {
    * @throws UnknownSupplierException if Supplier ID doesn't exist
    */
   public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID, int amount) throws DuplicateProductException, UnknownSupplierException {
-    if (_products.containsKey(id)) {
+    Product product = _products.get(id);
+    if (product != null) {
       throw new DuplicateProductException(id);
     }
-    else if (!_suppliers.containsKey(sID)) {
+    Supplier supplier = _suppliers.get(sID);
+    if (supplier == null) {
       throw new UnknownSupplierException(sID);
     }
-    else {
-      Supplier supplier = _suppliers.get(sID);
-      _products.put(id, new Book(supplier, id, price, cValue, title, author, isbn, amount));
+    _products.put(id, new Book(supplier, id, price, cValue, title, author, isbn, amount));
+    /* Set all clients to receive notifications by default */
+    for (Client c: _clients.values()) {
+      _products.get(id).registerObserver(c);
     }
   }
 
@@ -122,15 +130,17 @@ public class Store implements Serializable {
    * @throws UnknownServTypeException if Service Type doesn't exist
    */
   public void registerBox(String id, int price, int cValue, String sID, String serviceType, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException {
-    if (_products.containsKey(id)) {
+    Product product = _products.get(id);
+    if (product != null) {
       throw new DuplicateProductException(id);
     }
-    else if (!_suppliers.containsKey(sID)) {
+    Supplier supplier = _suppliers.get(sID);
+    if (supplier == null) {
       throw new UnknownSupplierException(sID);
     }
-    else {
-      Supplier supplier = _suppliers.get(sID);
-      _products.put(id, new Box(supplier, id, price, cValue, serviceType, amount));
+    _products.put(id, new Box(supplier, id, price, cValue, serviceType, amount));
+    for (Client c: _clients.values()) {
+      _products.get(id).registerObserver(c);
     }
   }
 
@@ -148,16 +158,18 @@ public class Store implements Serializable {
    * @throws UnknownServTypeException if Service Type doesn't exist
    * @throws UnknownServLevelException if Service Level doesn't exist
    */
-  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException, UnknownServLevelException{
-    if (_products.containsKey(id)) {
+  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException, UnknownServLevelException {
+    Product product = _products.get(id);
+    if (product != null) {
       throw new DuplicateProductException(id);
     }
-    else if (!_suppliers.containsKey(sID)) {
+    Supplier supplier = _suppliers.get(sID);
+    if (supplier == null) {
       throw new UnknownSupplierException(sID);
     }
-    else {
-      Supplier supplier = _suppliers.get(sID);
-      _products.put(id, new Container(supplier, id, price, cValue, amount, serviceType, serviceLevel));
+    _products.put(id, new Container(supplier, id, price, cValue, amount, serviceType, serviceLevel));
+    for (Client c: _clients.values()) {
+      _products.get(id).registerObserver(c);
     }
   }
 
@@ -168,21 +180,19 @@ public class Store implements Serializable {
    * @throws UnknownProductException if Product ID doesn't exist
    */
   public void changeProductPrice(String id, int newPrice) throws UnknownProductException {
-    if (_products.containsKey(id)) {
-      _products.get(id).setPrice(newPrice);
-    } else {
+    Product product = _products.get(id);
+    if (product == null) {
       throw new UnknownProductException(id);
-    }
+    } 
+    product.setPrice(newPrice);
   }
-
 
   /**
-   * @return a Set will all Clients available in Store
+   * @return a Collection will all Clients available in Store
    */
-  public Set<Map.Entry<String,Client>> getClients() {
-    return _clients.entrySet();
+  public Collection<Client> getClients() {
+    return Collections.unmodifiableCollection(_clients.values());
   }
-
 
   /**
    * @param id represents Client's ID
@@ -190,10 +200,11 @@ public class Store implements Serializable {
    * @throws UnknownClientException if Client ID doesn't exist
    */
   public Client getClient(String id) throws UnknownClientException {
-    if (_clients.containsKey(id)) {
-      return _clients.get(id);
+    Client client = _clients.get(id);
+    if (client == null) {
+      throw new UnknownClientException(id);
     }
-    throw new UnknownClientException(id);
+    return client;
   }
 
   /**
@@ -204,7 +215,8 @@ public class Store implements Serializable {
    * @throws DuplicateClientException if Client ID already exists
    */
   public void registerClient(String id, String name, String address) throws DuplicateClientException {
-    if (_clients.containsKey(id)) {
+    Client client = _clients.get(id);
+    if (client != null) {
       throw new DuplicateClientException(id);
     }
     _clients.put(id, new Client(id, name, address));
@@ -218,19 +230,20 @@ public class Store implements Serializable {
    * @throws UnknownClientException if Client ID doesn't exist
    * @throws UnknownProductException if Product ID doesn't exist
    */
-  public void toggleClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
-    if (_clients.containsKey(cid) && _products.containsKey(pid)){
-      _clients.get(cid).setNotifiability(!_clients.get(cid).isNotifiable(pid), pid);
-      //if (_clients.get(cid).isNotifiable(pid))
-        //return Message.notificationsOn();
-      //else
-        //return Message.notificationsOff();
+  public void changeClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
+    Product product = _products.get(pid);
+    if (product == null) {
+      throw new UnknownProductException(pid);
     }
-    else{
-      if (!_clients.containsKey(cid))
-        throw new UnknownClientException(cid);
-      if (!_products.containsKey(pid))
-        throw new UnknownProductException(cid);
+    Client client = _clients.get(cid);
+    if (client == null) {
+      throw new UnknownClientException(cid);
+    }
+    Observer o = (Observer) client;
+    if (product.getObservers().contains(o)) {
+      product.removeObserver(o);
+    } else {
+      product.registerObserver(o);
     }
   }
 
@@ -240,19 +253,12 @@ public class Store implements Serializable {
    * @return a list containing all transactions associated with the given Client
    * @throws UnknownClientException if Client ID doesn't exist
    */
-  public ArrayList<Sale> getClientTransactions(String id) throws UnknownClientException {
-    if (_clients.containsKey(id))
-      return _clients.get(id).getSales();
-    throw new UnknownClientException(id);
-  }
-
-
-  /**
-   * Method to get all current Suppliers
-   * @return a Set will all Suppliers available in Store
-   */
-  public Set<Map.Entry<String,Supplier>> getSuppliers() {
-    return _suppliers.entrySet();
+  public List<Sale> getClientTransactions(String id) throws UnknownClientException {
+    Client client = _clients.get(id);
+    if (client == null) {
+      throw new UnknownClientException(id);
+    }
+    return _clients.get(id).getClientSales();
   }
 
   /**
@@ -263,11 +269,42 @@ public class Store implements Serializable {
    * @throws DuplicateSupplierException if Supplier ID already exists
    */
   public void registerSupplier(String id, String name, String address) throws DuplicateSupplierException {
-    if (_suppliers.containsKey(id)) {
+    Supplier supplier = _suppliers.get(id);
+    if (supplier != null) {
       throw new DuplicateSupplierException(id);
     }
     _suppliers.put(id, new Supplier(id, name, address));
   }
+
+  /**
+   * Method to get all current Suppliers
+   * @return a Collection will all Suppliers available in Store
+   */
+  public Collection<Supplier> getSuppliers() {
+    return Collections.unmodifiableCollection(_suppliers.values());
+  }
+
+  public List<Order> getSupplierTransactions(String sID) throws UnknownSupplierException {
+    Supplier supplier = _suppliers.get(sID);
+    if (supplier == null) {
+      throw new UnknownSupplierException(sID);
+    }
+    return supplier.getTransactions();
+  }
+
+  /**
+   * @param id represents Supplier's ID
+   * @return
+   * @throws UnknownSupplierException
+   */
+  public boolean toggleSupplierTransactions(String id) throws UnknownSupplierException {
+    Supplier supplier = _suppliers.get(id);
+    if (supplier == null) {
+      throw new UnknownSupplierException(id);
+    }
+    return supplier.toggleTransactions();
+  }
+
 
   /**
    * @return current Store date.
@@ -276,37 +313,86 @@ public class Store implements Serializable {
     return _date;
   }
 
+  public int getAvailableBalance() {
+    return Math.round(availableBalance);
+  }
+
+  public int getAccountingBalance() {
+    return Math.round(accountingBalance);
+  }
+
   /**
    * @param days days to be advanced in Store's date.
    * @throws InvalidDaysException if days are negative
    */
   public void advanceDate(int days) throws InvalidDaysException {
-    if (days > 0) {
-      _date += days;
-    } else {
+    if (days <= 0) {
       throw new InvalidDaysException(days);
     }
+    _date += days;
   }
 
-  // TODO METHODS - Return types are not defined yet (void is yet to be changed in the near future)
-
-  public void toggleTransactions(String id){
-    // TODO
+  public Transaction getTransaction(int id) throws UnknownTransactionException {
+    Transaction transaction = _transactions.get(id);
+    if (transaction == null) {
+      throw new UnknownTransactionException(id);
+    }
+    return transaction;
   }
 
-  public void pay(int id){
-    // TODO
+
+  public void registerOrderTransaction(String supID, String pID, int qty) throws UnknownSupplierException, UnknownProductException, InactiveSupplierException,
+      IncorrectSupplierException {
+    Supplier supplier = _suppliers.get(supID);
+    if (supplier == null) {
+      throw new UnknownSupplierException(supID);
+    }
+    if (!supplier.isActive()) {
+      throw new InactiveSupplierException(supID);
+    }
+    Product product = _products.get(pID);
+    if (product == null) {
+      throw new UnknownProductException(pID);
+    }
+    if (product.getSupplier() != supplier) {
+      throw new IncorrectSupplierException(supID, pID);
+    }
+    product.addStock(qty);
+    Transaction transaction = new Order(_transactionID, supplier);
+    transaction.setPaymentDate(_date);
+    _transactions.put(_transactionID++, transaction);
+    supplier.addOrder((Order) transaction);
+    accountingBalance -= product.getPrice() * qty;
+    availableBalance -= product.getPrice() * qty;
   }
 
-  public void registerOrderTransaction(String supID, String pID, int amt){
-    // TODO
+  public void registerSaleTransaction(String cID, int limDate, String pID, int qty) throws UnknownClientException, UnknownProductException, NoEnoughStockProductException {
+    Client client = _clients.get(cID);
+    if (client == null) {
+      throw new UnknownClientException(cID);
+    }
+    Product product = _products.get(pID);
+    if (product == null) {
+      throw new UnknownProductException(pID);
+    }
+    int stock = product.getStock();
+    if (stock < qty) {
+      throw new NoEnoughStockProductException(cID, qty, stock);
+    }
+    product.removeStock(qty);
+    Transaction transaction = new Sale(_transactionID, client, product, limDate, qty);
+    _transactions.put(_transactionID++, transaction);
+    client.addSale((Sale) transaction);
+    accountingBalance += product.getPrice() * qty;
   }
 
-  public void registerSaleTransaction(String cID, int limDate, String pID, int amt){
-    // TODO
-  }
-  public void showTransaction(int id){
-    // TODO
+  public void pay(int id) throws UnknownTransactionException {
+    Sale sale = (Sale) _transactions.get(id);
+    if (sale == null) {
+      throw new UnknownTransactionException(id);
+    }
+    Client client = sale.getClient();
+    client.pay(sale);
   }
 
 }

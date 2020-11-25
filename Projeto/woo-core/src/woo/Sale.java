@@ -6,7 +6,6 @@ public class Sale extends Transaction{
     private Product _product;
     private int _limitDate;
     private int _amount;
-    private int _paymentDate;
 
     /**
      * @param id represents the new sale's ID
@@ -38,6 +37,14 @@ public class Sale extends Transaction{
         return getBasePrice() * _client.getStatus().p3Modifier(paymentGap);
     }
 
+    public Client getClient() {
+        return _client;
+    }
+
+    public Product getProduct() {
+        return _product;
+    }
+
     /**
      * @return the sale's limit payment date
      */
@@ -52,14 +59,15 @@ public class Sale extends Transaction{
         return _amount;
     }
 
-    /**
-     * @return the sale's payment date
-     */
-    public int getPaymentDate(){
-        return _paymentDate;
+    public int getLimitDateGap(){
+        return getPaymentDate() - _limitDate;
     }
 
-    public int getLimitDateGap(){
-        return _paymentDate - _limitDate;
+    @Override
+    public String toString() {
+        String paymentDate = getPaymentDate() != -1 ? "|" + getPaymentDate() : "";
+        return getID() + "|" + getClient().getID() + "|" + getProduct().getID() + "|" + 
+        getAmount() + "|" + getBasePrice() + "|" + getTotalPrice() + "|" + getLimitDate()
+        + paymentDate;
     }
 }

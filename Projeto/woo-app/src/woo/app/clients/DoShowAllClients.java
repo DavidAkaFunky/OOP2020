@@ -19,8 +19,9 @@ public class DoShowAllClients extends Command<Storefront> {
 
   @Override
   public void execute() throws DialogException {
-    for (Entry<String, Client> c: _receiver.getClients())
-      _display.addLine(c.getValue().toString());
+    for (Client c: _receiver.getClients()) {
+      _display.addLine(c.toString());
+    }
     _display.display();
   }
 }

@@ -1,6 +1,6 @@
 package woo;
 
-public class NormalClient extends Status {
+public class NormalClient extends ClientStatus {
     
     public NormalClient(Client c) { super(c); }
 
@@ -16,6 +16,11 @@ public class NormalClient extends Status {
             _client.setStatus(new EliteClient(_client));
         else if (_client.getScore() > 2500)
             _client.setStatus(new SelectionClient(_client));
+    }
+
+    @Override
+    public String toString() {
+        return "NORMAL";
     }
 
 }

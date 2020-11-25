@@ -7,15 +7,13 @@ import pt.tecnico.po.ui.Command;                                                
  */
 public class DoShowGlobalBalance extends Command<Storefront> {
 
-  //FIXME add input fields
-
   public DoShowGlobalBalance(Storefront receiver) {
     super(Label.SHOW_BALANCE, receiver);
-    //FIXME init input fields
   }
 
   @Override
   public final void execute() {
-    //FIXME implement command
+    _display.addLine(Message.currentBalance(_receiver.getAvailableBalance(), _receiver.getAccountingBalance()));
+    _display.display();
   }
 }

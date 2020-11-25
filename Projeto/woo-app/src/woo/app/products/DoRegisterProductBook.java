@@ -38,9 +38,9 @@ public class DoRegisterProductBook extends Command<Storefront> {
                              _ISBN.value(), _price.value(), _cValue.value(), 
                              _sID.value(), 1);
     } catch (DuplicateProductException e) {
-      throw new DuplicateProductKeyException(_key.value());
+      throw new DuplicateProductKeyException(e.getKey());
     } catch (UnknownSupplierException e) {
-      throw new UnknownSupplierKeyException(_sID.value());
+      throw new UnknownSupplierKeyException(e.getKey());
     }
   }
 }

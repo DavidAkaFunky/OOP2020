@@ -20,9 +20,9 @@ public class DoShowSuppliers extends Command<Storefront> {
 
   @Override
   public void execute() throws DialogException {
-    for (Entry<String, Supplier> s: _receiver.getSuppliers()) {
-      String active = s.getValue().isActive() ? Message.yes() : Message.no();
-      _display.addLine(s.getValue().toString() + active);
+    for (Supplier s: _receiver.getSuppliers()) {
+      String active = s.isActive() ? Message.yes() : Message.no();
+      _display.addLine(s.toString() + active);
     }
     _display.display();
   }

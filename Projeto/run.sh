@@ -27,5 +27,5 @@ for x in auto-tests/*.in; do
 done
 
 rm *.woo
-echo -e "${YELLOW}$(((15-$r)*100/15))% tests passed${NOCOLOR}"
+echo -e "${YELLOW}$(((93-$r)*100/93))% tests passed${NOCOLOR}"
 echo "Done."

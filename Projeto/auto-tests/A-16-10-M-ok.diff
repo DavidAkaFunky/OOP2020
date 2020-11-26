@@ -1,5 +1,5 @@
-*** auto-tests/A-16-10-M-ok.out	Thu Nov 26 14:09:33 2020
---- auto-tests/A-16-10-M-ok.outhyp	Thu Nov 26 17:25:15 2020
+*** auto-tests/A-16-10-M-ok.out	2020-11-26 19:26:04.100000000 +0000
+--- auto-tests/A-16-10-M-ok.outhyp	2020-11-26 19:58:19.270000000 +0000
 ***************
 *** 16,22 ****
   3 - Registar encomenda

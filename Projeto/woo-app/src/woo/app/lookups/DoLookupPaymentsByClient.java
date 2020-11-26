@@ -1,22 +1,35 @@
 package woo.app.lookups;
 
-import pt.tecnico.po.ui.Command;                                                                                                              import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
+import pt.tecnico.po.ui.Command;
+import woo.app.exceptions.UnknownClientKeyException;
+import woo.exceptions.UnknownClientException;
+import pt.tecnico.po.ui.DialogException;
+import pt.tecnico.po.ui.Input;                                                                                                                
+import woo.Storefront;                                                                                                                        
 
 /**
  * Lookup payments by given client.
  */
 public class DoLookupPaymentsByClient extends Command<Storefront> {
 
-  //FIXME add input fields
+  private Input<String> _key;
 
   public DoLookupPaymentsByClient(Storefront storefront) {
     super(Label.PAID_BY_CLIENT, storefront);
-    //FIXME init input fields
+    _key = _form.addStringInput(Message.requestClientKey());
   }
 
   @Override
   public void execute() throws DialogException {
-    //FIXME implement command
+    _form.parse();
+    try {
+      for (var s: _receiver.lookupPaymentsByClient(_key.value())) {
+        _display.addLine(s.toString());
+      }
+      _display.display();
+    } catch (UnknownClientException e) {
+      throw new UnknownClientKeyException(e.getKey());
+    }
   }
 
 }

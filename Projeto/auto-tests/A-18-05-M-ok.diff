@@ -1,5 +1,5 @@
-*** auto-tests/A-18-05-M-ok.out	Thu Nov 26 14:09:33 2020
---- auto-tests/A-18-05-M-ok.outhyp	Thu Nov 26 17:25:19 2020
+*** auto-tests/A-18-05-M-ok.out	2020-11-26 19:26:04.100000000 +0000
+--- auto-tests/A-18-05-M-ok.outhyp	2020-11-26 19:58:20.920000000 +0000
 ***************
 *** 28,41 ****
   3 - Registar encomenda

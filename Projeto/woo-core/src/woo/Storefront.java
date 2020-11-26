@@ -111,6 +111,10 @@ public class Storefront {
     return _store.getTransaction(id);
   }
 
+  public List<Transaction> lookupPaymentsByClient(String cID) throws UnknownClientException {
+    return _store.lookupPaymentsByClient(cID);
+  }
+
   public List<Product> lookupProductsUnderPrice(int price) { 
     return _store.lookupProductsUnderPrice(price);
   }

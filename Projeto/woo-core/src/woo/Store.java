@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.Collection;
 import java.util.Collections;
@@ -412,6 +411,14 @@ public class Store implements Serializable {
       Client client = sale.getClient();
       client.pay(sale); 
     }
+  }
+
+  public List<Transaction> lookupPaymentsByClient(String cID) throws UnknownClientException {
+    Client client = _clients.get(cID);
+    if (client == null){
+      throw new UnknownClientException(cID);
+    }
+    return Collections.unmodifiableList(client.getClientSales().stream().filter(s->s.getPaymentStatus()).collect(Collectors.toList()));
   }
 
   public List<Product> lookupProductsUnderPrice(int price) {

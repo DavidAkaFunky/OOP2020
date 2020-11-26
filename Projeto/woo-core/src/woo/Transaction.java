@@ -42,4 +42,8 @@ public class Transaction implements Serializable {
         _paymentDate = date;
     }
 
+    public void setPaidStatus(boolean yesno) {
+        _paid = yesno;
+    }
+
 }

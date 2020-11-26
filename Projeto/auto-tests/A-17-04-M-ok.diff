@@ -1,13 +1,7 @@
 *** auto-tests/A-17-04-M-ok.out	Thu Nov 26 14:09:33 2020
---- auto-tests/A-17-04-M-ok.outhyp	Thu Nov 26 16:09:24 2020
+--- auto-tests/A-17-04-M-ok.outhyp	Thu Nov 26 17:25:17 2020
 ***************
-*** 16,29 ****
-  3 - Registar encomenda
-  4 - Pagar
-  0 - Sair
-! Escolha uma opção: Identificador do fornecedor: Identificador do produto: Quantidade: Encomendar mais produtos? (s/n) Gestão de Transacções
-  1 - Visualizar
-  2 - Registar venda
+*** 22,29 ****
   3 - Registar encomenda
   4 - Pagar
   0 - Sair
@@ -16,46 +10,29 @@
   Gestão de Transacções
   1 - Visualizar
   2 - Registar venda
---- 16,38 ----
+--- 22,28 ----
   3 - Registar encomenda
   4 - Pagar
   0 - Sair
-! Escolha uma opção: Gestão de Transacções
-  1 - Visualizar
-  2 - Registar venda
-  3 - Registar encomenda
-  4 - Pagar
-  0 - Sair
-! Escolha uma opção: Número inválido!
-! Escolha uma opção: Número inválido!
-! Escolha uma opção: Opção inválida!
-! Gestão de Transacções
-! 1 - Visualizar
-! 2 - Registar venda
-! 3 - Registar encomenda
-! 4 - Pagar
-! 0 - Sair
-! Escolha uma opção: Número inválido!
-! Escolha uma opção: Identificador da transacção: Visualizar: Operação inválida: A transacção '0' não existe.
+! Escolha uma opção: Identificador da transacção: 0|P2|0|0
   Gestão de Transacções
   1 - Visualizar
   2 - Registar venda
 ***************
-*** 48,56 ****
+*** 48,55 ****
   3 - Permitir/inibir transacções
   4 - Consultar transacções
   0 - Sair
 ! Escolha uma opção: Identificador do fornecedor: 0|P2|1616|0
 ! 3O3|202
-! Gestão de Fornecedores
+  Gestão de Fornecedores
   1 - Mostrar fornecedores
   2 - Registar
-  3 - Permitir/inibir transacções
---- 57,63 ----
+--- 47,53 ----
   3 - Permitir/inibir transacções
   4 - Consultar transacções
   0 - Sair
-! Escolha uma opção: Identificador do fornecedor: Gestão de Fornecedores
+! Escolha uma opção: Identificador do fornecedor: 0|P2|0|0
+  Gestão de Fornecedores
   1 - Mostrar fornecedores
   2 - Registar
-  3 - Permitir/inibir transacções

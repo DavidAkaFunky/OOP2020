@@ -365,11 +365,19 @@ public class Store implements Serializable {
     if (product.getSupplier() != supplier) {
       throw new IncorrectSupplierException(supID, pID);
     }
+    /* Add stock to product */
     product.addStock(qty);
+    /* Create transaction */
     Transaction transaction = new Order(_transactionID, supplier);
+    /* Orders are instantly paid */
     transaction.setPaymentDate(_date);
+    transaction.setPaidStatus(true);
+    /* Add transaction to Map of transactions */
     _transactions.put(_transactionID++, transaction);
+    /* Add order to supplier total orders */
     supplier.addOrder((Order) transaction);
+
+    /* Update balance */
     accountingBalance -= product.getPrice() * qty;
     availableBalance -= product.getPrice() * qty;
   }
@@ -395,12 +403,15 @@ public class Store implements Serializable {
   }
 
   public void pay(int id) throws UnknownTransactionException {
-    Sale sale = (Sale) _transactions.get(id);
-    if (sale == null) {
+    Transaction transaction = _transactions.get(id);
+    if (transaction == null) {
       throw new UnknownTransactionException(id);
     }
-    Client client = sale.getClient();
-    client.pay(sale);
+    if (!transaction.getPaymentStatus()) {
+      Sale sale = (Sale) transaction;
+      Client client = sale.getClient();
+      client.pay(sale); 
+    }
   }
 
   public List<Product> lookupProductsUnderPrice(int price) {

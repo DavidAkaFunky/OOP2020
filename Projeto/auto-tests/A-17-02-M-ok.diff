@@ -1,0 +1,87 @@
+*** auto-tests/A-17-02-M-ok.out	Thu Nov 26 14:09:33 2020
+--- auto-tests/A-17-02-M-ok.outhyp	Thu Nov 26 16:09:24 2020
+***************
+*** 16,51 ****
+  3 - Registar encomenda
+  4 - Pagar
+  0 - Sair
+! Escolha uma opção: Identificador do fornecedor: Identificador do produto: Quantidade: Encomendar mais produtos? (s/n) Identificador do produto: Quantidade: Encomendar mais produtos? (s/n) Registar encomenda: Operação inválida: O produto 'qwewe' não existe.
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar venda
+  3 - Registar encomenda
+  4 - Pagar
+  0 - Sair
+! Escolha uma opção: Menu Principal
+! 1 - Abrir
+! 2 - Guardar
+! 3 - Mostrar Data
+! 4 - Avançar Data
+! 5 - Gestão de Produtos
+! 6 - Gestão de Clientes
+! 7 - Gestão de Fornecedores
+! 8 - Gestão de Transacções
+! 9 - Menu de Consultas
+! 10 - Ver Saldo Global
+  0 - Sair
+! Escolha uma opção: Gestão de Fornecedores
+! 1 - Mostrar fornecedores
+! 2 - Registar
+! 3 - Permitir/inibir transacções
+! 4 - Consultar transacções
+! 0 - Sair
+! Escolha uma opção: Identificador do fornecedor: Gestão de Fornecedores
+! 1 - Mostrar fornecedores
+! 2 - Registar
+! 3 - Permitir/inibir transacções
+! 4 - Consultar transacções
+  0 - Sair
+  Escolha uma opção: Menu Principal
+  1 - Abrir
+--- 16,49 ----
+  3 - Registar encomenda
+  4 - Pagar
+  0 - Sair
+! Escolha uma opção: Gestão de Transacções
+! 1 - Visualizar
+! 2 - Registar venda
+! 3 - Registar encomenda
+! 4 - Pagar
+! 0 - Sair
+! Escolha uma opção: Número inválido!
+! Escolha uma opção: Número inválido!
+! Escolha uma opção: Identificador do cliente: Data limite de pagamento: Data limite de pagamento: Identificador do produto: Quantidade: Registar venda: Operação inválida: O cliente 's' não existe.
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar venda
+  3 - Registar encomenda
+  4 - Pagar
+  0 - Sair
+! Escolha uma opção: Opção inválida!
+! Gestão de Transacções
+! 1 - Visualizar
+! 2 - Registar venda
+! 3 - Registar encomenda
+! 4 - Pagar
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: Identificador da transacção: Pagar: Operação inválida: A transacção '0' não existe.
+! Gestão de Transacções
+! 1 - Visualizar
+! 2 - Registar venda
+! 3 - Registar encomenda
+! 4 - Pagar
+  0 - Sair
+  Escolha uma opção: Menu Principal
+  1 - Abrir
+***************
+*** 59,62 ****
+  9 - Menu de Consultas
+  10 - Ver Saldo Global
+  0 - Sair
+! Escolha uma opção: 
+\ No newline at end of file
+--- 57,60 ----
+  9 - Menu de Consultas
+  10 - Ver Saldo Global
+  0 - Sair
+! Escolha uma opção: Fim de entrada de dados (R-EOF): pt.tecnico.po.io.RuntimeEOFException: Fim do fluxo de dados de entrada

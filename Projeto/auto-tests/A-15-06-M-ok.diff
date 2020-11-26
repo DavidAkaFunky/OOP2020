@@ -1,0 +1,50 @@
+*** auto-tests/A-15-06-M-ok.out	Thu Nov 26 14:09:33 2020
+--- auto-tests/A-15-06-M-ok.outhyp	Thu Nov 26 16:09:21 2020
+***************
+*** 38,47 ****
+  1 - Produtos com Preço Abaixo de Limite
+  2 - Facturas Pagas por Cliente
+  0 - Sair
+! Escolha uma opção: Identificador do cliente: Consultas
+  1 - Produtos com Preço Abaixo de Limite
+  2 - Facturas Pagas por Cliente
+  0 - Sair
+  Escolha uma opção: Menu Principal
+  1 - Abrir
+  2 - Guardar
+--- 38,48 ----
+  1 - Produtos com Preço Abaixo de Limite
+  2 - Facturas Pagas por Cliente
+  0 - Sair
+! Escolha uma opção: Consultas
+  1 - Produtos com Preço Abaixo de Limite
+  2 - Facturas Pagas por Cliente
+  0 - Sair
++ Escolha uma opção: Número inválido!
+  Escolha uma opção: Menu Principal
+  1 - Abrir
+  2 - Guardar
+***************
+*** 82,91 ****
+  1 - Produtos com Preço Abaixo de Limite
+  2 - Facturas Pagas por Cliente
+  0 - Sair
+! Escolha uma opção: Identificador do cliente: Consultas
+  1 - Produtos com Preço Abaixo de Limite
+  2 - Facturas Pagas por Cliente
+  0 - Sair
+  Escolha uma opção: Menu Principal
+  1 - Abrir
+  2 - Guardar
+--- 83,93 ----
+  1 - Produtos com Preço Abaixo de Limite
+  2 - Facturas Pagas por Cliente
+  0 - Sair
+! Escolha uma opção: Consultas
+  1 - Produtos com Preço Abaixo de Limite
+  2 - Facturas Pagas por Cliente
+  0 - Sair
++ Escolha uma opção: Número inválido!
+  Escolha uma opção: Menu Principal
+  1 - Abrir
+  2 - Guardar

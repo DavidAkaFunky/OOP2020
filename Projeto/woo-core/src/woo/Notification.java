@@ -1,12 +1,14 @@
 package woo;
 
-public class Notification {
+import java.io.Serializable;
 
-    private String _productID;
+public class Notification implements Serializable {
+
     private String _event;
+    private String _productID;
     private int _price;
 
-    public Notification(String productID, String event, int price) {
+    public Notification(String event, String productID, int price) {
         _productID = productID;
         _event = event;
         _price = price;
@@ -18,6 +20,6 @@ public class Notification {
 
     @Override
     public String toString() {
-        return getPID() + "|" + getEvent() + "|" + getPrice();
+        return getEvent() + "|" + getPID() + "|" + getPrice();
     }
 }

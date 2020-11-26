@@ -89,9 +89,11 @@ public abstract class Product implements Serializable, Observable {
      */
     public void setPrice(int price) {
         int old = _price;
-        _price = price;
-        if (price < old) {
-            notifyObservers("BARGAIN");
+        if (price >= 0) {
+            _price = price;
+            if (price < old) {
+                notifyObservers("BARGAIN");
+            }
         }
     }
 
@@ -113,7 +115,7 @@ public abstract class Product implements Serializable, Observable {
     public void notifyObservers(String event) {
         for (int i = 0; i < observers.size(); ++i) {
             Observer observer = (Observer) observers.get(i);
-            observer.update(_id, event, _price);
+            observer.update(event, _id, _price);
         }
     }
 

@@ -9,6 +9,8 @@ import java.io.FileReader;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -73,6 +75,7 @@ public class Store implements Serializable {
           int amount = Integer.parseInt(input[8]);
           registerBook(input[1], input[2], input[3], input[4], price, cValue, input[5], amount);
         } else {
+          reader.close();
           throw new BadEntryException(input[0]);
         }
       }
@@ -219,7 +222,12 @@ public class Store implements Serializable {
     if (client != null) {
       throw new DuplicateClientException(id);
     }
-    _clients.put(id, new Client(id, name, address));
+    Client newClient = new Client(id, name, address);
+    _clients.put(id, newClient);
+    for (Product p: _products.values()) {
+      Observer o = (Observer) newClient;
+      p.registerObserver(o);
+    }
   }
 
 
@@ -393,6 +401,10 @@ public class Store implements Serializable {
     }
     Client client = sale.getClient();
     client.pay(sale);
+  }
+
+  public List<Product> lookupProductsUnderPrice(int price) {
+    return Collections.unmodifiableList(_products.values().stream().filter(p->p.getPrice() < price).collect(Collectors.toList()));
   }
 
 }

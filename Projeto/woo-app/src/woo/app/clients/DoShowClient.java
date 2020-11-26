@@ -30,7 +30,7 @@ public class DoShowClient extends Command<Storefront> {
       for (Notification n: client.getNotifications()) {
         _display.addLine(n.toString());
       }
-      /* LOOK AFTER */ client.clearNotifications();
+      client.clearNotifications();
       _display.display();
     } catch (UnknownClientException e) {
       throw new UnknownClientKeyException(e.getKey());

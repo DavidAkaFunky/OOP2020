@@ -33,7 +33,7 @@ public class DoRegisterProductBox extends Command<Storefront> {
     _form.parse();
     try {
       _receiver.registerBox(_key.value(), _price.value(), _cValue.value(), 
-                             _sID.value(), _sType.value(), 1);
+                             _sID.value(), _sType.value(), 0);
     } catch (DuplicateProductException e) {
       throw new DuplicateProductKeyException(e.getKey());
     } catch (UnknownSupplierException e) {

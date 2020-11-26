@@ -1,5 +1,5 @@
 package woo;
 
 public interface Observer {
-    public void update(String pID, String event, int stock);
+    public void update(String event, String pID, int price);
 }

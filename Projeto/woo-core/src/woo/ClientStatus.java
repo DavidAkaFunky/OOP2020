@@ -1,6 +1,8 @@
 package woo;
 
-public abstract class ClientStatus {
+import java.io.Serializable;
+
+public abstract class ClientStatus implements Serializable {
     protected Client _client;
 
     public ClientStatus(Client c) { _client = c; }

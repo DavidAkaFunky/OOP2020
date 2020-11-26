@@ -104,8 +104,8 @@ public class Client implements Serializable, Observer {
         _status.pay(s); //Alterar o estatuto
     }
 
-    public void update(String productID, String event, int price) {
-        _notifications.add(new Notification(productID, event, price));
+    public void update(String event, String productID, int price) {
+        _notifications.add(new Notification(event, productID, price));
     }
 
     public void clearNotifications() {

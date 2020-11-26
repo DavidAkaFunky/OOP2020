@@ -39,7 +39,7 @@ public class DoRegisterProductContainer extends Command<Storefront> {
     _form.parse();
     try {
       _receiver.registerContainer(_key.value(), _price.value(), _cValue.value(), 
-                             _sID.value(), _sType.value(), _sLevel.value(), 1);
+                             _sID.value(), _sType.value(), _sLevel.value(), 0);
     } catch (DuplicateProductException e) {
       throw new DuplicateProductKeyException(e.getKey());
     } catch (UnknownSupplierException e) {

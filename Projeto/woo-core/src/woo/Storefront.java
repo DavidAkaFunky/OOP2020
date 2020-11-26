@@ -111,7 +111,9 @@ public class Storefront {
     return _store.getTransaction(id);
   }
 
-  public void showProductsPrice(int price){ }
+  public List<Product> lookupProductsUnderPrice(int price) { 
+    return _store.lookupProductsUnderPrice(price);
+  }
 
   public int getDate() {
     return _store.getDate();
@@ -141,6 +143,7 @@ public class Storefront {
       ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(getFilename())));
       out.writeObject(_store);
       out.close();
+      _save = false;
     }
   }
 

@@ -22,8 +22,8 @@ public class DoRegisterSaleTransaction extends Command<Storefront> {
   public DoRegisterSaleTransaction(Storefront receiver) {
     super(Label.REGISTER_SALE_TRANSACTION, receiver);
     _clientID = _form.addStringInput(Message.requestClientKey());
-    _productID = _form.addStringInput(Message.requestProductKey());
     _limitDate = _form.addIntegerInput(Message.requestPaymentDeadline());
+    _productID = _form.addStringInput(Message.requestProductKey());
     _qty = _form.addIntegerInput(Message.requestAmount());
   }
 

@@ -12,15 +12,17 @@ public class SelectionClient extends ClientStatus{
         int paymentGap = s.getLimitDateGap();
         if (paymentGap <= 0)
             _client.setScore(_client.getScore() + 10 * (int) s.getTotalPrice());
-        else if (paymentGap > 2)
+        else if (paymentGap > 2){
+            _client.setScore(_client.getScore() / 10);
             _client.setStatus(new NormalClient(_client));
+        }
         if (_client.getScore() > 25000)
             _client.setStatus(new EliteClient(_client));
     }
 
     @Override
     public String toString() {
-        return "NORMAL";
+        return "SELECTION";
     }
 
 }

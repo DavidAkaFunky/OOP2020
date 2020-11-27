@@ -21,7 +21,7 @@ public class Client implements Serializable, Observer {
     /* Client score. */
     private int _score = 0;
 
-    private int _paid = 0;
+    private double _paid = 0;
 
     private List<Sale> _sales = new ArrayList<Sale>();
 
@@ -77,7 +77,7 @@ public class Client implements Serializable, Observer {
         _sales.add(s);
     }
 
-    public void addPaidSale(int salePrice) {
+    public void addPaidSale(double salePrice) {
         _paid += salePrice;
     }
 
@@ -106,8 +106,10 @@ public class Client implements Serializable, Observer {
      * Makes client pay for a sale
      */
     public void pay(Sale s) {
-        //Calcular o valor final da encomenda
-        _status.pay(s); //Alterar o estatuto
+        if (!s.getPaymentStatus()){
+            s.pay();
+            _status.pay(s); //Change current client status
+        }
     }
 
     public void update(String event, String productID, int price) {
@@ -125,9 +127,9 @@ public class Client implements Serializable, Observer {
     public String toString(){
         int totalPrice = 0;
         for (Sale s: _sales){
-            totalPrice += s.getTotalPrice();
+            totalPrice += s.getBasePrice();
         }
-        return getID() + "|" + getName() + "|" + getAddress() + "|" + getStatus().toString() + "|" + totalPrice + "|" + _paid;
+        return getID() + "|" + getName() + "|" + getAddress() + "|" + getStatus().toString() + "|" + totalPrice + "|" + (int) _paid;
     }
 
 }

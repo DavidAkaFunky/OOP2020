@@ -3,9 +3,11 @@ package woo;
 public class Sale extends Transaction{
     
     private Client _client;
+    private Store _store;
     private Product _product;
     private int _limitDate;
     private int _amount;
+    private double _paidPrice;
 
     /**
      * @param id represents the new sale's ID
@@ -14,12 +16,13 @@ public class Sale extends Transaction{
      * @param limitDate represents the new sale's limit payment date
      * @param amount represents the new sale's amount of products from the given ID
      */
-    public Sale(int id, Client client, Product product, int limitDate, int amount) {
+    public Sale(int id, Client client, Product product, int limitDate, int amount, Store store) {
         super(id);
         _client = client;
         _product = product; 
         _limitDate = limitDate;
         _amount = amount;
+        _store = store;
     }
 
     @Override
@@ -31,8 +34,10 @@ public class Sale extends Transaction{
      * @return the sale's real price (after taxes)
      */
     public double getTotalPrice(){
+        if (getPaymentStatus()){
+            return _paidPrice;
+        }
         int paymentGap = getLimitDateGap();
-        int totalPrice = 0;
         int N = _product.getN();
         if (paymentGap <= -N) {
             return getBasePrice() * _client.getStatus().p1Modifier();
@@ -67,12 +72,18 @@ public class Sale extends Transaction{
     }
 
     public int getLimitDateGap(){
-        return getPaymentDate() - _limitDate;
+        return getPaymentStatus() ? getPaymentDate() - _limitDate : _store.getDate() - _limitDate;
+    }
+
+    public void pay(){
+        _paidPrice = getTotalPrice();
+        setPaymentDate(_store.getDate());
+        setPaidStatus(true);
     }
 
     @Override
     public String toString() {
-        String totalPrice = getTotalPrice() > 0 ? String.format("%.0f", getTotalPrice()) : "0.0";
+        String totalPrice = getTotalPrice() > 0 ? String.format("%.0f", getTotalPrice()) : "0";
         String paymentDate = getPaymentDate() != -1 ? "|" + getPaymentDate() : "";
         return getID() + "|" + getClient().getID() + "|" + getProduct().getID() + "|" + 
         getAmount() + "|" + getBasePrice() + "|" + totalPrice + "|" + getLimitDate()

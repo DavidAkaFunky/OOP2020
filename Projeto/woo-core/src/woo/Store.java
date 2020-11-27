@@ -397,7 +397,7 @@ public class Store implements Serializable {
       throw new NoEnoughStockProductException(pID, qty, stock);
     }
     product.removeStock(qty);
-    Transaction transaction = new Sale(_transactionID, client, product, limDate, qty);
+    Transaction transaction = new Sale(_transactionID, client, product, limDate, qty, this);
     _transactions.put(_transactionID++, transaction);
     client.addSale((Sale) transaction);
     accountingBalance += product.getPrice() * qty;
@@ -412,7 +412,7 @@ public class Store implements Serializable {
       Sale sale = (Sale) transaction;
       Client client = sale.getClient();
       client.pay(sale); 
-      client.addPaidSale(sale.getBasePrice());
+      client.addPaidSale(sale.getTotalPrice());
     }
   }
 

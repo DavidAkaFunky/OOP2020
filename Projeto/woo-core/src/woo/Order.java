@@ -1,9 +1,14 @@
 package woo;
 
+import java.util.Map;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+
 public class Order extends Transaction {
     
     private Supplier _supplier;
-    private int _totalCost;
+    private int _basePrice;
+    private Map<Product, Integer> _products = new LinkedHashMap<Product, Integer>();
 
     /**
      * @param id represents the new order's ID
@@ -21,18 +26,31 @@ public class Order extends Transaction {
         return _supplier;
     }
 
-    public int getTotalCost() {
-        return _totalCost;
+    @Override
+    public int getBasePrice() {
+        return _basePrice;
     }
 
     public void setTotalCost(int totalCost) {
-        _totalCost = totalCost;
+        _basePrice = totalCost;
+    }
+
+    public void addProduct(Product product, int qty) {
+        _products.put(product, qty);
+    }
+
+    public Map<Product, Integer> getOrderProducts() {
+        return Collections.unmodifiableMap(_products);
     }
 
     @Override
     public String toString() {
-        return getID() + "|" + getSupplier().getID() + "|" + getBasePrice() + "|" +
-        getPaymentDate();
+        String base = getID() + "|" + getSupplier().getID() + "|" + getBasePrice() + "|" +
+        getPaymentDate() + '\n';
+        for (Map.Entry<Product, Integer> entry : _products.entrySet()) {
+            base += entry.getKey().getID() + "|" + entry.getValue() + "\n";
+        }
+        return base;
     }
 
 }

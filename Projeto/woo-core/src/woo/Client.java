@@ -21,6 +21,8 @@ public class Client implements Serializable, Observer {
     /* Client score. */
     private int _score = 0;
 
+    private int _paid = 0;
+
     private List<Sale> _sales = new ArrayList<Sale>();
 
     private List<Notification> _notifications = new ArrayList<Notification>();
@@ -75,6 +77,10 @@ public class Client implements Serializable, Observer {
         _sales.add(s);
     }
 
+    public void addPaidSale(int salePrice) {
+        _paid += salePrice;
+    }
+
     /**
      * @return the client's current status
      */
@@ -118,12 +124,10 @@ public class Client implements Serializable, Observer {
 
     public String toString(){
         int totalPrice = 0;
-        int paidPrice = 0;
         for (Sale s: _sales){
-            paidPrice += s.getBasePrice();
             totalPrice += s.getTotalPrice();
         }
-        return getID() + "|" + getName() + "|" + getAddress() + "|" + getStatus().toString() + "|" + totalPrice + "|" + paidPrice;
+        return getID() + "|" + getName() + "|" + getAddress() + "|" + getStatus().toString() + "|" + totalPrice + "|" + _paid;
     }
 
 }

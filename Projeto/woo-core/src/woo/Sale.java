@@ -14,7 +14,7 @@ public class Sale extends Transaction{
      * @param limitDate represents the new sale's limit payment date
      * @param amount represents the new sale's amount of products from the given ID
      */
-    public Sale(int id, Client client, Product product, int limitDate, int amount){
+    public Sale(int id, Client client, Product product, int limitDate, int amount) {
         super(id);
         _client = client;
         _product = product; 
@@ -22,18 +22,25 @@ public class Sale extends Transaction{
         _amount = amount;
     }
 
+    @Override
+    public int getBasePrice() {
+        return _product.getPrice() *  _amount;
+    }
+
     /**
      * @return the sale's real price (after taxes)
      */
     public double getTotalPrice(){
         int paymentGap = getLimitDateGap();
+        int totalPrice = 0;
         int N = _product.getN();
-        if (paymentGap <= -N)
+        if (paymentGap <= -N) {
             return getBasePrice() * _client.getStatus().p1Modifier();
-        else if (-N < paymentGap && paymentGap <= 0)
+        } else if (-N < paymentGap && paymentGap <= 0) {
             return getBasePrice() * _client.getStatus().p2Modifier(paymentGap);
-        else if (0 < paymentGap && paymentGap <= N)
+        } else if (0 < paymentGap && paymentGap <= N) {
             return getBasePrice() * _client.getStatus().p3Modifier(paymentGap);
+        }
         return getBasePrice() * _client.getStatus().p3Modifier(paymentGap);
     }
 
@@ -65,9 +72,10 @@ public class Sale extends Transaction{
 
     @Override
     public String toString() {
+        String totalPrice = getTotalPrice() > 0 ? String.format("%.0f", getTotalPrice()) : "0.0";
         String paymentDate = getPaymentDate() != -1 ? "|" + getPaymentDate() : "";
         return getID() + "|" + getClient().getID() + "|" + getProduct().getID() + "|" + 
-        getAmount() + "|" + getBasePrice() + "|" + getTotalPrice() + "|" + getLimitDate()
+        getAmount() + "|" + getBasePrice() + "|" + totalPrice + "|" + getLimitDate()
         + paymentDate;
     }
 }

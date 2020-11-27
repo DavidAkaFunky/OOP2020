@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Storefront: façade for the core classes.
@@ -95,11 +96,12 @@ public class Storefront {
     _store.pay(id);
   }
 
-  public void registerOrderTransaction(String supID, String pID, int qty)
+  public void registerOrderTransaction(String supID, Map<String, Integer> products)
       throws UnknownSupplierException, UnknownProductException, InactiveSupplierException, IncorrectSupplierException {
     _save = true;
-    _store.registerOrderTransaction(supID, pID, qty);
+    _store.registerOrderTransaction(supID, products);
   }
+
 
   public void registerSaleTransaction(String cID, int limDate, String pID, int qty)
       throws UnknownClientException, UnknownProductException, NoEnoughStockProductException {

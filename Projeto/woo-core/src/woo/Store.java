@@ -347,9 +347,8 @@ public class Store implements Serializable {
     return transaction;
   }
 
-
-  public void registerOrderTransaction(String supID, String pID, int qty) throws UnknownSupplierException, UnknownProductException, InactiveSupplierException,
-      IncorrectSupplierException {
+  public void registerOrderTransaction(String supID, Map<String, Integer> products) 
+  throws UnknownSupplierException, UnknownProductException, InactiveSupplierException, IncorrectSupplierException {
     Supplier supplier = _suppliers.get(supID);
     if (supplier == null) {
       throw new UnknownSupplierException(supID);
@@ -357,28 +356,31 @@ public class Store implements Serializable {
     if (!supplier.isActive()) {
       throw new InactiveSupplierException(supID);
     }
-    Product product = _products.get(pID);
-    if (product == null) {
-      throw new UnknownProductException(pID);
+    for (Map.Entry<String,Integer> productID : products.entrySet()) {
+      Product product = _products.get(productID.getKey());
+      if (product == null) {
+        throw new UnknownProductException(productID.getKey());
+      }
+      if (product.getSupplier() != supplier) {
+        throw new IncorrectSupplierException(supID, product.getID());
+      }
     }
-    if (product.getSupplier() != supplier) {
-      throw new IncorrectSupplierException(supID, pID);
+    Order order = new Order(_transactionID, supplier);
+    int totalCost = 0;
+    for (Map.Entry<String,Integer> pID : products.entrySet()) {
+      Product p = _products.get(pID.getKey());
+      int qty = pID.getValue();
+      p.addStock(qty);
+      totalCost += p.getPrice() * qty;
+      order.addProduct(p, qty);
+      accountingBalance -= p.getPrice() * qty;
+      availableBalance -= p.getPrice() * qty;
     }
-    /* Add stock to product */
-    product.addStock(qty);
-    /* Create transaction */
-    Transaction transaction = new Order(_transactionID, supplier);
-    /* Orders are instantly paid */
-    transaction.setPaymentDate(_date);
-    transaction.setPaidStatus(true);
-    /* Add transaction to Map of transactions */
-    _transactions.put(_transactionID++, transaction);
-    /* Add order to supplier total orders */
-    supplier.addOrder((Order) transaction);
-
-    /* Update balance */
-    accountingBalance -= product.getPrice() * qty;
-    availableBalance -= product.getPrice() * qty;
+    order.setPaymentDate(_date);
+    order.setPaidStatus(true);
+    order.setTotalCost(totalCost);
+    _transactions.put(_transactionID++, order);
+    supplier.addOrder(order);
   }
 
   public void registerSaleTransaction(String cID, int limDate, String pID, int qty) throws UnknownClientException, UnknownProductException, NoEnoughStockProductException {
@@ -392,7 +394,7 @@ public class Store implements Serializable {
     }
     int stock = product.getStock();
     if (stock < qty) {
-      throw new NoEnoughStockProductException(cID, qty, stock);
+      throw new NoEnoughStockProductException(pID, qty, stock);
     }
     product.removeStock(qty);
     Transaction transaction = new Sale(_transactionID, client, product, limDate, qty);
@@ -410,6 +412,7 @@ public class Store implements Serializable {
       Sale sale = (Sale) transaction;
       Client client = sale.getClient();
       client.pay(sale); 
+      client.addPaidSale(sale.getBasePrice());
     }
   }
 

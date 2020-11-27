@@ -1,5 +1,9 @@
 package woo.app.transactions;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
+
 import pt.tecnico.po.ui.Command;                                                                                                              import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
 import woo.app.exceptions.UnauthorizedSupplierException;
 import woo.app.exceptions.UnknownProductKeyException;
@@ -9,6 +13,7 @@ import woo.exceptions.InactiveSupplierException;
 import woo.exceptions.IncorrectSupplierException;
 import woo.exceptions.UnknownProductException;
 import woo.exceptions.UnknownSupplierException;
+import woo.Order;
 
 /**
  * Register order.
@@ -16,34 +21,44 @@ import woo.exceptions.UnknownSupplierException;
 public class DoRegisterOrderTransaction extends Command<Storefront> {
 
   private Input<String> _supplierID;
+  private Map<String, Integer> _products = new TreeMap<String, Integer>();
   private Input<String> _productID;
   private Input<Integer> _qty;
-  private Input<String> _choice;
+  private Input<Boolean> _choice;
 
   public DoRegisterOrderTransaction(Storefront receiver) {
     super(Label.REGISTER_ORDER_TRANSACTION, receiver);
-    _supplierID = _form.addStringInput(Message.requestSupplierKey());
   }
 
   @Override
   public final void execute() throws DialogException {
-    do {
-      _productID = _form.addStringInput(Message.requestProductKey());
-      _qty = _form.addIntegerInput(Message.requestAmount());
-      _choice = _form.addStringInput(Message.requestMore());
-      _form.parse(false);
-      try {
-        _receiver.registerOrderTransaction(_supplierID.value(), _productID.value(), _qty.value());
-      } catch (UnknownSupplierException e) {
-        throw new UnknownSupplierKeyException(e.getKey());
-      } catch (UnknownProductException e) {
-        throw new UnknownProductKeyException(e.getKey());
-      }  catch (IncorrectSupplierException e) {
-        throw new WrongSupplierException(e.getSupplierKey(), e.getProductKey());
-      } catch (InactiveSupplierException e) {
-        throw new UnauthorizedSupplierException(e.getKey());
+    _products.clear();
+    _supplierID = _form.addStringInput(Message.requestSupplierKey());
+    _productID = _form.addStringInput(Message.requestProductKey());
+    _qty = _form.addIntegerInput(Message.requestAmount());
+    _choice = _form.addBooleanInput(Message.requestMore());
+    _form.parse();
+    _form.clear();
+    try {
+      _products.put(_productID.value(), _qty.value());
+      while (_choice.value() == true) {
+        _productID = _form.addStringInput(Message.requestProductKey());
+        _qty = _form.addIntegerInput(Message.requestAmount());
+        _choice = _form.addBooleanInput(Message.requestMore());
+        _form.parse();
+        _form.clear();
+        _products.put(_productID.value(), _qty.value());
       }
-    } while (_choice.value().equals("s"));
+      _receiver.registerOrderTransaction(_supplierID.value(), Collections.unmodifiableMap(_products));
+    } catch (UnknownSupplierException e) {
+        throw new UnknownSupplierKeyException(e.getKey());
+    } catch (UnknownProductException e) {
+        throw new UnknownProductKeyException(e.getKey());
+    }  catch (IncorrectSupplierException e) {
+        throw new WrongSupplierException(e.getSupplierKey(), e.getProductKey());
+    } catch (InactiveSupplierException e) {
+        throw new UnauthorizedSupplierException(e.getKey());
+    }
   }
 
 }

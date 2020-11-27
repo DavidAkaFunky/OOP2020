@@ -14,7 +14,7 @@ public class NormalClient extends ClientStatus {
             _client.setScore(_client.getScore() + 10 * (int) s.getTotalPrice());
         if (_client.getScore() > 25000)
             _client.setStatus(new EliteClient(_client));
-        else if (_client.getScore() > 2500)
+        else if (_client.getScore() > 2000)
             _client.setStatus(new SelectionClient(_client));
     }
 

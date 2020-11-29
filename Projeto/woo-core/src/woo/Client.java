@@ -12,6 +12,7 @@ import java.util.Collections;
  */
 
 public class Client implements Serializable, Observer {
+
     /** Client's status. */
     private ClientStatus _status = new NormalClient(this);
 
@@ -30,11 +31,11 @@ public class Client implements Serializable, Observer {
     /** Client's paid sales amount */
     private double _paid = 0;
 
+    /** Client's chosen notification delivery mode */
+    private DeliveryMode _mode;
+
     /** The list of sales associated to this client. */
     private List<Sale> _sales = new ArrayList<Sale>();
-
-    /** The list of notifications associated to this client. */
-    private List<Notification> _notifications = new ArrayList<Notification>();
 
     /**
      * Create client.
@@ -45,11 +46,18 @@ public class Client implements Serializable, Observer {
      *          client name.
      * @param address
      *          client address.
+     * @param mode
+     *          client chosen delivery mode
      */
-    public Client(String id, String name, String address) {
+    public Client(String id, String name, String address, DeliveryMode mode) {
         _id = id;
         _name = name;
         _address = address;
+        _mode = mode;
+    }
+
+    public Client(String id, String name, String address) {
+        this(id, name, address, new DefaultDeliveryMode());
     }
 
     /**
@@ -119,6 +127,15 @@ public class Client implements Serializable, Observer {
     }
 
     /**
+     * Returns the client's chosen delivery mode.
+     * 
+     * @return the client's current delivery mode
+     */
+    public DeliveryMode getDeliveryMode() {
+        return _mode;
+    }
+
+    /**
      * Updates client's status.
      * 
      * @param status
@@ -151,13 +168,13 @@ public class Client implements Serializable, Observer {
     }
 
     /**
-     * Add notification to pending notifications.
+     * Update client using their chosen delivery mode.
      * 
      * @param notification
      *          notification being added.
      */
     public void update(Notification notification) {
-        _notifications.add(notification);
+        _mode.update(notification);
     }
 
     /**
@@ -165,7 +182,10 @@ public class Client implements Serializable, Observer {
      * (called when client is shown and notifications are no longer relevant)
      */
     public void clearNotifications() {
-        _notifications.clear();
+        if (_mode instanceof DefaultDeliveryMode){
+            DefaultDeliveryMode mode = (DefaultDeliveryMode) _mode;
+            mode.clearNotifications();
+        }
     }
 
     /**
@@ -174,7 +194,11 @@ public class Client implements Serializable, Observer {
      * @return a list with the client's pending notifications.
      */
     public List<Notification> getNotifications() {
-        return Collections.unmodifiableList(_notifications);
+        if (_mode instanceof DefaultDeliveryMode) {
+            DefaultDeliveryMode mode = (DefaultDeliveryMode) _mode;
+            return Collections.unmodifiableList(mode.getNotifications());
+        }
+        return null;
     }
 
     /**

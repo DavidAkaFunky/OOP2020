@@ -36,9 +36,6 @@ public class Client implements Serializable, Observer {
     /** The list of notifications associated to this client. */
     private List<Notification> _notifications = new ArrayList<Notification>();
 
-    /** Notification's delivery method. */
-    private NotificationStrategy _strategy;
-
     /**
      * Create client.
      * 

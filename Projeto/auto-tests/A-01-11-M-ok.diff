@@ -1,0 +1,37 @@
+*** auto-tests/A-01-11-M-ok.out	2020-11-29 18:29:14.070000000 +0000
+--- auto-tests/A-01-11-M-ok.outhyp	2020-11-29 18:33:10.260000000 +0000
+***************
+*** 10,16 ****
+  9 - Menu de Consultas
+  10 - Ver Saldo Global
+  0 - Sair
+! Escolha uma opção: Ficheiro a abrir: Menu Principal
+  1 - Abrir
+  2 - Guardar
+  3 - Mostrar Data
+--- 10,17 ----
+  9 - Menu de Consultas
+  10 - Ver Saldo Global
+  0 - Sair
+! Escolha uma opção: Ficheiro a abrir: Abrir: Operação inválida: Problema ao abrir 'app03.dat'.
+! Menu Principal
+  1 - Abrir
+  2 - Guardar
+  3 - Mostrar Data
+***************
+*** 22,28 ****
+  9 - Menu de Consultas
+  10 - Ver Saldo Global
+  0 - Sair
+! Escolha uma opção: Data actual: 10
+  Menu Principal
+  1 - Abrir
+  2 - Guardar
+--- 23,29 ----
+  9 - Menu de Consultas
+  10 - Ver Saldo Global
+  0 - Sair
+! Escolha uma opção: Data actual: 0
+  Menu Principal
+  1 - Abrir
+  2 - Guardar

@@ -1,0 +1,38 @@
+*** auto-tests/A-01-07-M-ok.out	2020-11-29 18:29:14.070000000 +0000
+--- auto-tests/A-01-07-M-ok.outhyp	2020-11-29 18:33:09.870000000 +0000
+***************
+*** 42,48 ****
+  9 - Menu de Consultas
+  10 - Ver Saldo Global
+  0 - Sair
+! Escolha uma opção: Ficheiro sem nome. Guardar ficheiro como: Menu Principal
+  1 - Abrir
+  2 - Guardar
+  3 - Mostrar Data
+--- 42,49 ----
+  9 - Menu de Consultas
+  10 - Ver Saldo Global
+  0 - Sair
+! Escolha uma opção: Ficheiro sem nome. Guardar ficheiro como: Guardar: Operação inválida: Problema ao abrir 'app03.dat'.
+! Menu Principal
+  1 - Abrir
+  2 - Guardar
+  3 - Mostrar Data
+***************
+*** 94,100 ****
+  9 - Menu de Consultas
+  10 - Ver Saldo Global
+  0 - Sair
+! Escolha uma opção: Menu Principal
+  1 - Abrir
+  2 - Guardar
+  3 - Mostrar Data
+--- 95,102 ----
+  9 - Menu de Consultas
+  10 - Ver Saldo Global
+  0 - Sair
+! Escolha uma opção: Guardar: Operação inválida: Problema ao abrir 'app03.dat'.
+! Menu Principal
+  1 - Abrir
+  2 - Guardar
+  3 - Mostrar Data

@@ -1,24 +1,40 @@
 package woo.app.products;
 
-import pt.tecnico.po.ui.Command;  
-import woo.exceptions.DuplicateProductException;
-import woo.exceptions.UnknownServTypeException;
+import pt.tecnico.po.ui.Command;
+import pt.tecnico.po.ui.DialogException;
+import pt.tecnico.po.ui.Input; 
 import woo.app.exceptions.DuplicateProductKeyException;
 import woo.app.exceptions.UnknownServiceTypeException;
+import woo.app.exceptions.UnknownSupplierKeyException;
+import woo.exceptions.DuplicateProductException;
+import woo.exceptions.UnknownServTypeException;
 import woo.exceptions.UnknownSupplierException;
-import woo.app.exceptions.UnknownSupplierKeyException;                                                                                                            import pt.tecnico.po.ui.DialogException;                                                                                                      import pt.tecnico.po.ui.Input;                                                                                                                import woo.Storefront;                                                                                                                        //FIXME import other classes
+import woo.Storefront;
 
 /**
  * Register box.
  */
 public class DoRegisterProductBox extends Command<Storefront> {
+  /** Input field. */
+  Input<String> _key;
 
-  private Input<String> _key;
-  private Input<Integer> _price;
-  private Input<Integer> _cValue;
-  private Input<String> _sID;
-  private Input<String> _sType;
+  /** Input field. */
+  Input<Integer> _price;
 
+  /** Input field. */
+  Input<Integer> _cValue;
+
+  /** Input field. */
+  Input<String> _sID;
+
+  /** Input field. */
+  Input<String> _sType;
+
+  /**
+   * Constructor.
+   * 
+   * @param receiver
+   */
   public DoRegisterProductBox(Storefront receiver) {
     super(Label.REGISTER_BOX, receiver);
     _key = _form.addStringInput(Message.requestProductKey());
@@ -28,10 +44,11 @@ public class DoRegisterProductBox extends Command<Storefront> {
     _sType = _form.addStringInput(Message.requestServiceType());
   }
 
+  /** @see pt.tecnico.po.ui.Command#execute() */
   @Override
   public final void execute() throws DialogException {
-    _form.parse();
     try {
+      _form.parse();
       _receiver.registerBox(_key.value(), _price.value(), _cValue.value(), 
                              _sID.value(), _sType.value(), 0);
     } catch (DuplicateProductException e) {

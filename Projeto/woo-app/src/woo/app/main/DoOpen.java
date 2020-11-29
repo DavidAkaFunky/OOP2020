@@ -6,18 +6,22 @@ import java.io.IOException;
 import pt.tecnico.po.ui.Command;
 import pt.tecnico.po.ui.DialogException;
 import pt.tecnico.po.ui.Input;
-import woo.Storefront;
 import woo.app.exceptions.FileOpenFailedException;
 import woo.exceptions.UnavailableFileException;
+import woo.Storefront;
 
 /**
  * Open existing saved state.
  */
 public class DoOpen extends Command<Storefront> {
-
+  /** Input field. */
   private Input<String> _filename;
 
-  /** @param receiver */
+  /**
+   * Constructor.
+   * 
+   * @param receiver
+   */
   public DoOpen(Storefront receiver) {
     super(Label.OPEN, receiver);
     _filename = _form.addStringInput(Message.openFile());
@@ -36,6 +40,7 @@ public class DoOpen extends Command<Storefront> {
     } catch (IOException e) {
       throw new FileOpenFailedException(_filename.value());
     }
+
   }
 
 }

@@ -2,19 +2,34 @@ package woo;
 
 import woo.exceptions.UnknownServTypeException;
 
-public class Box extends Product {
+/**
+ * Class for box products. These products have service type besides
+ * all default Product attributes.
+ */
 
+public class Box extends Product {
+    /** Box service type. */
     private String _serviceType;
+
+    /** Different box service types available. */
     private enum ServiceTypes {NORMAL, AIR, EXPRESS, PERSONAL};
 
     /**
-     * @param supplier represents the new box's supplier
-     * @param id represents the new box's ID
-     * @param price represents the new box's price
-     * @param criticalLevel represents the new box's critical level
-     * @param serviceType represents the new box's service type
-     * @param amount represents the amount of units of the new box in stock
-     * @throws UnknownServTypeException if the given service type is not in the list of valid ones
+     * Create box product.
+     * 
+     * @param supplier
+     *          box supplier.
+     * @param id
+     *          box product ID.
+     * @param price
+     *          box price.
+     * @param criticalLevel 
+     *          box critical stock level.
+     * @param serviceType
+     *          box service type.
+     * @param amount 
+     *          box qty.
+     * @throws UnknownServTypeException
      */
     public Box(Supplier supplier, String id, int price, int criticalLevel, String serviceType, int amount) throws UnknownServTypeException {
         super(supplier, id, price, criticalLevel, amount);
@@ -26,17 +41,21 @@ public class Box extends Product {
     }
 
     /**
-     * @return the box's service type
+     * @return the box's service type.
      */
     public String getServiceType(){
         return _serviceType;
     }
 
+    /**
+     * @return the box's payment period variable.
+     */
     public int getN() { return 5; }
 
     /**
-     * @param serviceType represents the given service type
-     * @return if the service type is valid
+     * @param serviceType 
+     *          service type being checked.
+     * @return true if given service type is valid; false, otherwise.
      */
     public boolean validServiceType(String serviceType) {
         for (ServiceTypes s : ServiceTypes.values()) {
@@ -47,10 +66,11 @@ public class Box extends Product {
         return false;
     }
 
+    /**
+	 * @see java.lang.Object#toString()
+	 */
     @Override
     public String toString() {
-        return "BOX|" + super.getID() + "|" + super.getSupplier().getID() 
-        + "|" + super.getPrice() + "|" + super.getCriticalValue() + "|" + super.getStock() + "|" +
-        getServiceType();
+        return "BOX" + super.toString() + getServiceType();
     }
 }

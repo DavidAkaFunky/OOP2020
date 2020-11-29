@@ -10,11 +10,16 @@ import woo.Storefront;
  * Show all products.
  */
 public class DoShowAllProducts extends Command<Storefront> {
-
+  /**
+   * Constructor.
+   * 
+   * @param receiver
+   */
   public DoShowAllProducts(Storefront receiver) {
     super(Label.SHOW_ALL_PRODUCTS, receiver);
   }
 
+  /** @see pt.tecnico.po.ui.Command#execute() */
   @Override
   public final void execute() throws DialogException {
     for (Product p: _receiver.getProducts()) {

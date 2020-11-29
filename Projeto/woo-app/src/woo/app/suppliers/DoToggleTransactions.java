@@ -8,22 +8,25 @@ import woo.app.exceptions.UnknownSupplierKeyException;
  * Enable/disable supplier transactions.
  */
 public class DoToggleTransactions extends Command<Storefront> {
-
+  /** Input field. */
   private Input<String> _key;
 
+  /**
+   * Constructor.
+   * 
+   * @param receiver
+   */
   public DoToggleTransactions(Storefront receiver) {
     super(Label.TOGGLE_TRANSACTIONS, receiver);
     _key = _form.addStringInput(Message.requestSupplierKey());
   }
 
+  /** @see pt.tecnico.po.ui.Command#execute() */
   @Override
   public void execute() throws DialogException {
-    _form.parse();
-    String key = _key.value();
     try {
-      String state = _receiver.toggleSupplierTransactions(key) ? Message.transactionsOn(key) : Message.transactionsOff(key);
-      _display.addLine(state);
-      _display.display();
+      _form.parse();
+      _display.popup(_receiver.toggleSupplierTransactions(_key.value()) ? Message.transactionsOn(_key.value()) : Message.transactionsOff(_key.value()));
     } catch (UnknownSupplierException e) {
       throw new UnknownSupplierKeyException(e.getKey());
     }

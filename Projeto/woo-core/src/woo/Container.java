@@ -3,22 +3,37 @@ package woo;
 import woo.exceptions.UnknownServTypeException;
 import woo.exceptions.UnknownServLevelException;
 
+/**
+ * Class for container products. These products have service level besides
+ * service type and all default Product attributes.
+ */
+
 public class Container extends Box {
-    
+    /** Container service level. */
     private String _serviceLevel;
 
+    /** Different container service levels available. */
     private enum ServiceLevels {B4, C4, C5, DL};
 
     /**
-     * @param supplier represents the new container's supplier
-     * @param id represents the new container's ID
-     * @param price represents the new container's price
-     * @param criticalLevel represents the new container's critical level
-     * @param amount represents the amount of units of the new container in stock
-     * @param serviceType represents the new container's service type
-     * @param serviceLevel represents the new container's service level
-     * @throws UnknownServTypeException if the given service type is not in the list of valid ones
-     * @throws UnknownServLevelException if the given service level is not in the list of valid ones
+     * Create container product. 
+     * 
+     * @param supplier
+     *          container supplier.
+     * @param id 
+     *          container product ID.
+     * @param price 
+     *          container price.
+     * @param criticalLevel 
+     *          container critical stock level.
+     * @param amount 
+     *          container qty.
+     * @param serviceType 
+     *          container service type.
+     * @param serviceLevel 
+     *          container service level.
+     * @throws UnknownServTypeException
+     * @throws UnknownServLevelException
      */
     public Container(Supplier supplier, String id, int price, int criticalLevel, int amount, String serviceType, String serviceLevel) throws UnknownServTypeException, UnknownServLevelException {
         super(supplier, id, price, criticalLevel, serviceType, amount);
@@ -30,33 +45,36 @@ public class Container extends Box {
     }
 
     /**
-     * @return the container's service level
+     * @return the container's service level.
      */
     public String getServiceLevel(){
         return _serviceLevel;
     }
 
+    /**
+     * @return the container's payment period variable.
+     */
     public int getN() { return 8; }
 
     /**
-     * @param level represents the given service level
-     * @return if the service level is valid
+     * @param level
+     *          service level being checked.
+     * @return true if given service level is valid; false, otherwise.
      */
-    public boolean validServiceLevel(String level) {
+    public boolean validServiceLevel(String serviceLevel) {
         for (ServiceLevels s : ServiceLevels.values()) {
-            if (s.name().equals(level)) {
+            if (s.name().equals(serviceLevel)) {
                 return true;
             }
         }
         return false;
     }
 
+    /**
+	 * @see java.lang.Object#toString()
+	 */
     @Override
-
-
     public String toString() {
-        return "CONTAINER|" + super.getID() + "|" + super.getSupplier().getID() 
-        + "|" + super.getPrice() + "|" + super.getCriticalValue() + "|" + super.getStock() + "|" +
-        super.getServiceType() + "|" + getServiceLevel();
+        return super.toString().replace("BOX", "CONTAINER") + "|" + getServiceLevel();
     }
 }

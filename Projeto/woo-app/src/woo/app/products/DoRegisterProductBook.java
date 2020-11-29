@@ -10,15 +10,32 @@ import woo.app.exceptions.UnknownSupplierKeyException;
  * Register book.
  */
 public class DoRegisterProductBook extends Command<Storefront> {
-
+  /** Input field. */
   private Input<String> _key;
+
+  /** Input field. */
   private Input<String> _title;
+
+  /** Input field. */
   private Input<String> _author;
+
+  /** Input field. */
   private Input<String> _ISBN;
+
+  /** Input field. */
   private Input<Integer> _price;
+
+  /** Input field. */
   private Input<Integer> _cValue;
+
+  /** Input field. */
   private Input<String> _sID;
 
+  /**
+   * Constructor.
+   * 
+   * @param receiver
+   */
   public DoRegisterProductBook(Storefront receiver) {
     super(Label.REGISTER_BOOK, receiver);
     _key = _form.addStringInput(Message.requestProductKey());
@@ -30,10 +47,11 @@ public class DoRegisterProductBook extends Command<Storefront> {
     _sID = _form.addStringInput(Message.requestSupplierKey());
   }
 
+  /** @see pt.tecnico.po.ui.Command#execute() */
   @Override
   public final void execute() throws DialogException {
-    _form.parse();
     try {
+      _form.parse();
       _receiver.registerBook(_key.value(), _title.value(), _author.value(), 
                              _ISBN.value(), _price.value(), _cValue.value(), 
                              _sID.value(), 0);

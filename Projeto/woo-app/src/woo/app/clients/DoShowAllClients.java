@@ -1,7 +1,5 @@
 package woo.app.clients;
 
-import java.util.Map.Entry;
-
 import pt.tecnico.po.ui.Command;
 import pt.tecnico.po.ui.DialogException;
 import pt.tecnico.po.ui.Input;
@@ -12,11 +10,16 @@ import woo.Storefront;
  * Show all clients.
  */
 public class DoShowAllClients extends Command<Storefront> {
-
+  /**
+   * Constructor.
+   * 
+   * @param storefront
+   */
   public DoShowAllClients(Storefront storefront) {
     super(Label.SHOW_ALL_CLIENTS, storefront);
   }
 
+  /** @see pt.tecnico.po.ui.Command#execute() */
   @Override
   public void execute() throws DialogException {
     for (Client c: _receiver.getClients()) {

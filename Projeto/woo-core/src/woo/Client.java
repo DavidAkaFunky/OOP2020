@@ -182,10 +182,7 @@ public class Client implements Serializable, Observer {
      * (called when client is shown and notifications are no longer relevant)
      */
     public void clearNotifications() {
-        if (_mode instanceof DefaultDeliveryMode){
-            DefaultDeliveryMode mode = (DefaultDeliveryMode) _mode;
-            mode.clearNotifications();
-        }
+        _mode.clearNotifications();
     }
 
     /**
@@ -194,11 +191,7 @@ public class Client implements Serializable, Observer {
      * @return a list with the client's pending notifications.
      */
     public List<Notification> getNotifications() {
-        if (_mode instanceof DefaultDeliveryMode) {
-            DefaultDeliveryMode mode = (DefaultDeliveryMode) _mode;
-            return Collections.unmodifiableList(mode.getNotifications());
-        }
-        return null;
+        return _mode.getNotifications();
     }
 
     /**

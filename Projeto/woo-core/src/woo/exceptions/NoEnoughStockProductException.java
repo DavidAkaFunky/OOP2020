@@ -24,7 +24,18 @@ public class NoEnoughStockProductException extends Exception {
     _available = available;
     }
 
+    /**
+    * @return the product key.
+    */
     public String getKey() { return _key; }
+
+    /**
+    * @return the amount of requested product.
+    */
     public int getRequested() { return _requested; }
+
+    /**
+    * @return the amount of available product.
+    */
     public int getAvailable() { return _available; }
 }

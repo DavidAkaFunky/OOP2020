@@ -20,6 +20,9 @@ public abstract class Transaction implements Serializable {
     /** Transaction's paid status (true if paid; false, otherwise) */
     private boolean _paid = false;
 
+    /** Store's date. */
+    private int _storeDate;
+
     /**
      * Create new Transaction.
      * 
@@ -33,7 +36,7 @@ public abstract class Transaction implements Serializable {
     /**
      * @return the transaction's unique ID
      */
-    public int getID(){
+    public int getID() {
         return _id;
     }
 
@@ -69,6 +72,23 @@ public abstract class Transaction implements Serializable {
      */
     public void isPaid() {
         _paid = true;
+    }
+
+    /**
+     * Updates transaction with current store date.
+     * @param date
+     *          store date.
+     */
+    public void setCurrentStoreDate(int date) {
+        _storeDate = date;
+    }
+
+    /**
+     * Returns last saved store date on transcation.
+     * @return transaction's last store date record.
+     */
+    public int getCurrentStoreDate() {
+        return _storeDate;
     }
 
     /**

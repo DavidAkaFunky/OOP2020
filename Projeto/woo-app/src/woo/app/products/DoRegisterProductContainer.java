@@ -18,22 +18,22 @@ import woo.Storefront;
  */
 public class DoRegisterProductContainer extends Command<Storefront> {
   /** Input field. */
-  private Input<String> _key;
+  private Input<String> _containerProductKey;
 
   /** Input field. */
-  private Input<Integer> _price;
+  private Input<Integer> _containerPrice;
 
   /** Input field. */
-  private Input<Integer> _cValue;
+  private Input<Integer> _containerCriticalSLevel;
 
   /** Input field. */
-  private Input<String> _sID;
+  private Input<String> _supplierKey;
 
   /** Input field. */
-  private Input<String> _sType;
+  private Input<String> _containerServiceType;
 
   /** Input field. */
-  private Input<String> _sLevel;
+  private Input<String> _containerServiceLevel;
 
   /**
    * Constructor.
@@ -42,12 +42,12 @@ public class DoRegisterProductContainer extends Command<Storefront> {
    */
   public DoRegisterProductContainer(Storefront receiver) {
     super(Label.REGISTER_CONTAINER, receiver);
-    _key = _form.addStringInput(Message.requestProductKey());
-    _price = _form.addIntegerInput(Message.requestPrice());
-    _cValue = _form.addIntegerInput(Message.requestStockCriticalValue());
-    _sID = _form.addStringInput(Message.requestSupplierKey());
-    _sType = _form.addStringInput(Message.requestServiceType());
-    _sLevel = _form.addStringInput(Message.requestServiceLevel());
+    _containerProductKey = _form.addStringInput(Message.requestProductKey());
+    _containerPrice = _form.addIntegerInput(Message.requestPrice());
+    _containerCriticalSLevel = _form.addIntegerInput(Message.requestStockCriticalValue());
+    _supplierKey = _form.addStringInput(Message.requestSupplierKey());
+    _containerServiceType = _form.addStringInput(Message.requestServiceType());
+    _containerServiceLevel = _form.addStringInput(Message.requestServiceLevel());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
@@ -55,8 +55,8 @@ public class DoRegisterProductContainer extends Command<Storefront> {
   public final void execute() throws DialogException {
     try {
       _form.parse();
-      _receiver.registerContainer(_key.value(), _price.value(), _cValue.value(), 
-                             _sID.value(), _sType.value(), _sLevel.value(), 0);
+      _receiver.registerContainer(_containerProductKey.value(), _containerPrice.value(), _containerCriticalSLevel.value(), 
+                                  _supplierKey.value(), _containerServiceType.value(), _containerServiceLevel.value(), 0);
     } catch (DuplicateProductException e) {
       throw new DuplicateProductKeyException(e.getKey());
     } catch (UnknownSupplierException e) {

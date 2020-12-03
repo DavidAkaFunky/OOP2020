@@ -1,7 +1,7 @@
-public class NormalMode implements Mode {
+public class NormalMode extends Mode {
 
     public void on(){
-
+        System.out.println(toString() + )
     }
     public void off();
     public void sound();

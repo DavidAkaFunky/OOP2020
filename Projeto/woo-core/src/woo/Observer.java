@@ -10,8 +10,12 @@ public interface Observer {
     /**
      * Adds a notification to array of Client notifications.
      * 
-     * @param notification
-     *          notification being added.
+     * @param event
+     *          notification event.
+     * @param pID
+     *          product ID.
+     * @param price
+     *          product price.
      */
-    public void update(Notification notification);
+    public void update(String event, String pID, int price);
 }

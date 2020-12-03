@@ -172,8 +172,7 @@ public abstract class Product implements Serializable, Observable {
     public void notifyObservers(String event) {
         for (int i = 0; i < observers.size(); ++i) {
             Observer observer = (Observer) observers.get(i);
-            Notification notification = new Notification(event, _id, _price);
-            observer.update(notification);
+            observer.update(event, _id, _price);
         }
     }
 

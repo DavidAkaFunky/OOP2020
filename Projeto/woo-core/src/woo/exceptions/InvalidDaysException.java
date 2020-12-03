@@ -15,6 +15,9 @@ public class InvalidDaysException extends Exception {
     _date = date;
   }
 
+  /**
+   * @return the invalid date.
+   */
   public int getDate() {
       return _date;
   }

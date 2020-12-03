@@ -12,7 +12,7 @@ import woo.Storefront;
  */
 public class DoAdvanceDate extends Command<Storefront> {
   /** Input field. */
-  private Input<Integer> _days;
+  private Input<Integer> _daysToAdvance;
 
   /**
    * Constructor.
@@ -21,7 +21,7 @@ public class DoAdvanceDate extends Command<Storefront> {
    */
   public DoAdvanceDate(Storefront receiver) {
     super(Label.ADVANCE_DATE, receiver);
-    _days = _form.addIntegerInput(Message.requestDaysToAdvance());
+    _daysToAdvance = _form.addIntegerInput(Message.requestDaysToAdvance());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
@@ -29,7 +29,7 @@ public class DoAdvanceDate extends Command<Storefront> {
   public final void execute() throws DialogException {
     try {
       _form.parse();
-      _receiver.advanceDate(_days.value());
+      _receiver.advanceDate(_daysToAdvance.value());
     } catch (InvalidDaysException e) {
       throw new InvalidDateException(e.getDate());
     }

@@ -14,6 +14,9 @@ public class UnknownClientException extends Exception {
     _key = key;
   }
 
+  /**
+   * @return the invalid client key.
+   */
   public String getKey() {
     return _key;
   }

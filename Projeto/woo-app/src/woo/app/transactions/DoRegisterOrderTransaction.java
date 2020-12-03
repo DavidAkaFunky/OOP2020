@@ -1,7 +1,8 @@
 package woo.app.transactions;
 
 import java.util.Collections;
-import java.util.TreeMap;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 import pt.tecnico.po.ui.Command;
 import pt.tecnico.po.ui.DialogException;
@@ -14,7 +15,6 @@ import woo.exceptions.InactiveSupplierException;
 import woo.exceptions.IncorrectSupplierException;
 import woo.exceptions.UnknownProductException;
 import woo.exceptions.UnknownSupplierException;
-import woo.Order;
 import woo.Storefront;
 
 /**
@@ -22,19 +22,20 @@ import woo.Storefront;
  */
 public class DoRegisterOrderTransaction extends Command<Storefront> {
   /** Input field. */
-  private Input<String> _supplierID;
+  private Input<String> _supplierKey;
 
   /** Input field. */
-  private Input<String> _productID;
+  private Input<String> _productKey;
 
   /** Input field. */
-  private Input<Integer> _qty;
+  private Input<Integer> _productQty;
 
   /** Input field. */
-  private Input<Boolean> _choice;
+  private Input<Boolean> _moreProducts;
 
-  /** TreeMap structure that contains product ID's and its quantities to be added to order. */
-  private TreeMap<String, Integer> _products = new TreeMap<String, Integer>();
+  /** LinkedHashMap structure that contains product ID's and its quantities to be added to order.
+   * (Keys are ordered by their insertion order). */
+  private Map<String, Integer> _products = new LinkedHashMap<String, Integer>();
 
   /**
    * Constructor.
@@ -49,23 +50,29 @@ public class DoRegisterOrderTransaction extends Command<Storefront> {
   @Override
   public final void execute() throws DialogException {
     _products.clear(); // Clear structure after each order
-    _supplierID = _form.addStringInput(Message.requestSupplierKey());
-    _productID = _form.addStringInput(Message.requestProductKey());
-    _qty = _form.addIntegerInput(Message.requestAmount());
-    _choice = _form.addBooleanInput(Message.requestMore());
+    _supplierKey = _form.addStringInput(Message.requestSupplierKey());
+    _productKey = _form.addStringInput(Message.requestProductKey());
+    _productQty = _form.addIntegerInput(Message.requestAmount());
+    _moreProducts = _form.addBooleanInput(Message.requestMore());
     try {
       _form.parse();
       _form.clear();
-      _products.put(_productID.value(), _qty.value());
-      while (_choice.value() == true) {
-        _productID = _form.addStringInput(Message.requestProductKey());
-        _qty = _form.addIntegerInput(Message.requestAmount());
-        _choice = _form.addBooleanInput(Message.requestMore());
+      _products.put(_productKey.value(), _productQty.value());
+      while (_moreProducts.value() == true) {
+        _productKey = _form.addStringInput(Message.requestProductKey());
+        _productQty = _form.addIntegerInput(Message.requestAmount());
+        _moreProducts = _form.addBooleanInput(Message.requestMore());
         _form.parse();
         _form.clear();
-        _products.put(_productID.value(), _qty.value());
+        // Add stock or create product
+        var productQty = _products.get(_productKey.value());
+        if (productQty == null) {
+          _products.put(_productKey.value(), _productQty.value());
+        } else {
+          _products.put(_productKey.value(), productQty + _productQty.value());
+        }
       }
-      _receiver.registerOrderTransaction(_supplierID.value(), Collections.unmodifiableMap(_products));
+      _receiver.registerOrderTransaction(_supplierKey.value(), Collections.unmodifiableMap(_products));
     } catch (UnknownSupplierException e) {
         throw new UnknownSupplierKeyException(e.getKey());
     } catch (UnknownProductException e) {

@@ -18,7 +18,6 @@ import java.util.List;
  * Class Store implements a store.
  */
 public class Store implements Serializable {
-
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202009192006L;
 
@@ -40,9 +39,9 @@ public class Store implements Serializable {
   /** Transaction ID. */
   private int _transactionID = 0;
 
-  /** Company balance (starts at 0) */
-  private float availableBalance = 0;
-  private float accountingBalance = 0;
+  /** Company balance */
+  private float _availableBalance;
+  private float _accountingBalance;
 
   /* ------------------------------------- IMPORT FILE ------------------------------------- */
 
@@ -141,13 +140,14 @@ public class Store implements Serializable {
    * @return store available balance.
    */
   public int getAvailableBalance() {
-    availableBalance = 0;
+    _availableBalance = 0;
     for (Transaction t : _transactions.values()) {
       if (t.getPaymentStatus() == true) {
-        availableBalance += t.getTotalPrice();
+        t.setCurrentStoreDate(_date);
+        _availableBalance += t.getTotalPrice();
       }
     }
-    return Math.round(availableBalance);
+    return Math.round(_availableBalance);
   }
 
   /**
@@ -156,11 +156,12 @@ public class Store implements Serializable {
    * @return store accounting balance.
    */
   public int getAccountingBalance() {
-    accountingBalance = 0;
+    _accountingBalance = 0;
     for (Transaction t : _transactions.values()) {
-      accountingBalance += t.getTotalPrice();
+      t.setCurrentStoreDate(_date);
+      _accountingBalance += t.getTotalPrice();
     }
-    return Math.round(accountingBalance);
+    return Math.round(_accountingBalance);
   }
 
   /* ---------------------------------------- PRODUCTS ---------------------------------------- */
@@ -359,20 +360,22 @@ public class Store implements Serializable {
    * @throws UnknownClientException
    * @throws UnknownProductException
    */
-  public void changeClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
-    Product product = _products.get(pid);
-    if (product == null) {
-      throw new UnknownProductException(pid);
-    }
-    Client client = _clients.get(cid);
+  public boolean changeClientProductNotifications(String cID, String pID) throws UnknownClientException, UnknownProductException{
+    Client client = _clients.get(cID);
     if (client == null) {
-      throw new UnknownClientException(cid);
+      throw new UnknownClientException(cID);
+    }
+    Product product = _products.get(pID);
+    if (product == null) {
+      throw new UnknownProductException(pID);
     }
     Observer o = (Observer) client;
     if (product.getObservers().contains(o)) {
       product.removeObserver(o);
+      return false;
     } else {
       product.registerObserver(o);
+      return true;
     }
   }
 
@@ -389,7 +392,7 @@ public class Store implements Serializable {
     if (client == null) {
       throw new UnknownClientException(id);
     }
-    return _clients.get(id).getClientSales();
+    return client.getClientSales();
   }
 
   /* -------------------------------------- SUPPLIERS --------------------------------------- */
@@ -469,6 +472,7 @@ public class Store implements Serializable {
     if (transaction == null) {
       throw new UnknownTransactionException(id);
     }
+    transaction.setCurrentStoreDate(_date);
     return transaction;
   }
 
@@ -501,7 +505,8 @@ public class Store implements Serializable {
       throw new NoEnoughStockProductException(pID, qty, stock);
     }
     product.removeStock(qty);
-    Sale sale = new Sale(_transactionID, client, product, limDate, qty, this);
+    Sale sale = new Sale(_transactionID, client, product, limDate, qty);
+    sale.setCurrentStoreDate(_date);
     _transactions.put(_transactionID++, sale);
     client.addSale(sale);
   }
@@ -527,10 +532,10 @@ public class Store implements Serializable {
     if (supplier.isActive() == false) {
       throw new InactiveSupplierException(supID);
     }
-    for (Map.Entry<String,Integer> productID : products.entrySet()) {
-      Product product = _products.get(productID.getKey());
+    for (String productID : products.keySet()) {
+      Product product = _products.get(productID);
       if (product == null) {
-        throw new UnknownProductException(productID.getKey());
+        throw new UnknownProductException(productID);
       }
       if (product.getSupplier() != supplier) {
         throw new IncorrectSupplierException(supID, product.getID());
@@ -567,11 +572,23 @@ public class Store implements Serializable {
     if (transaction.getPaymentStatus() == false) {
       Sale sale = (Sale) transaction;
       Client client = sale.getClient();
+      sale.setCurrentStoreDate(_date);
       client.pay(sale);
     }
   }
 
   /* --------------------------------------- LOOKUPS ---------------------------------------- */
+
+  /**
+   * Returns all store products whose price is cheapear than given price as an unmodifiable list.
+   * 
+   * @param price
+   *          reference price.
+   * @return a list with all products whose price is under given price.
+   */
+  public List<Product> lookupProductsUnderPrice(int price) {
+    return Collections.unmodifiableList(_products.values().stream().filter(p->p.getPrice() < price).collect(Collectors.toList()));
+  }
 
   /**
    * Returns a given client's paid sales as an unmodifiable list.
@@ -587,17 +604,6 @@ public class Store implements Serializable {
       throw new UnknownClientException(cID);
     }
     return Collections.unmodifiableList(client.getClientSales().stream().filter(s->s.getPaymentStatus()).collect(Collectors.toList()));
-  }
-
-  /**
-   * Returns all store products whose price is cheapear than given price as an unmodifiable list.
-   * 
-   * @param price
-   *          reference price.
-   * @return a list with all products whose price is under given price.
-   */
-  public List<Product> lookupProductsUnderPrice(int price) {
-    return Collections.unmodifiableList(_products.values().stream().filter(p->p.getPrice() < price).collect(Collectors.toList()));
   }
 
 }

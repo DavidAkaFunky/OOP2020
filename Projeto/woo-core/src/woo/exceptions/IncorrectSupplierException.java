@@ -19,10 +19,16 @@ public class IncorrectSupplierException extends Exception {
     _pkey = pkey;
   }
 
+  /**
+   * @return the incorrent supplier key.
+   */
   public String getSupplierKey() {
     return _skey;
   }
 
+  /**
+   * @return the product key whose is supplier isn't given supplier key.
+   */
   public String getProductKey() {
     return _pkey;
   }

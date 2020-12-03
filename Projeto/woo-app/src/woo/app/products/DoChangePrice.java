@@ -12,10 +12,10 @@ import woo.Storefront;
  */
 public class DoChangePrice extends Command<Storefront> {
   /** Input field. */
-  private Input<String> _key;
+  private Input<String> _productKey;
 
   /** Input field. */
-  private Input<Integer> _newPrice;
+  private Input<Integer> _productNewPrice;
   
   /**
    * Constructor.
@@ -24,8 +24,8 @@ public class DoChangePrice extends Command<Storefront> {
    */
   public DoChangePrice(Storefront receiver) {
     super(Label.CHANGE_PRICE, receiver);
-    _key = _form.addStringInput(Message.requestProductKey());
-    _newPrice = _form.addIntegerInput(Message.requestPrice());
+    _productKey = _form.addStringInput(Message.requestProductKey());
+    _productNewPrice = _form.addIntegerInput(Message.requestPrice());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
@@ -33,7 +33,7 @@ public class DoChangePrice extends Command<Storefront> {
   public final void execute() throws DialogException {
     try {
       _form.parse();
-      _receiver.changeProductPrice(_key.value(), _newPrice.value());
+      _receiver.changeProductPrice(_productKey.value(), _productNewPrice.value());
     } catch (UnknownProductException e) {
       throw new UnknownProductKeyException(e.getKey());
     }

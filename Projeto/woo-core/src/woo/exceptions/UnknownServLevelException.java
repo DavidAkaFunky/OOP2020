@@ -13,5 +13,8 @@ public class UnknownServLevelException extends Exception {
     _level = level;
   }
 
+  /**
+   * @return the invalid product service level.
+   */
   public String getLevel() { return _level; }
 }

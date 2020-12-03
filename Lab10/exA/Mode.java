@@ -1,4 +1,4 @@
-public interface Mode {
+public abstract class Mode {
 
     private Machine _m;
 

@@ -18,6 +18,8 @@ public class Notification implements Serializable {
     /** Notification's price. */
     private int _price;
 
+    // Might have a String/Delivery Mode attribute.
+
     /**
      * Constructor.
      * 
@@ -49,12 +51,11 @@ public class Notification implements Serializable {
      */
     public int getPrice() { return _price; }
 
-
     /**
 	 * @see java.lang.Object#toString()
 	 */
     @Override
     public String toString() {
-        return getEvent() + "|" + getPID() + "|" + getPrice();
+        return _event + "|" + _productID + "|" + _price;
     }
 }

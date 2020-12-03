@@ -14,6 +14,9 @@ public class DuplicateSupplierException extends Exception {
     _key = key;
   }
 
+  /**
+   * @return the invalid supplier key.
+   */
   public String getKey() {
     return _key;
   }

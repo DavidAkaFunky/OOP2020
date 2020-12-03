@@ -5,7 +5,6 @@ import pt.tecnico.po.ui.DialogException;
 import pt.tecnico.po.ui.Input;
 import woo.app.exceptions.UnknownSupplierKeyException;
 import woo.exceptions.UnknownSupplierException;
-import woo.Transaction;
 import woo.Storefront;
 
 /**
@@ -13,7 +12,7 @@ import woo.Storefront;
  */
 public class DoShowSupplierTransactions extends Command<Storefront> {
   /** Input field. */
-  private Input<String> _key;
+  private Input<String> _supplierKey;
 
   /**
    * Constructor.
@@ -22,7 +21,7 @@ public class DoShowSupplierTransactions extends Command<Storefront> {
    */
   public DoShowSupplierTransactions(Storefront receiver) {
     super(Label.SHOW_SUPPLIER_TRANSACTIONS, receiver);
-    _key = _form.addStringInput(Message.requestSupplierKey());
+    _supplierKey = _form.addStringInput(Message.requestSupplierKey());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
@@ -30,8 +29,8 @@ public class DoShowSupplierTransactions extends Command<Storefront> {
   public void execute() throws DialogException {
     try {
       _form.parse();
-      for (Transaction n: _receiver.getSupplierTransactions(_key.value())) {
-        _display.addLine(n.toString());
+      for (var transaction: _receiver.getSupplierTransactions(_supplierKey.value())) {
+        _display.addLine(transaction.toString());
       }
       _display.display();
     } catch(UnknownSupplierException e) {

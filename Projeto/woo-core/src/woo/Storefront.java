@@ -75,6 +75,7 @@ public class Storefront {
     _store = (Store) in.readObject();
     in.close();
     _filename = filename;
+    _save = true;
   }
 
   /**
@@ -303,9 +304,9 @@ public class Storefront {
    * @throws UnknownClientException
    * @throws UnknownProductException
    */
-  public void changeClientProductNotifications(String pid, String cid) throws UnknownClientException, UnknownProductException{
+  public boolean changeClientProductNotifications(String cID, String pID) throws UnknownClientException, UnknownProductException{
     _save = true;
-    _store.changeClientProductNotifications(pid, cid);
+    return _store.changeClientProductNotifications(cID, pID);
   }
   
   /**

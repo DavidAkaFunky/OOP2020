@@ -1,9 +1,7 @@
 package woo.app.lookups;
 
 import pt.tecnico.po.ui.Command;
-import pt.tecnico.po.ui.DialogException;
 import pt.tecnico.po.ui.Input;
-import woo.Product;
 import woo.Storefront;
 
 /**
@@ -25,10 +23,10 @@ public class DoLookupProductsUnderTopPrice extends Command<Storefront> {
 
   /** @see pt.tecnico.po.ui.Command#execute() */
   @Override
-  public void execute() throws DialogException {
+  public void execute() {
     _form.parse();
-    for (Product p : _receiver.lookupProductsUnderPrice(_topPrice.value())) {
-      _display.addLine(p.toString());
+    for (var productUnderTopPrice : _receiver.lookupProductsUnderPrice(_topPrice.value())) {
+      _display.addLine(productUnderTopPrice.toString());
     }
     _display.display();
   }

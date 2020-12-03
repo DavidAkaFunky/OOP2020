@@ -14,10 +14,10 @@ import woo.Storefront;
  */
 public class DoToggleProductNotifications extends Command<Storefront> {
   /** Input field. */
-  private Input<String> _pID;
-  
+  private Input<String> _clientKey;
+
   /** Input field. */
-  private Input<String> _cID;
+  private Input<String> _productKey;
 
   /**
    * Constructor.
@@ -26,8 +26,8 @@ public class DoToggleProductNotifications extends Command<Storefront> {
    */
   public DoToggleProductNotifications(Storefront storefront) {
     super(Label.TOGGLE_PRODUCT_NOTIFICATIONS, storefront);
-    _pID = _form.addStringInput(Message.requestProductKey());
-    _cID = _form.addStringInput(Message.requestClientKey());
+    _clientKey = _form.addStringInput(Message.requestClientKey());
+    _productKey = _form.addStringInput(Message.requestProductKey());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
@@ -35,7 +35,8 @@ public class DoToggleProductNotifications extends Command<Storefront> {
   public void execute() throws DialogException {
     try {
       _form.parse();
-      _receiver.changeClientProductNotifications(_pID.value(), _cID.value());
+      _display.popup(_receiver.changeClientProductNotifications(_clientKey.value(), _productKey.value()) == true ? 
+                     Message.notificationsOn(_clientKey.value(), _productKey.value()) : Message.notificationsOff(_clientKey.value(), _productKey.value()));
     } catch (UnknownProductException e) {
       throw new UnknownProductKeyException(e.getKey());
     } catch (UnknownClientException e) {

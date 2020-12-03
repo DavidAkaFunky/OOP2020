@@ -8,9 +8,6 @@ public class Sale extends Transaction{
     /** Client who made the Store sale. */
     private Client _client;
 
-    /** Store where the Sale was made. */
-    private Store _store;
-
     /** Product sold to Client. */
     private Product _product;
 
@@ -37,13 +34,12 @@ public class Sale extends Transaction{
      * @param amount
      *          qty of product bought.
      */
-    public Sale(int id, Client client, Product product, int limitDate, int amount, Store store) {
+    public Sale(int id, Client client, Product product, int limitDate, int amount) {
         super(id);
         _client = client;
         _product = product; 
         _limitDate = limitDate;
         _amount = amount;
-        _store = store;
     }
 
     /**
@@ -61,7 +57,7 @@ public class Sale extends Transaction{
      */
     @Override
     public double getTotalPrice(){
-        if (getPaymentStatus()) { return _paidPrice; }
+        if (getPaymentStatus() == true) { return _paidPrice; }
         int N = _product.getN();
         int paymentGap = getLimitDateGap(); 
         if (paymentGap >= 0) {
@@ -114,7 +110,7 @@ public class Sale extends Transaction{
      * @return >= 0 if paid on time ; < 0 fines may be applied.
      */
     public int getLimitDateGap() {
-        return _limitDate - _store.getDate();
+        return _limitDate - getCurrentStoreDate();
     }
 
     /**
@@ -122,7 +118,7 @@ public class Sale extends Transaction{
      */
     public void pay() {
         _paidPrice = getTotalPrice();
-        setPaymentDate(_store.getDate());
+        setPaymentDate(getCurrentStoreDate());
         isPaid();
     }
 
@@ -131,10 +127,8 @@ public class Sale extends Transaction{
 	 */
     @Override
     public String toString() {
-        String totalPrice = getTotalPrice() > 0 ? String.format("%.0f", getTotalPrice()) : "0";
-        String paymentDate = getPaymentStatus() == true ? "|" + getPaymentDate() : "";
         return getID() + "|" + getClient().getID() + "|" + getProduct().getID() + "|" + 
-        getAmount() + "|" + getBasePrice() + "|" + totalPrice + "|" + getLimitDate()
-        + paymentDate;
+        getAmount() + "|" + getBasePrice() + "|" + (int) getTotalPrice() + "|" + getLimitDate()
+        + (getPaymentStatus() == true ? "|" + getPaymentDate() : "");
     }
 }

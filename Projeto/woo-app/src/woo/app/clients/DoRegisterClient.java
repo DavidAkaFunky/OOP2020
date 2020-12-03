@@ -12,13 +12,13 @@ import woo.Storefront;
  */
 public class DoRegisterClient extends Command<Storefront> {
   /** Input field. */
-  private Input<String> _key;
+  private Input<String> _clientKey;
 
   /** Input field. */
-  private Input<String> _name;
+  private Input<String> _clientName;
 
   /** Input field. */
-  private Input<String> _address;
+  private Input<String> _clientAddress;
 
   /**
    * Constructor.
@@ -27,9 +27,9 @@ public class DoRegisterClient extends Command<Storefront> {
    */
   public DoRegisterClient(Storefront storefront) {
     super(Label.REGISTER_CLIENT, storefront);
-    _key = _form.addStringInput(Message.requestClientKey());
-    _name = _form.addStringInput(Message.requestClientName());
-    _address = _form.addStringInput(Message.requestClientAddress());
+    _clientKey = _form.addStringInput(Message.requestClientKey());
+    _clientName = _form.addStringInput(Message.requestClientName());
+    _clientAddress = _form.addStringInput(Message.requestClientAddress());
   }
   
   /** @see pt.tecnico.po.ui.Command#execute() */ 
@@ -37,7 +37,7 @@ public class DoRegisterClient extends Command<Storefront> {
   public void execute() throws DialogException {
     try {
       _form.parse();
-      _receiver.registerClient(_key.value(), _name.value(), _address.value());
+      _receiver.registerClient(_clientKey.value(), _clientName.value(), _clientAddress.value());
     } catch (DuplicateClientException e) {
       throw new DuplicateClientKeyException(e.getKey());
     }

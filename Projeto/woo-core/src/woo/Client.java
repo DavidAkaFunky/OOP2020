@@ -12,7 +12,6 @@ import java.util.Collections;
  */
 
 public class Client implements Serializable, Observer {
-
     /** Client's status. */
     private ClientStatus _status = new NormalClient(this);
 
@@ -28,16 +27,34 @@ public class Client implements Serializable, Observer {
     /** Client's score (sale points). */
     private int _score = 0;
 
-    /** Client's paid sales amount */
+    /** Client's base sales total price. */
+    private int _basePrices = 0;
+
+    /** Client's paid sales amount. */
     private double _paid = 0;
 
-    /** Client's chosen notification delivery mode */
+    /** Client's chosen notification delivery type. */
     private DeliveryMode _mode;
 
     /** The list of sales associated to this client. */
     private List<Sale> _sales = new ArrayList<Sale>();
 
     /**
+     * Calls main constructor with Default Delivery notification delivery system..
+     * 
+     * @param id
+     *          client ID.
+     * @param name
+     *          client name.
+     * @param address
+     *          client address.
+     */
+    public Client(String id, String name, String address) {
+        this(id, name, address, new DefaultDeliveryMode());
+    }
+
+    /**
+     * Main constructor.
      * Create client.
      * 
      * @param id
@@ -47,7 +64,7 @@ public class Client implements Serializable, Observer {
      * @param address
      *          client address.
      * @param mode
-     *          client chosen delivery mode
+     *          client chosen delivery mode.
      */
     public Client(String id, String name, String address, DeliveryMode mode) {
         _id = id;
@@ -56,40 +73,36 @@ public class Client implements Serializable, Observer {
         _mode = mode;
     }
 
-    public Client(String id, String name, String address) {
-        this(id, name, address, new DefaultDeliveryMode());
-    }
-
     /**
-     * @return the client's ID
+     * @return the client's ID.
      */
     public String getID(){
         return _id;
     }
 
     /**
-     * @return the client's name
+     * @return the client's name.
      */
     public String getName(){
         return _name;
     }
 
     /**
-     * @return the client's address
+     * @return the client's address.
      */
     public String getAddress(){
         return _address;
     }
 
     /**
-     * @return the client's score (total points)
+     * @return the client's score (total points).
      */
     public int getScore(){
         return _score;
     }
 
     /**
-     * Returns the client's sales.
+     * Returns the client's sales made as an unmodifiable List.
      * 
      * @return a list with the client's sales.
      */
@@ -98,13 +111,15 @@ public class Client implements Serializable, Observer {
     }
 
     /**
-     * Adds a sale to client's total sales.
+     * Adds a sale to client's sales list.
+     * Also updates total sale base prices.
      * 
      * @param sale
      *          sale being added to list of client's sales.
      */
     public void addSale(Sale sale) {
         _sales.add(sale);
+        _basePrices += sale.getBasePrice();
     }
 
     /**
@@ -173,20 +188,12 @@ public class Client implements Serializable, Observer {
      * @param notification
      *          notification being added.
      */
-    public void update(Notification notification) {
-        _mode.update(notification);
+    public void update(String event, String pID, int price) {
+        _mode.update(event, pID, price);
     }
 
     /**
-     * Clears notifications array.
-     * (called when client is shown and notifications are no longer relevant)
-     */
-    public void clearNotifications() {
-        _mode.clearNotifications();
-    }
-
-    /**
-     * Returns pending client notifications.
+     * Returns pending client notifications as an unmodifiable List.
      * 
      * @return a list with the client's pending notifications.
      */
@@ -195,14 +202,17 @@ public class Client implements Serializable, Observer {
     }
 
     /**
+     * Clears client's notifications.
+     */
+    public void clearNotifications() {
+        _mode.clearNotifications();
+    }
+
+    /**
 	 * @see java.lang.Object#toString()
 	 */
-    public String toString(){
-        int totalPrice = 0;
-        for (Sale s: _sales){
-            totalPrice += s.getBasePrice();
-        }
-        return getID() + "|" + getName() + "|" + getAddress() + "|" + getStatus().toString() + "|" + totalPrice + "|" + (int) _paid;
+    public String toString() {
+        return _id + "|" + _name + "|" + _address + "|" + _status.toString() + "|" + _basePrices + "|" + (int) _paid;
     }
 
 }

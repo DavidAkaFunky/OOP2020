@@ -5,7 +5,6 @@ import pt.tecnico.po.ui.DialogException;
 import pt.tecnico.po.ui.Input;                                                                                                           
 import woo.app.exceptions.UnknownClientKeyException;
 import woo.exceptions.UnknownClientException;
-import woo.Transaction;                                                                                                              
 import woo.Storefront;
 
 /**
@@ -13,7 +12,7 @@ import woo.Storefront;
  */
 public class DoShowClientTransactions extends Command<Storefront> {
   /** Input field. */
-  private Input<String> _key;
+  private Input<String> _clientKey;
 
   /**
    * Constructor.
@@ -22,7 +21,7 @@ public class DoShowClientTransactions extends Command<Storefront> {
    */
   public DoShowClientTransactions(Storefront storefront) {
     super(Label.SHOW_CLIENT_TRANSACTIONS, storefront);
-    _key = _form.addStringInput(Message.requestClientKey());
+    _clientKey = _form.addStringInput(Message.requestClientKey());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
@@ -30,8 +29,8 @@ public class DoShowClientTransactions extends Command<Storefront> {
   public void execute() throws DialogException {
     try {
       _form.parse();
-      for (Transaction t : _receiver.getClientTransactions(_key.value())) {
-        _display.addLine(t.toString());
+      for (var transaction : _receiver.getClientTransactions(_clientKey.value())) {
+        _display.addLine(transaction.toString());
       }
       _display.display();
     } catch (UnknownClientException e) {

@@ -14,6 +14,9 @@ public class UnknownTransactionException extends Exception {
     _key = key;
   }
 
+  /**
+   * @return the invalid transaction key.
+   */
   public int getKey() {
     return _key;
   }

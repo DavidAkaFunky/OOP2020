@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import pt.tecnico.po.ui.Command;
-import pt.tecnico.po.ui.DialogException;
 import pt.tecnico.po.ui.Input;
 import woo.app.exceptions.FileOpenFailedException;
 import woo.exceptions.MissingFileAssociationException;
@@ -15,7 +14,7 @@ import woo.Storefront;
  */
 public class DoSave extends Command<Storefront> {
   /** Input field. */
-  private Input<String> _filename;
+  private Input<String> _filenameToSave;
 
   /**
    * Constructor.
@@ -25,25 +24,24 @@ public class DoSave extends Command<Storefront> {
   public DoSave(Storefront receiver) {
     super(Label.SAVE, receiver);
     if (_receiver.getFilename() == null) {
-      _filename = _form.addStringInput(Message.newSaveAs());
+      _filenameToSave = _form.addStringInput(Message.newSaveAs());
     }
   }
 
   /**
-   * @throws FileOpenFailedException
    * @see pt.tecnico.po.ui.Command#execute()
    */
   @Override
-  public final void execute() throws FileOpenFailedException {
+  public final void execute() {
       try {
         if (_receiver.getFilename() == null) {
           _form.parse();
-          _receiver.saveAs(_filename.value());
+          _receiver.saveAs(_filenameToSave.value());
         } else {
           _receiver.save();
         }
       } catch (IOException | MissingFileAssociationException e) {
-        throw new FileOpenFailedException(_filename.value());
+        e.printStackTrace();
       }
   }
 }

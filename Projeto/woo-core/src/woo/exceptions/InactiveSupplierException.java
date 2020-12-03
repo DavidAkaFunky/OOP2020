@@ -13,7 +13,10 @@ public class InactiveSupplierException extends Exception {
     public InactiveSupplierException(String key) {
       _key = key;
     }
-  
+    
+    /**
+   * @return the inactive supplier key.
+   */
     public String getKey() {
       return _key;
     }

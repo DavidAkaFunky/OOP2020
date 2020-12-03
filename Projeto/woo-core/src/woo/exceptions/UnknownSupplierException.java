@@ -14,6 +14,9 @@ public class UnknownSupplierException extends Exception {
     _key = id;
   }
 
+  /**
+   * @return the invalid supplier key.
+   */
   public String getKey() {
     return _key;
   }

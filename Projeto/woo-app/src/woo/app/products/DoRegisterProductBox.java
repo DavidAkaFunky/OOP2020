@@ -16,19 +16,19 @@ import woo.Storefront;
  */
 public class DoRegisterProductBox extends Command<Storefront> {
   /** Input field. */
-  Input<String> _key;
+  private Input<String> _boxProductKey;
 
   /** Input field. */
-  Input<Integer> _price;
+  private Input<Integer> _boxPrice;
 
   /** Input field. */
-  Input<Integer> _cValue;
+  private Input<Integer> _boxCriticalSLevel;
 
   /** Input field. */
-  Input<String> _sID;
+  private Input<String> _supplierKey;
 
   /** Input field. */
-  Input<String> _sType;
+  private Input<String> _boxServiceType;
 
   /**
    * Constructor.
@@ -37,11 +37,11 @@ public class DoRegisterProductBox extends Command<Storefront> {
    */
   public DoRegisterProductBox(Storefront receiver) {
     super(Label.REGISTER_BOX, receiver);
-    _key = _form.addStringInput(Message.requestProductKey());
-    _price = _form.addIntegerInput(Message.requestPrice());
-    _cValue = _form.addIntegerInput(Message.requestStockCriticalValue());
-    _sID = _form.addStringInput(Message.requestSupplierKey());
-    _sType = _form.addStringInput(Message.requestServiceType());
+    _boxProductKey = _form.addStringInput(Message.requestProductKey());
+    _boxPrice = _form.addIntegerInput(Message.requestPrice());
+    _boxCriticalSLevel = _form.addIntegerInput(Message.requestStockCriticalValue());
+    _supplierKey = _form.addStringInput(Message.requestSupplierKey());
+    _boxServiceType = _form.addStringInput(Message.requestServiceType());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
@@ -49,8 +49,8 @@ public class DoRegisterProductBox extends Command<Storefront> {
   public final void execute() throws DialogException {
     try {
       _form.parse();
-      _receiver.registerBox(_key.value(), _price.value(), _cValue.value(), 
-                             _sID.value(), _sType.value(), 0);
+      _receiver.registerBox(_boxProductKey.value(), _boxPrice.value(), _boxCriticalSLevel.value(), 
+                            _supplierKey.value(), _boxServiceType.value(), 0);
     } catch (DuplicateProductException e) {
       throw new DuplicateProductKeyException(e.getKey());
     } catch (UnknownSupplierException e) {

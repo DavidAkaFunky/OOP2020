@@ -1,4 +1,4 @@
-JAVADIR=/usr/share/java
+JAVADIR=../..
 JARNAME=woo-app
 
 all:

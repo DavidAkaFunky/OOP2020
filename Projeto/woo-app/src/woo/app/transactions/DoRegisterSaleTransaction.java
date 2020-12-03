@@ -15,18 +15,17 @@ import woo.Storefront;
  * Register sale.
  */
 public class DoRegisterSaleTransaction extends Command<Storefront> {
-
   /** Input field. */
-  private Input<String> _clientID;
-
-  /** Input field. */
-  private Input<String> _productID;
+  private Input<String> _clientKey;
 
   /** Input field. */
   private Input<Integer> _limitDate;
 
   /** Input field. */
-  private Input<Integer> _qty;
+  private Input<String> _productKey;
+
+  /** Input field. */
+  private Input<Integer> _productQty;
 
   /**
    * Constructor.
@@ -35,10 +34,10 @@ public class DoRegisterSaleTransaction extends Command<Storefront> {
    */
   public DoRegisterSaleTransaction(Storefront receiver) {
     super(Label.REGISTER_SALE_TRANSACTION, receiver);
-    _clientID = _form.addStringInput(Message.requestClientKey());
+    _clientKey = _form.addStringInput(Message.requestClientKey());
     _limitDate = _form.addIntegerInput(Message.requestPaymentDeadline());
-    _productID = _form.addStringInput(Message.requestProductKey());
-    _qty = _form.addIntegerInput(Message.requestAmount());
+    _productKey = _form.addStringInput(Message.requestProductKey());
+    _productQty = _form.addIntegerInput(Message.requestAmount());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
@@ -46,7 +45,7 @@ public class DoRegisterSaleTransaction extends Command<Storefront> {
   public final void execute() throws DialogException {
     try {
       _form.parse();
-      _receiver.registerSaleTransaction(_clientID.value(), _limitDate.value(), _productID.value(), _qty.value());
+      _receiver.registerSaleTransaction(_clientKey.value(), _limitDate.value(), _productKey.value(), _productQty.value());
     } catch (UnknownClientException e) {
       throw new UnknownClientKeyException(e.getKey());
     } catch (UnknownProductException e) {

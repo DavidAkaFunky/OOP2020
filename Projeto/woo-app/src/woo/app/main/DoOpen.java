@@ -15,7 +15,7 @@ import woo.Storefront;
  */
 public class DoOpen extends Command<Storefront> {
   /** Input field. */
-  private Input<String> _filename;
+  private Input<String> _filenameToOpen;
 
   /**
    * Constructor.
@@ -24,7 +24,7 @@ public class DoOpen extends Command<Storefront> {
    */
   public DoOpen(Storefront receiver) {
     super(Label.OPEN, receiver);
-    _filename = _form.addStringInput(Message.openFile());
+    _filenameToOpen = _form.addStringInput(Message.openFile());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
@@ -32,13 +32,13 @@ public class DoOpen extends Command<Storefront> {
   public final void execute() throws DialogException {
     try {
       _form.parse();
-      _receiver.load(_filename.value());
+      _receiver.load(_filenameToOpen.value());
     } catch (UnavailableFileException ufe) {
       throw new FileOpenFailedException(ufe.getFilename());
     } catch(ClassNotFoundException | FileNotFoundException e) {
-      throw new FileOpenFailedException(_filename.value());
+      throw new FileOpenFailedException(_filenameToOpen.value());
     } catch (IOException e) {
-      throw new FileOpenFailedException(_filename.value());
+      throw new FileOpenFailedException(_filenameToOpen.value());
     }
 
   }

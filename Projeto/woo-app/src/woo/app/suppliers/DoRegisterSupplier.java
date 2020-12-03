@@ -12,13 +12,13 @@ import woo.Storefront;
  */
 public class DoRegisterSupplier extends Command<Storefront> {
   /** Input field. */
-  private Input<String> _key;
+  private Input<String> _supplierKey;
 
   /** Input field. */
-  private Input<String> _name;
+  private Input<String> _supplierName;
 
   /** Input field. */
-  private Input<String> _address;
+  private Input<String> _supplierAddress;
 
   /**
    * Constructor.
@@ -27,9 +27,9 @@ public class DoRegisterSupplier extends Command<Storefront> {
    */
   public DoRegisterSupplier(Storefront receiver) {
     super(Label.REGISTER_SUPPLIER, receiver);
-    _key = _form.addStringInput(Message.requestSupplierKey());
-    _name = _form.addStringInput(Message.requestSupplierName());
-    _address = _form.addStringInput(Message.requestSupplierAddress());
+    _supplierKey = _form.addStringInput(Message.requestSupplierKey());
+    _supplierName = _form.addStringInput(Message.requestSupplierName());
+    _supplierAddress = _form.addStringInput(Message.requestSupplierAddress());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
@@ -37,7 +37,7 @@ public class DoRegisterSupplier extends Command<Storefront> {
   public void execute() throws DialogException {
     try {
       _form.parse();
-      _receiver.registerSupplier(_key.value(), _name.value(), _address.value());
+      _receiver.registerSupplier(_supplierKey.value(), _supplierName.value(), _supplierAddress.value());
     } catch (DuplicateSupplierException e) {
       throw new DuplicateSupplierKeyException(e.getKey());
     }

@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import pt.tecnico.po.ui.Command;
 import pt.tecnico.po.ui.DialogException;
 import pt.tecnico.po.ui.Input;
+import pt.tecnico.po.ui.Form;
 import woo.app.exceptions.UnauthorizedSupplierException;
 import woo.app.exceptions.UnknownProductKeyException;
 import woo.app.exceptions.UnknownSupplierKeyException;
@@ -49,21 +50,20 @@ public class DoRegisterOrderTransaction extends Command<Storefront> {
   /** @see pt.tecnico.po.ui.Command#execute() */
   @Override
   public final void execute() throws DialogException {
-    _products.clear(); // Clear structure after each order
     _supplierKey = _form.addStringInput(Message.requestSupplierKey());
     _productKey = _form.addStringInput(Message.requestProductKey());
     _productQty = _form.addIntegerInput(Message.requestAmount());
     _moreProducts = _form.addBooleanInput(Message.requestMore());
     try {
       _form.parse();
-      _form.clear();
+      _form = new Form();
       _products.put(_productKey.value(), _productQty.value());
       while (_moreProducts.value() == true) {
         _productKey = _form.addStringInput(Message.requestProductKey());
         _productQty = _form.addIntegerInput(Message.requestAmount());
         _moreProducts = _form.addBooleanInput(Message.requestMore());
         _form.parse();
-        _form.clear();
+        _form = new Form();
         // Add stock or create product
         var productQty = _products.get(_productKey.value());
         if (productQty == null) {
@@ -81,6 +81,9 @@ public class DoRegisterOrderTransaction extends Command<Storefront> {
         throw new WrongSupplierException(e.getSupplierKey(), e.getProductKey());
     } catch (InactiveSupplierException e) {
         throw new UnauthorizedSupplierException(e.getKey());
+    }
+    finally {
+      _products.clear(); // Clear structure after each order
     }
   }
 

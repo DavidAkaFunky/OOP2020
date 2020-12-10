@@ -15,6 +15,6 @@ public class UnknownServTypeException extends Exception {
   /**
    * @return the invalid product service type.
    */
-  public String getType() { return _type; }
+  public String getServiceType() { return _type; }
 
 }

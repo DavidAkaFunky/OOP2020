@@ -1,11 +1,7 @@
 package woo.app.main;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import pt.tecnico.po.ui.Command;
 import pt.tecnico.po.ui.Input;
-import woo.app.exceptions.FileOpenFailedException;
 import woo.exceptions.MissingFileAssociationException;
 import woo.Storefront;
 
@@ -40,7 +36,7 @@ public class DoSave extends Command<Storefront> {
         } else {
           _receiver.save();
         }
-      } catch (IOException | MissingFileAssociationException e) {
+      } catch (MissingFileAssociationException e) {
         e.printStackTrace();
       }
   }

@@ -3,12 +3,16 @@ package woo;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 /**
  * Class Supplier represents a Store supplier. They respond to store orders on demand.
  */
 public class Supplier implements Serializable {
+    /** Serial number for serialization. */
+    private static final long serialVersionUID = 202012040059L;
+    
     /** Supplier's unique ID. */
     private String _id;
 
@@ -34,7 +38,7 @@ public class Supplier implements Serializable {
      * @param address
      *          supplier address.
      */
-    public Supplier(String id,String name, String address){
+    public Supplier(String id,String name, String address) {
         _id = id;
         _name = name;
         _address = address;
@@ -43,28 +47,28 @@ public class Supplier implements Serializable {
     /**
      * @return the supplier's unique ID
      */
-    public String getID(){
+    public String getID() {
         return _id;
     }
 
     /**
      * @return the supplier's name
      */
-    public String getName(){
+    public String getName() {
         return _name;
     }
 
     /**
      * @return the supplier's address
      */
-    public String getAddress(){
+    public String getAddress() {
         return _address;
     }
 
     /**
      * @return the supplier's active status.
      */
-    public boolean isActive(){
+    public boolean isActive() {
         return _active;
     }
 
@@ -76,11 +80,10 @@ public class Supplier implements Serializable {
     public boolean toggleTransactions() {
         if (isActive()) {
             _active = false;
-            return false;
         } else {
             _active = true;
-            return true;
         }
+        return _active;
     } 
     
     /**
@@ -88,8 +91,8 @@ public class Supplier implements Serializable {
      * 
      * @return a list containing all supplier's orders.
      */
-    public List<Order> getTransactions() {
-        return Collections.unmodifiableList(_transactions);
+    public Collection<Order> getTransactions() {
+        return Collections.unmodifiableCollection(_transactions);
     } 
 
     /**

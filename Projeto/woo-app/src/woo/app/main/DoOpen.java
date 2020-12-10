@@ -1,8 +1,5 @@
 package woo.app.main;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import pt.tecnico.po.ui.Command;
 import pt.tecnico.po.ui.DialogException;
 import pt.tecnico.po.ui.Input;
@@ -33,14 +30,9 @@ public class DoOpen extends Command<Storefront> {
     try {
       _form.parse();
       _receiver.load(_filenameToOpen.value());
-    } catch (UnavailableFileException ufe) {
-      throw new FileOpenFailedException(ufe.getFilename());
-    } catch(ClassNotFoundException | FileNotFoundException e) {
-      throw new FileOpenFailedException(_filenameToOpen.value());
-    } catch (IOException e) {
-      throw new FileOpenFailedException(_filenameToOpen.value());
+    } catch (UnavailableFileException e) {
+      throw new FileOpenFailedException(e.getFilename());
     }
-
   }
 
 }

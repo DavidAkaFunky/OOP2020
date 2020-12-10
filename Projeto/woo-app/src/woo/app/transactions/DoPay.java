@@ -31,7 +31,7 @@ public class DoPay extends Command<Storefront> {
       _form.parse();
       _receiver.pay(_transactionID.value());
     } catch(UnknownTransactionException e) {
-      throw new UnknownTransactionKeyException(e.getKey());
+      throw new UnknownTransactionKeyException(e.getTransactionKey());
     }
    }
 

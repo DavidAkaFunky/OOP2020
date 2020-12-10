@@ -5,32 +5,32 @@ public class IncorrectSupplierException extends Exception {
   private static final long serialVersionUID = 202009200054L;
 
   /** Supplier key. */
-  private String _skey;
+  private String _sKey;
 
   /** Product key. */
-  private String _pkey;
+  private String _pKey;
 
   /** 
-   * @param skey supplier key.
-   * @param pkey product key. 
+   * @param sKey supplier key.
+   * @param pKey product key. 
    */
-  public IncorrectSupplierException(String skey, String pkey) {
-    _skey = skey;
-    _pkey = pkey;
+  public IncorrectSupplierException(String sKey, String pKey) {
+    _sKey = sKey;
+    _pKey = pKey;
   }
 
   /**
    * @return the incorrent supplier key.
    */
   public String getSupplierKey() {
-    return _skey;
+    return _sKey;
   }
 
   /**
    * @return the product key whose is supplier isn't given supplier key.
    */
   public String getProductKey() {
-    return _pkey;
+    return _pKey;
   }
   
 }

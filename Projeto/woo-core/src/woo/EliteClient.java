@@ -6,13 +6,18 @@ package woo;
  */
 
 public class EliteClient extends ClientStatus {
+    /** Serial number for serialization. */
+    private static final long serialVersionUID = 202012040059L;
+    
     /**
      * Constructor.
      * 
      * @param client
      *          client being set as Elite status.
      */
-    public EliteClient(Client client) { super(client); }
+    public EliteClient(Client client) {
+        super(client);
+    }
 
     /**
      * Elite Client P2 Modifier.
@@ -21,7 +26,10 @@ public class EliteClient extends ClientStatus {
      *          difference between current date and limit date.
      * @return modifier to multiply to base sale price relative to period P2.
      */
-    public double p2Modifier(int paymentGap) { return 0.9; }
+    @Override
+    public double p2Modifier(int paymentGap) {
+        return 0.9;
+    }
 
     /**
      * Elite Client P3 Modifier.
@@ -30,7 +38,10 @@ public class EliteClient extends ClientStatus {
      *          difference between current date and limit date.
      * @return modifier to multiply to base sale price relative to period P3.
      */
-    public double p3Modifier(int paymentGap) { return 0.95; }
+    @Override
+    public double p3Modifier(int paymentGap) {
+        return 0.95;
+    }
 
     /**
      * Elite Client P4 Modifier.
@@ -39,7 +50,10 @@ public class EliteClient extends ClientStatus {
      *          difference between current date and limit date.
      * @return modifier to multiply to base sale price relative to period P4.
      */
-    public double p4Modifier(int paymentGap) { return 1.0; }
+    @Override
+    public double p4Modifier(int paymentGap) {
+        return 1.0;
+    }
 
     /**
      * Elite Client pay sale. No "level-ups" exist, only possible "level-downs".
@@ -47,13 +61,14 @@ public class EliteClient extends ClientStatus {
      * @param sale
      *          sale being paid.
      */
-    public void pay(Sale sale){
+    @Override
+    public void pay(Sale sale) {
         int paymentGap = sale.getLimitDateGap();
-        if (paymentGap >= 0)
-            _client.setScore(_client.getScore() + 10 * (int) sale.getTotalPrice());
-        else if (paymentGap < -15){
-            _client.setStatus(new SelectionClient(_client));
-            _client.setScore(_client.getScore() / 4);
+        if (paymentGap >= 0) {
+            _client.updateScore(_client.getScore() + 10 * (int) sale.getTotalPrice());
+        } else if (paymentGap < -15) {
+            _client.updateStatus(new SelectionClient(_client));
+            _client.updateScore(_client.getScore() / 4);
         }
     }
 

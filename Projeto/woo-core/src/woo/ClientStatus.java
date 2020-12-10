@@ -8,6 +8,9 @@ import java.io.Serializable;
  */
 
 public abstract class ClientStatus implements Serializable {
+    /** Serial number for serialization. */
+    private static final long serialVersionUID = 202012040059L;
+    
     /** The client associated to each status. */
     protected Client _client;
 
@@ -17,10 +20,14 @@ public abstract class ClientStatus implements Serializable {
      * @param client
      *          client whose status is being instantiated.
      */
-    public ClientStatus(Client client) { _client = client; }
+    public ClientStatus(Client client) {
+        _client = client;
+    }
 
     /** Period P1 discount (10%). */
-    public double p1Modifier() { return 0.9; }
+    public double p1Modifier() {
+        return 0.9;
+    }
 
     /**
      * Period P2 discount.

@@ -1,8 +1,8 @@
 package woo;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -11,7 +11,10 @@ import java.util.Collections;
  * to be notified about Product changes.
  */
 
-public class Client implements Serializable, Observer {
+public class Client implements ProductObserver {
+    /** Serial number for serialization. */
+    private static final long serialVersionUID = 202012040059L;
+    
     /** Client's status. */
     private ClientStatus _status = new NormalClient(this);
 
@@ -31,16 +34,19 @@ public class Client implements Serializable, Observer {
     private int _basePrices = 0;
 
     /** Client's paid sales amount. */
-    private double _paid = 0;
+    private double _totalPaid = 0;
 
     /** Client's chosen notification delivery type. */
-    private DeliveryMode _mode;
+    private NotificationDeliveryMode _deliveryMode;
 
     /** The list of sales associated to this client. */
     private List<Sale> _sales = new ArrayList<Sale>();
 
+    /** List containg client's unread notifications.  */
+    private List<Notification> _notifications = new ArrayList<Notification>();
+
     /**
-     * Calls main constructor with Default Delivery notification delivery system..
+     * Call main constructor with Default Delivery notification delivery system.
      * 
      * @param id
      *          client ID.
@@ -49,13 +55,13 @@ public class Client implements Serializable, Observer {
      * @param address
      *          client address.
      */
-    public Client(String id, String name, String address) {
+    public Client(String id, String name, String address) { 
         this(id, name, address, new DefaultDeliveryMode());
     }
 
     /**
      * Main constructor.
-     * Create client.
+     * Create a client.
      * 
      * @param id
      *          client ID.
@@ -66,48 +72,89 @@ public class Client implements Serializable, Observer {
      * @param mode
      *          client chosen delivery mode.
      */
-    public Client(String id, String name, String address, DeliveryMode mode) {
+    public Client(String id, String name, String address, NotificationDeliveryMode mode) {
         _id = id;
         _name = name;
         _address = address;
-        _mode = mode;
+        _deliveryMode = mode;
+    }
+
+    /**
+     * Returns the client's status.
+     * 
+     * @return the client's current status
+     */
+    public ClientStatus getStatus() {
+        return _status;
     }
 
     /**
      * @return the client's ID.
      */
-    public String getID(){
+    public String getID() {
         return _id;
     }
 
     /**
      * @return the client's name.
      */
-    public String getName(){
+    public String getName() {
         return _name;
     }
 
     /**
      * @return the client's address.
      */
-    public String getAddress(){
+    public String getAddress() {
         return _address;
     }
 
     /**
      * @return the client's score (total points).
      */
-    public int getScore(){
+    public int getScore() {
         return _score;
     }
 
     /**
-     * Returns the client's sales made as an unmodifiable List.
-     * 
-     * @return a list with the client's sales.
+     * @return the client's total amount of sale base prices.
      */
-    public List<Sale> getClientSales() {
-        return Collections.unmodifiableList(_sales);
+    public int getTotalBasePrices() {
+        return _basePrices;
+    }
+
+    /**
+     * @return the total paid in sales by the client.
+     */
+    public int getTotalPaid() {
+        return (int) _totalPaid;
+    }
+
+    /**
+     * Returns the client's chosen delivery mode.
+     * 
+     * @return the client's current delivery mode
+     */
+    public NotificationDeliveryMode getDeliveryMode() {
+        return _deliveryMode;
+    }
+
+    /**
+     * Returns the client's sales made as an unmodifiable collection.
+     * 
+     * @return a collection with the client's sales.
+     */
+    public Collection<Sale> getClientSales() {
+        return Collections.unmodifiableCollection(_sales);
+    }
+
+    /**
+     * Returns the client's pending notifications as an unmodifiable collection
+     * 
+     * @return a collection with the client's pending notifications.
+     */
+    public Collection<Notification> getClientNotifications() {
+        return Collections.unmodifiableCollection(_notifications);
     }
 
     /**
@@ -129,25 +176,7 @@ public class Client implements Serializable, Observer {
      *          price of paid sale to be added to client's total paid sales.
      */
     public void addPaidSale(double salePrice) {
-        _paid += salePrice;
-    }
-
-    /**
-     * Returns the client's status.
-     * 
-     * @return the client's current status
-     */
-    public ClientStatus getStatus() {
-        return _status;
-    }
-
-    /**
-     * Returns the client's chosen delivery mode.
-     * 
-     * @return the client's current delivery mode
-     */
-    public DeliveryMode getDeliveryMode() {
-        return _mode;
+        _totalPaid += salePrice;
     }
 
     /**
@@ -156,7 +185,7 @@ public class Client implements Serializable, Observer {
      * @param status
      *          client's new status.
      */
-    public void setStatus(ClientStatus status) {
+    public void updateStatus(ClientStatus status) {
         _status = status;
     }
 
@@ -166,7 +195,7 @@ public class Client implements Serializable, Observer {
      * @param score 
      *          client's new score
      */
-    public void setScore(int score){
+    public void updateScore(int score) {
         _score = score;
     }
     
@@ -176,8 +205,7 @@ public class Client implements Serializable, Observer {
      * @param sale
      *          sale being paid.
      */
-    public void pay(Sale sale) {
-        sale.pay();
+    public void paySale(Sale sale) {
         _status.pay(sale);
         addPaidSale(sale.getTotalPrice());
     }
@@ -188,31 +216,30 @@ public class Client implements Serializable, Observer {
      * @param notification
      *          notification being added.
      */
+    @Override
     public void update(String event, String pID, int price) {
-        _mode.update(event, pID, price);
-    }
-
-    /**
-     * Returns pending client notifications as an unmodifiable List.
-     * 
-     * @return a list with the client's pending notifications.
-     */
-    public List<Notification> getNotifications() {
-        return _mode.getNotifications();
-    }
-
-    /**
-     * Clears client's notifications.
-     */
-    public void clearNotifications() {
-        _mode.clearNotifications();
+        _notifications.add(_deliveryMode.deliverNotification(event, pID, price));
     }
 
     /**
 	 * @see java.lang.Object#toString()
 	 */
+    @Override
     public String toString() {
-        return _id + "|" + _name + "|" + _address + "|" + _status.toString() + "|" + _basePrices + "|" + (int) _paid;
+        return getID() + "|" + getName() + "|" + getAddress() + "|" + getStatus().toString() + "|" + getTotalBasePrices() + "|" + getTotalPaid();
+    }
+
+    /**
+     * Aux method to print Client and its notifications and clear them.
+     * @return client's toString and its notifications.
+     */
+    public String showClient() {
+        String base = toString();
+        for (Notification n : _notifications) {
+            base += '\n' + n.toString();
+        }
+        _notifications.clear();
+        return base;
     }
 
 }

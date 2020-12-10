@@ -34,7 +34,7 @@ public class DoShowSupplierTransactions extends Command<Storefront> {
       }
       _display.display();
     } catch(UnknownSupplierException e) {
-      throw new UnknownSupplierKeyException(e.getKey());
+      throw new UnknownSupplierKeyException(e.getSupplierKey());
     }
   }
 

@@ -4,7 +4,10 @@ package woo;
  * Class Sale is a subclass of a Transaction and it's instantiated
  * when the Store sells products to costumers (Clients).
  */
-public class Sale extends Transaction{
+public class Sale extends Transaction {
+    /** Serial number for serialization. */
+    private static final long serialVersionUID = 202012040059L;
+    
     /** Client who made the Store sale. */
     private Client _client;
 
@@ -15,7 +18,7 @@ public class Sale extends Transaction{
     private int _limitDate;
 
     /** Amount of Product demanded by Client. */
-    private int _amount;
+    private int _productQty;
 
     /** Total paid sale price. */
     private double _paidPrice;
@@ -39,15 +42,7 @@ public class Sale extends Transaction{
         _client = client;
         _product = product; 
         _limitDate = limitDate;
-        _amount = amount;
-    }
-
-    /**
-     * @return the sale base price (before taxes).
-     */
-    @Override
-    public int getBasePrice() {
-        return _product.getPrice() *  _amount;
+        _productQty = amount;
     }
 
     /**
@@ -55,9 +50,10 @@ public class Sale extends Transaction{
      * the value returned from this funtion depends on the Client status
      * and the date where the payment was made.
      */
-    @Override
-    public double getTotalPrice(){
-        if (getPaymentStatus() == true) { return _paidPrice; }
+    public double getTotalPrice() {
+        if (getPaymentStatus() == true) {
+            return _paidPrice;
+        }
         int N = _product.getN();
         int paymentGap = getLimitDateGap(); 
         if (paymentGap >= 0) {
@@ -93,15 +89,15 @@ public class Sale extends Transaction{
     /**
      * @return the sale's limit payment date
      */
-    public int getLimitDate(){
+    public int getLimitDate() {
         return _limitDate;
     }
 
     /**
      * @return the sale's amount of products
      */
-    public int getAmount(){
-        return _amount;
+    public int getProductQuantity() {
+        return _productQty;
     }
 
     /**
@@ -114,12 +110,18 @@ public class Sale extends Transaction{
     }
 
     /**
-     * Updates sale paidPrice and paymentDate and sets sale as paid.
+     * Updates sale paidPrice and paymentDate and makes client pay the sale.
      */
+    @Override
     public void pay() {
         _paidPrice = getTotalPrice();
         setPaymentDate(getCurrentStoreDate());
-        isPaid();
+        _client.paySale(this);
+    }
+
+    @Override
+    public void accept(TransactionVisitor visitor) {
+        visitor.visit(this);
     }
 
     /**
@@ -128,7 +130,7 @@ public class Sale extends Transaction{
     @Override
     public String toString() {
         return getID() + "|" + getClient().getID() + "|" + getProduct().getID() + "|" + 
-        getAmount() + "|" + getBasePrice() + "|" + (int) getTotalPrice() + "|" + getLimitDate()
+        getProductQuantity() + "|" + getBasePrice() + "|" + (int) getTotalPrice() + "|" + getLimitDate()
         + (getPaymentStatus() == true ? "|" + getPaymentDate() : "");
     }
 }

@@ -39,7 +39,7 @@ public class DoRegisterClient extends Command<Storefront> {
       _form.parse();
       _receiver.registerClient(_clientKey.value(), _clientName.value(), _clientAddress.value());
     } catch (DuplicateClientException e) {
-      throw new DuplicateClientKeyException(e.getKey());
+      throw new DuplicateClientKeyException(e.getClientKey());
     }
   }
 

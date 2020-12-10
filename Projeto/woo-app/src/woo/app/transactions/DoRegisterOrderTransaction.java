@@ -1,8 +1,8 @@
 package woo.app.transactions;
 
 import java.util.Collections;
-import java.util.Map;
-import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 import pt.tecnico.po.ui.Command;
 import pt.tecnico.po.ui.DialogException;
@@ -16,6 +16,7 @@ import woo.exceptions.InactiveSupplierException;
 import woo.exceptions.IncorrectSupplierException;
 import woo.exceptions.UnknownProductException;
 import woo.exceptions.UnknownSupplierException;
+import woo.OrderElement;
 import woo.Storefront;
 
 /**
@@ -34,9 +35,8 @@ public class DoRegisterOrderTransaction extends Command<Storefront> {
   /** Input field. */
   private Input<Boolean> _moreProducts;
 
-  /** LinkedHashMap structure that contains product ID's and its quantities to be added to order.
-   * (Keys are ordered by their insertion order). */
-  private Map<String, Integer> _products = new LinkedHashMap<String, Integer>();
+  /** New form to accept more products. */
+  private Form _newForm = new Form();
 
   /**
    * Constructor.
@@ -45,44 +45,34 @@ public class DoRegisterOrderTransaction extends Command<Storefront> {
    */
   public DoRegisterOrderTransaction(Storefront receiver) {
     super(Label.REGISTER_ORDER_TRANSACTION, receiver);
+    _supplierKey = _form.addStringInput(Message.requestSupplierKey());
+    _productKey = _newForm.addStringInput(Message.requestProductKey());
+    _productQty = _newForm.addIntegerInput(Message.requestAmount());
+    _moreProducts = _newForm.addBooleanInput(Message.requestMore());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
   @Override
   public final void execute() throws DialogException {
-    _supplierKey = _form.addStringInput(Message.requestSupplierKey());
-    _productKey = _form.addStringInput(Message.requestProductKey());
-    _productQty = _form.addIntegerInput(Message.requestAmount());
-    _moreProducts = _form.addBooleanInput(Message.requestMore());
-    try {
-      _form.parse();
-      _form = new Form();
-      _products.put(_productKey.value(), _productQty.value());
-      while (_moreProducts.value() == true) {
-        _productKey = _form.addStringInput(Message.requestProductKey());
-        _productQty = _form.addIntegerInput(Message.requestAmount());
-        _moreProducts = _form.addBooleanInput(Message.requestMore());
-        _form.parse();
-        _form = new Form();
-        // Add stock or create product
-        var productQty = _products.get(_productKey.value());
-        if (productQty == null) {
-          _products.put(_productKey.value(), _productQty.value());
-        } else {
-          _products.put(_productKey.value(), productQty + _productQty.value());
-        }
-      }
-      _receiver.registerOrderTransaction(_supplierKey.value(), Collections.unmodifiableMap(_products));
-    } catch (UnknownSupplierException e) {
-        throw new UnknownSupplierKeyException(e.getKey());
-    } catch (UnknownProductException e) {
-        throw new UnknownProductKeyException(e.getKey());
-    }  catch (IncorrectSupplierException e) {
-        throw new WrongSupplierException(e.getSupplierKey(), e.getProductKey());
-    } catch (InactiveSupplierException e) {
-        throw new UnauthorizedSupplierException(e.getKey());
+    _form.parse();
+    _newForm.parse();
+    List<OrderElement> _products = new ArrayList<OrderElement>();
+    _products.add(new OrderElement(_productKey.value(), _productQty.value()));
+    while (_moreProducts.value() == true) {
+      _newForm.parse();
+      _products.add(new OrderElement(_productKey.value(), _productQty.value()));
     }
-    finally {
+    try {
+      _receiver.registerOrderTransaction(_supplierKey.value(), Collections.unmodifiableCollection(_products));
+    } catch (UnknownSupplierException e) {
+        throw new UnknownSupplierKeyException(e.getSupplierKey());
+    } catch (UnknownProductException e) {
+        throw new UnknownProductKeyException(e.getProductKey());
+    } catch (InactiveSupplierException e) {
+      throw new UnauthorizedSupplierException(e.getSupplierKey());
+    } catch (IncorrectSupplierException e) {
+        throw new WrongSupplierException(e.getSupplierKey(), e.getProductKey());
+    } finally {
       _products.clear(); // Clear structure after each order
     }
   }

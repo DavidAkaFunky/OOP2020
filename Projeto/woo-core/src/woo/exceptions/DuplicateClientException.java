@@ -17,7 +17,7 @@ public class DuplicateClientException extends Exception {
   /**
    * @return the invalid client key.
    */
-  public String getKey() {
+  public String getClientKey() {
     return _key;
   }
 

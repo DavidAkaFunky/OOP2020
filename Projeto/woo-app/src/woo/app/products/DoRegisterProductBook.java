@@ -29,7 +29,7 @@ public class DoRegisterProductBook extends Command<Storefront> {
   private Input<Integer> _bookPrice;
 
   /** Input field. */
-  private Input<Integer> _bookCriticalSLevel;
+  private Input<Integer> _bookStockCriticalValue;
 
   /** Input field. */
   private Input<String> _supplierKey;
@@ -46,7 +46,7 @@ public class DoRegisterProductBook extends Command<Storefront> {
     _bookAuthor = _form.addStringInput(Message.requestBookAuthor());
     _bookISBN = _form.addStringInput(Message.requestISBN());
     _bookPrice = _form.addIntegerInput(Message.requestPrice());
-    _bookCriticalSLevel = _form.addIntegerInput(Message.requestStockCriticalValue());
+    _bookStockCriticalValue = _form.addIntegerInput(Message.requestStockCriticalValue());
     _supplierKey = _form.addStringInput(Message.requestSupplierKey());
   }
 
@@ -56,12 +56,12 @@ public class DoRegisterProductBook extends Command<Storefront> {
     try {
       _form.parse();
       _receiver.registerBook(_bookProductKey.value(), _bookTitle.value(), _bookAuthor.value(), 
-                             _bookISBN.value(), _bookPrice.value(), _bookCriticalSLevel.value(), 
-                             _supplierKey.value(), 0);
+                             _bookISBN.value(), _bookPrice.value(), _bookStockCriticalValue.value(), 
+                             _supplierKey.value());
     } catch (DuplicateProductException e) {
-      throw new DuplicateProductKeyException(e.getKey());
+      throw new DuplicateProductKeyException(e.getProductKey());
     } catch (UnknownSupplierException e) {
-      throw new UnknownSupplierKeyException(e.getKey());
+      throw new UnknownSupplierKeyException(e.getSupplierKey());
     }
   }
 }

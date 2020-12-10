@@ -34,7 +34,7 @@ public class DoLookupPaymentsByClient extends Command<Storefront> {
       }
       _display.display();
     } catch (UnknownClientException e) {
-      throw new UnknownClientKeyException(e.getKey());
+      throw new UnknownClientKeyException(e.getClientKey());
     }
   }
 

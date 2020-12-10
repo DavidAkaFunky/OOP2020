@@ -35,12 +35,12 @@ public class DoToggleProductNotifications extends Command<Storefront> {
   public void execute() throws DialogException {
     try {
       _form.parse();
-      _display.popup(_receiver.changeClientProductNotifications(_clientKey.value(), _productKey.value()) == true ? 
+      _display.popup(_receiver.areProductNotificationsOn(_clientKey.value(), _productKey.value()) ? 
                      Message.notificationsOn(_clientKey.value(), _productKey.value()) : Message.notificationsOff(_clientKey.value(), _productKey.value()));
-    } catch (UnknownProductException e) {
-      throw new UnknownProductKeyException(e.getKey());
     } catch (UnknownClientException e) {
-      throw new UnknownClientKeyException(e.getKey());
+      throw new UnknownClientKeyException(e.getClientKey());
+    } catch (UnknownProductException e) {
+      throw new UnknownProductKeyException(e.getProductKey());
     }
   }
 

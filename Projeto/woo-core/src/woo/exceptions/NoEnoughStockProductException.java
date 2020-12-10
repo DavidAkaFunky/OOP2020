@@ -27,7 +27,7 @@ public class NoEnoughStockProductException extends Exception {
     /**
     * @return the product key.
     */
-    public String getKey() { return _key; }
+    public String getProductKey() { return _key; }
 
     /**
     * @return the amount of requested product.

@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Class Store implements a store.
@@ -38,10 +37,6 @@ public class Store implements Serializable {
 
   /** Transaction ID. */
   private int _transactionID = 0;
-
-  /** Company balance */
-  private float _availableBalance;
-  private float _accountingBalance;
 
   /* ------------------------------------- IMPORT FILE ------------------------------------- */
 
@@ -140,14 +135,13 @@ public class Store implements Serializable {
    * @return store available balance.
    */
   public int getAvailableBalance() {
-    _availableBalance = 0;
+    StoreCompanyVisitor visitor = new StoreCompanyVisitor();
     for (Transaction t : _transactions.values()) {
       if (t.getPaymentStatus() == true) {
-        t.setCurrentStoreDate(_date);
-        _availableBalance += t.getTotalPrice();
+        t.accept(visitor);
       }
     }
-    return Math.round(_availableBalance);
+    return visitor.getTotalBalance();
   }
 
   /**
@@ -156,18 +150,34 @@ public class Store implements Serializable {
    * @return store accounting balance.
    */
   public int getAccountingBalance() {
-    _accountingBalance = 0;
+    StoreCompanyVisitor visitor = new StoreCompanyVisitor();
     for (Transaction t : _transactions.values()) {
       t.setCurrentStoreDate(_date);
-      _accountingBalance += t.getTotalPrice();
+      t.accept(visitor);
     }
-    return Math.round(_accountingBalance);
+    return visitor.getTotalBalance();
   }
 
   /* ---------------------------------------- PRODUCTS ---------------------------------------- */
 
   /**
-   * @return a Collection with all Products available in store
+   * Returns a Product given a unique product ID.
+   * 
+   * @param pID
+   *          product ID.
+   * @return
+   * @throws UnknownProductException
+   */
+  public Product getProduct(String pID) throws UnknownProductException {
+    Product product = _products.get(pID);
+    if (product == null) {
+      throw new UnknownProductException(pID);
+    }
+    return product;
+  }
+
+  /**
+   * @return a Collection with all Products available in store.
    */
   public Collection<Product> getProducts() {
     return Collections.unmodifiableCollection(_products.values());
@@ -176,7 +186,7 @@ public class Store implements Serializable {
   /**
    * Registers a box in store.
    * 
-   * @param id
+   * @param pID
    *          box product ID.
    * @param price
    *          box product price.
@@ -192,25 +202,23 @@ public class Store implements Serializable {
    * @throws UnknownSupplierException
    * @throws UnknownServTypeException
    */
-  public void registerBox(String id, int price, int cValue, String sID, String serviceType, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException {
-    Product product = _products.get(id);
+  public void registerBox(String pID, int price, int cValue, String sID, String serviceType, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException {
+    Product product = _products.get(pID);
     if (product != null) {
-      throw new DuplicateProductException(id);
+      throw new DuplicateProductException(pID);
     }
-    Supplier supplier = _suppliers.get(sID);
-    if (supplier == null) {
-      throw new UnknownSupplierException(sID);
-    }
-    _products.put(id, new Box(supplier, id, price, cValue, serviceType, amount));
-    for (Client c: _clients.values()) {
-      _products.get(id).registerObserver(c);
+    Supplier supplier = getSupplier(sID);
+    Box box = new Box(supplier, pID, price, cValue, serviceType, amount);
+    _products.put(pID, box);
+    for (Client client: _clients.values()) {
+      box.registerObserver(client);
     }
   }
 
   /**
    * Registers a container in store.
    * 
-   * @param id
+   * @param pID
    *          container product ID.
    * @param price 
    *          container product price.
@@ -229,25 +237,23 @@ public class Store implements Serializable {
    * @throws UnknownServTypeException
    * @throws UnknownServLevelException
    */
-  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException, UnknownServLevelException {
-    Product product = _products.get(id);
+  public void registerContainer(String pID, int price, int cValue, String sID, String serviceType, String serviceLevel, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException, UnknownServLevelException {
+    Product product = _products.get(pID);
     if (product != null) {
-      throw new DuplicateProductException(id);
+      throw new DuplicateProductException(pID);
     }
-    Supplier supplier = _suppliers.get(sID);
-    if (supplier == null) {
-      throw new UnknownSupplierException(sID);
-    }
-    _products.put(id, new Container(supplier, id, price, cValue, amount, serviceType, serviceLevel));
-    for (Client c: _clients.values()) {
-      _products.get(id).registerObserver(c);
+    Supplier supplier = getSupplier(sID);
+    Container container = new Container(supplier, pID, price, cValue, amount, serviceType, serviceLevel);
+    _products.put(pID, container);
+    for (Client client: _clients.values()) {
+      container.registerObserver(client);
     }
   }
 
   /**
    * Registers a book in store.
    * 
-   * @param id
+   * @param pID
    *          book product ID.
    * @param title
    *          book title.
@@ -266,37 +272,30 @@ public class Store implements Serializable {
    * @throws DuplicateProductException
    * @throws UnknownSupplierException
    */
-  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID, int amount) throws DuplicateProductException, UnknownSupplierException {
-    Product product = _products.get(id);
+  public void registerBook(String pID, String title, String author, String isbn, int price, int cValue, String sID, int amount) throws DuplicateProductException, UnknownSupplierException {
+    Product product = _products.get(pID);
     if (product != null) {
-      throw new DuplicateProductException(id);
+      throw new DuplicateProductException(pID);
     }
-    Supplier supplier = _suppliers.get(sID);
-    if (supplier == null) {
-      throw new UnknownSupplierException(sID);
-    }
-    _products.put(id, new Book(supplier, id, price, cValue, title, author, isbn, amount));
-    /* Set all clients to receive notifications by default */
-    for (Client c: _clients.values()) {
-      _products.get(id).registerObserver(c);
+    Supplier supplier = getSupplier(sID);
+    Book book = new Book(supplier, pID, price, cValue, title, author, isbn, amount);
+    _products.put(pID, book);
+    for (Client client: _clients.values()) {
+      book.registerObserver(client);
     }
   }
 
   /**
    * Changes a product's price.
    * 
-   * @param id
+   * @param pID
    *          product ID.
    * @param newPrice
    *          new product price.
    * @throws UnknownProductException
    */
-  public void changeProductPrice(String id, int newPrice) throws UnknownProductException {
-    Product product = _products.get(id);
-    if (product == null) {
-      throw new UnknownProductException(id);
-    } 
-    product.setPrice(newPrice);
+  public void changeProductPrice(String pID, int newPrice) throws UnknownProductException {
+    getProduct(pID).changePrice(newPrice);
   }
 
   /* --------------------------------------- CLIENTS ---------------------------------------- */
@@ -304,15 +303,15 @@ public class Store implements Serializable {
   /**
    * Returns a client given a client unique ID.
    * 
-   * @param id
+   * @param cID
    *          client ID.
-   * @return
+   * @return client given unique ID.
    * @throws UnknownClientException
    */
-  public Client getClient(String id) throws UnknownClientException {
-    Client client = _clients.get(id);
+  public Client getClient(String cID) throws UnknownClientException {
+    Client client = _clients.get(cID);
     if (client == null) {
-      throw new UnknownClientException(id);
+      throw new UnknownClientException(cID);
     }
     return client;
   }
@@ -329,7 +328,7 @@ public class Store implements Serializable {
   /**
    * Registers a client in store.
    * 
-   * @param id
+   * @param cID
    *          client ID.
    * @param name
    *          client name.
@@ -337,65 +336,68 @@ public class Store implements Serializable {
    *          client address.
    * @throws DuplicateClientException
    */
-  public void registerClient(String id, String name, String address) throws DuplicateClientException {
-    Client client = _clients.get(id);
+  public void registerClient(String cID, String name, String address) throws DuplicateClientException {
+    Client client = _clients.get(cID);
     if (client != null) {
-      throw new DuplicateClientException(id);
+      throw new DuplicateClientException(cID);
     }
-    Client newClient = new Client(id, name, address);
-    _clients.put(id, newClient);
-    for (Product p: _products.values()) {
-      Observer o = (Observer) newClient;
-      p.registerObserver(o);
+    Client newClient = new Client(cID, name, address);
+    _clients.put(cID, newClient);
+    for (Product product: _products.values()) {
+      product.registerObserver(newClient);
     }
   }
 
   /**
    * Activates/Deactivates a client's specific product notifications.
    * 
-   * @param pid
-   *          product ID.
-   * @param cid
+   * @param cID
    *          client ID.
+   * @param pID
+   *          product ID.
    * @throws UnknownClientException
    * @throws UnknownProductException
    */
-  public boolean changeClientProductNotifications(String cID, String pID) throws UnknownClientException, UnknownProductException{
-    Client client = _clients.get(cID);
-    if (client == null) {
-      throw new UnknownClientException(cID);
-    }
-    Product product = _products.get(pID);
-    if (product == null) {
-      throw new UnknownProductException(pID);
-    }
-    Observer o = (Observer) client;
-    if (product.getObservers().contains(o)) {
-      product.removeObserver(o);
-      return false;
+  public boolean areProductNotificationsOn(String cID, String pID) throws UnknownClientException, UnknownProductException {
+    Client client = getClient(cID);
+    Product product = getProduct(pID);
+    if (product.getObservers().get(client) == true) {
+      product.removeObserver(client);
     } else {
-      product.registerObserver(o);
-      return true;
+      product.registerObserver(client);
     }
+    return product.getObservers().get(client);
   }
 
   /**
-   * Returns all the client transactions as an unmodifiable list.
+   * Returns all the client transactions as an unmodifiable collection.
    * 
-   * @param id
+   * @param cID
    *          client ID.
-   * @return a list with all the client transactions.
+   * @return a collection with all the client transactions.
    * @throws UnknownClientException
    */
-  public List<Sale> getClientTransactions(String id) throws UnknownClientException {
-    Client client = _clients.get(id);
-    if (client == null) {
-      throw new UnknownClientException(id);
-    }
-    return client.getClientSales();
+  public Collection<Sale> getClientTransactions(String cID) throws UnknownClientException {
+    return getClient(cID).getClientSales();
   }
 
   /* -------------------------------------- SUPPLIERS --------------------------------------- */
+
+  /**
+   * Returns a supplier given its unique ID.
+   * 
+   * @param supID
+   *          supplier ID.
+   * @return supplier given unique ID.
+   * @throws UnknownSupplierException
+   */
+  public Supplier getSupplier(String supID) throws UnknownSupplierException {
+    Supplier supplier = _suppliers.get(supID);
+    if (supplier == null) {
+      throw new UnknownSupplierException(supID);
+    }
+    return supplier;
+  }
 
   /**
    * Returns all the store suppliers as an unmodifiable collection.
@@ -409,7 +411,7 @@ public class Store implements Serializable {
   /**
    * Registers a supplier in store.
    * 
-   * @param id
+   * @param sID
    *          supplier ID.
    * @param name
    *          supplier name.
@@ -417,44 +419,36 @@ public class Store implements Serializable {
    *          supplier address.
    * @throws DuplicateSupplierException
    */
-  public void registerSupplier(String id, String name, String address) throws DuplicateSupplierException {
-    Supplier supplier = _suppliers.get(id);
+  public void registerSupplier(String sID, String name, String address) throws DuplicateSupplierException {
+    Supplier supplier = _suppliers.get(sID);
     if (supplier != null) {
-      throw new DuplicateSupplierException(id);
+      throw new DuplicateSupplierException(sID);
     }
-    _suppliers.put(id, new Supplier(id, name, address));
+    _suppliers.put(sID, new Supplier(sID, name, address));
   }
 
   /**
    * Activates/Deactivates a supplier's ability to perform transactions.
    * 
-   * @param id
+   * @param sID
    *          supplier ID.
    * @return true if supplier is now able to perform transactions; false, otherwise.
    * @throws UnknownSupplierException
    */
-  public boolean toggleSupplierTransactions(String id) throws UnknownSupplierException {
-    Supplier supplier = _suppliers.get(id);
-    if (supplier == null) {
-      throw new UnknownSupplierException(id);
-    }
-    return supplier.toggleTransactions();
+  public boolean areSupplierTransactionsOn(String sID) throws UnknownSupplierException {
+    return getSupplier(sID).toggleTransactions();
   }
 
   /**
-   * Returns all the supplier transactions as an unmodifiable list.
+   * Returns all the supplier transactions as an unmodifiable collection.
    * 
    * @param sID
    *          supplier ID.
-   * @return a list with all the supplier transactions.
+   * @return a collection with all the supplier transactions.
    * @throws UnknownSupplierException
    */
-  public List<Order> getSupplierTransactions(String sID) throws UnknownSupplierException {
-    Supplier supplier = _suppliers.get(sID);
-    if (supplier == null) {
-      throw new UnknownSupplierException(sID);
-    }
-    return supplier.getTransactions();
+  public Collection<Order> getSupplierTransactions(String sID) throws UnknownSupplierException {
+    return getSupplier(sID).getTransactions();
   }
 
   /* ------------------------------------- TRANSACTIONS ------------------------------------- */
@@ -492,23 +486,17 @@ public class Store implements Serializable {
    * @throws NoEnoughStockProductException
    */
   public void registerSaleTransaction(String cID, int limDate, String pID, int qty) throws UnknownClientException, UnknownProductException, NoEnoughStockProductException {
-    Client client = _clients.get(cID);
-    if (client == null) {
-      throw new UnknownClientException(cID);
-    }
-    Product product = _products.get(pID);
-    if (product == null) {
-      throw new UnknownProductException(pID);
-    }
-    int stock = product.getStock();
-    if (stock < qty) {
-      throw new NoEnoughStockProductException(pID, qty, stock);
+    Client client = getClient(cID);
+    Product product = getProduct(pID);
+    if (product.getStock() < qty) {
+      throw new NoEnoughStockProductException(pID, qty, product.getStock());
     }
     product.removeStock(qty);
     Sale sale = new Sale(_transactionID, client, product, limDate, qty);
     sale.setCurrentStoreDate(_date);
-    _transactions.put(_transactionID++, sale);
+    sale.setBasePrice(product.getPrice() * qty);
     client.addSale(sale);
+    _transactions.put(_transactionID++, sale);
   }
 
   /**
@@ -523,38 +511,32 @@ public class Store implements Serializable {
    * @throws InactiveSupplierException
    * @throws IncorrectSupplierException
    */
-  public void registerOrderTransaction(String supID, Map<String, Integer> products) throws UnknownSupplierException, UnknownProductException, 
+  public void registerOrderTransaction(String supID, Collection<OrderElement> products) throws UnknownSupplierException, UnknownProductException, 
                                                                                     InactiveSupplierException, IncorrectSupplierException {
-    Supplier supplier = _suppliers.get(supID);
-    if (supplier == null) {
-      throw new UnknownSupplierException(supID);
-    }
+    Supplier supplier = getSupplier(supID);
     if (supplier.isActive() == false) {
       throw new InactiveSupplierException(supID);
     }
-    for (String productID : products.keySet()) {
-      Product product = _products.get(productID);
-      if (product == null) {
-        throw new UnknownProductException(productID);
-      }
-      if (product.getSupplier() != supplier) {
-        throw new IncorrectSupplierException(supID, product.getID());
+    for (OrderElement e : products) {
+      Product p = getProduct(e.getProductID());
+      if (p.getSupplier() != supplier) {
+        throw new IncorrectSupplierException(supID, e.getProductID());
       }
     }
-    Order order = new Order(_transactionID, supplier);
+    Order order = new Order(_transactionID, supplier.getID());
     int totalCost = 0;
-    for (Map.Entry<String,Integer> pID : products.entrySet()) {
-      Product p = _products.get(pID.getKey());
-      int qty = pID.getValue();
+    for (OrderElement e : products) {
+      Product p = getProduct(e.getProductID());
+      int qty = e.getProductQty();
+      e.setProductID(p.getID());
       p.addStock(qty);
+      order.addProduct(e);
       totalCost += p.getPrice() * qty;
-      order.addProduct(p, qty);
     }
     order.setPaymentDate(_date);
-    order.isPaid();
-    order.setTotalCost(totalCost);
-    _transactions.put(_transactionID++, order);
+    order.setBasePrice(totalCost);
     supplier.addOrder(order);
+    _transactions.put(_transactionID++, order);
   }
 
   /**
@@ -565,45 +547,37 @@ public class Store implements Serializable {
    * @throws UnknownTransactionException
    */
   public void pay(int id) throws UnknownTransactionException {
-    Transaction transaction = _transactions.get(id);
-    if (transaction == null) {
-      throw new UnknownTransactionException(id);
-    }
+    Transaction transaction = getTransaction(id);
     if (transaction.getPaymentStatus() == false) {
-      Sale sale = (Sale) transaction;
-      Client client = sale.getClient();
-      sale.setCurrentStoreDate(_date);
-      client.pay(sale);
+      transaction.setCurrentStoreDate(_date);
+      transaction.pay();
     }
   }
 
   /* --------------------------------------- LOOKUPS ---------------------------------------- */
 
   /**
-   * Returns all store products whose price is cheapear than given price as an unmodifiable list.
+   * Returns all store products whose price is cheapear than given price as an unmodifiable collection.
    * 
    * @param price
    *          reference price.
-   * @return a list with all products whose price is under given price.
+   * @return a collection with all products whose price is under given price.
    */
-  public List<Product> lookupProductsUnderPrice(int price) {
-    return Collections.unmodifiableList(_products.values().stream().filter(p->p.getPrice() < price).collect(Collectors.toList()));
+  public Collection<Product> lookupProductsUnderPrice(int price) {
+    return Collections.unmodifiableCollection(_products.values().stream().filter(p->p.getPrice() < price).collect(Collectors.toList()));
   }
 
   /**
-   * Returns a given client's paid sales as an unmodifiable list.
+   * Returns a given client's paid sales as an unmodifiable collection.
    * 
    * @param cID
    *          client ID.
-   * @return a list with client's paid sales.
+   * @return a collection with client's paid sales.
    * @throws UnknownClientException
    */
-  public List<Sale> lookupPaymentsByClient(String cID) throws UnknownClientException {
-    Client client = _clients.get(cID);
-    if (client == null){
-      throw new UnknownClientException(cID);
-    }
-    return Collections.unmodifiableList(client.getClientSales().stream().filter(s->s.getPaymentStatus()).collect(Collectors.toList()));
+  public Collection<Sale> lookupPaymentsByClient(String cID) throws UnknownClientException {
+    Client client = getClient(cID);
+    return Collections.unmodifiableCollection(client.getClientSales().stream().filter(s->s.getPaymentStatus()).collect(Collectors.toList()));
   }
 
 }

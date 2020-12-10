@@ -1,13 +1,14 @@
 package woo;
 
-import java.io.Serializable;
-
 /**
  * This is an abstract class representing a store transaction. Subclasses
  * refine this class in accordance to whether the store bought products or
  * sold them.
  */
-public abstract class Transaction implements Serializable {
+public abstract class Transaction implements TransactionVisitable {
+    /** Serial number for serialization. */
+    private static final long serialVersionUID = 202012040059L;
+    
     /** Transaction's unique ID. */
     private int _id;
 
@@ -57,7 +58,7 @@ public abstract class Transaction implements Serializable {
     }
 
     /**
-     * Sets transaction payment date.
+     * Sets transaction payment date and transaction as paid.
      * Called upon store order or client sale payment.
      * 
      * @param date
@@ -65,12 +66,6 @@ public abstract class Transaction implements Serializable {
      */
     public void setPaymentDate(int date) {
         _paymentDate = date;
-    }
-
-    /**
-     * Sets transaction as paid.
-     */
-    public void isPaid() {
         _paid = true;
     }
 
@@ -94,11 +89,20 @@ public abstract class Transaction implements Serializable {
     /**
      * @return the transaction's base price (before taxes).
      */
-    public abstract int getBasePrice();
+    public int getBasePrice() {
+        return _basePrice;
+    }
 
     /**
-     * @return the transaction's total price (after taxes).
+     * Sets transaction's base price (before taxes).
      */
-    public abstract double getTotalPrice();
+    public void setBasePrice(int basePrice) {
+        _basePrice = basePrice;
+    }
+
+    /**
+     * Pays the transaction.
+     */
+    public abstract void pay();
 
 }

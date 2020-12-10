@@ -29,9 +29,9 @@ public class DoShowTransaction extends Command<Storefront> {
   public final void execute() throws DialogException {
     try {
       _form.parse();
-      _display.popup(_receiver.getTransaction(_transactionID.value()).toString());
+      _display.popup(_receiver.getTransaction(_transactionID.value()));
     } catch(UnknownTransactionException e) {
-      throw new UnknownTransactionKeyException(e.getKey());
+      throw new UnknownTransactionKeyException(e.getTransactionKey());
     }
   }
 

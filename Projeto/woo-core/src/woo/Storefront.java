@@ -5,14 +5,11 @@ import woo.exceptions.*;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Storefront: façade for the core classes.
@@ -66,31 +63,33 @@ public class Storefront {
    * @param filename
    *          file being opened.
    * @throws UnavailableFileException
-   * @throws IOException
-   * @throws FileNotFoundException
-   * @throws ClassNotFoundException
    */
-  public void load(String filename) throws UnavailableFileException, FileNotFoundException, IOException, ClassNotFoundException {
-    ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filename)));
-    _store = (Store) in.readObject();
-    in.close();
-    _filename = filename;
-    _save = true;
+  public void load(String filename) throws UnavailableFileException {
+    try {
+      ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filename)));
+      _store = (Store) in.readObject();
+      in.close();
+      _filename = filename;
+    } catch (IOException | ClassNotFoundException e) {
+      throw new UnavailableFileException(filename);
+    }
   }
 
   /**
    * Saves current store data in storefront's associated filename.
    * 
-   * @throws IOException
-   * @throws FileNotFoundException
    * @throws MissingFileAssociationException
    */
-  public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
-    if (getSave()) {
-      ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(_filename)));
-      out.writeObject(_store);
-      out.close();
-      _save = false;
+  public void save() throws MissingFileAssociationException {
+    try {
+      if (_save == true) {
+        ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(_filename)));
+        out.writeObject(_store);
+        out.close();
+        _save = false;
+      }
+    } catch(IOException e) {
+      throw new MissingFileAssociationException();
     }
   }
 
@@ -100,10 +99,8 @@ public class Storefront {
    * @param filename
    *          new storefront filename.
    * @throws MissingFileAssociationException
-   * @throws IOException
-   * @throws FileNotFoundException
    */
-  public void saveAs(String filename) throws MissingFileAssociationException, FileNotFoundException, IOException {
+  public void saveAs(String filename) throws MissingFileAssociationException {
     _filename = filename;
     save();
   }
@@ -166,7 +163,7 @@ public class Storefront {
   /**
    * Registers a box in store.
    * 
-   * @param id
+   * @param pID
    *          box product ID.
    * @param price
    *          box product price.
@@ -182,15 +179,15 @@ public class Storefront {
    * @throws UnknownSupplierException
    * @throws UnknownServTypeException
    */
-  public void registerBox(String id, int price, int cValue, String sID, String serviceType, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException {
+  public void registerBox(String pID, int price, int cValue, String sID, String serviceType) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException {
     _save = true;
-    _store.registerBox(id, price, cValue, sID, serviceType, amount);
+    _store.registerBox(pID, price, cValue, sID, serviceType, 0);
   }
 
   /**
    * Registers a container in store.
    * 
-   * @param id
+   * @param pID
    *          container product ID.
    * @param price 
    *          container product price.
@@ -209,15 +206,15 @@ public class Storefront {
    * @throws UnknownServTypeException
    * @throws UnknownServLevelException
    */
-  public void registerContainer(String id, int price, int cValue, String sID, String serviceType, String serviceLevel, int amount) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException, UnknownServLevelException {
+  public void registerContainer(String pID, int price, int cValue, String sID, String serviceType, String serviceLevel) throws DuplicateProductException, UnknownSupplierException, UnknownServTypeException, UnknownServLevelException {
     _save = true;
-    _store.registerContainer(id, price, cValue, sID, serviceType, serviceLevel, amount);
+    _store.registerContainer(pID, price, cValue, sID, serviceType, serviceLevel, 0);
   }
 
   /**
    * Registers a book in store.
    * 
-   * @param id
+   * @param pID
    *          book product ID.
    * @param title
    *          book title.
@@ -236,23 +233,23 @@ public class Storefront {
    * @throws DuplicateProductException
    * @throws UnknownSupplierException
    */
-  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID, int amount) throws DuplicateProductException, UnknownSupplierException {
+  public void registerBook(String id, String title, String author, String isbn, int price, int cValue, String sID) throws DuplicateProductException, UnknownSupplierException {
     _save = true;
-    _store.registerBook(id, title, author, isbn, price, cValue, sID, amount);
+    _store.registerBook(id, title, author, isbn, price, cValue, sID, 0);
   }
 
   /**
    * Changes a product's price.
    * 
-   * @param id
+   * @param pID
    *          product ID.
    * @param newPrice
    *          new product price.
    * @throws UnknownProductException
    */
-  public void changeProductPrice(String id, int newPrice) throws UnknownProductException {
+  public void changeProductPrice(String pID, int newPrice) throws UnknownProductException {
     _save = true;
-    _store.changeProductPrice(id, newPrice);
+    _store.changeProductPrice(pID, newPrice);
   }
 
   /* --------------------------------------- CLIENTS ---------------------------------------- */
@@ -260,17 +257,17 @@ public class Storefront {
   /**
    * Returns a client given a client unique ID.
    * 
-   * @param id
+   * @param cID
    *          client ID.
    * @return
    * @throws UnknownClientException
    */
-  public Client getClient(String id) throws UnknownClientException {
-    return _store.getClient(id);
+  public Client getClient(String cID) throws UnknownClientException {
+    return _store.getClient(cID);
   }
 
   /**
-   * Returns all the store clients as an unomodifiable collection.
+   * Returns all the store clients as an unmodifiable collection.
    * 
    * @return a collection with all store clients.
    */
@@ -281,7 +278,7 @@ public class Storefront {
   /**
    * Registers a client in store.
    * 
-   * @param id
+   * @param cID
    *          client ID.
    * @param name
    *          client name.
@@ -289,36 +286,36 @@ public class Storefront {
    *          client address.
    * @throws DuplicateClientException
    */
-  public void registerClient(String id, String name, String address) throws DuplicateClientException {
+  public void registerClient(String cID, String name, String address) throws DuplicateClientException {
     _save = true;
-    _store.registerClient(id, name, address);
+    _store.registerClient(cID, name, address);
   }
 
   /**
    * Activates/Deactivates a client's specific product notifications.
    * 
-   * @param pid
-   *          product ID.
-   * @param cid
+   * @param cID
    *          client ID.
+   * @param pID
+   *          product ID.
    * @throws UnknownClientException
    * @throws UnknownProductException
    */
-  public boolean changeClientProductNotifications(String cID, String pID) throws UnknownClientException, UnknownProductException{
+  public boolean areProductNotificationsOn(String cID, String pID) throws UnknownClientException, UnknownProductException {
     _save = true;
-    return _store.changeClientProductNotifications(cID, pID);
+    return _store.areProductNotificationsOn(cID, pID);
   }
   
   /**
-   * Returns all the client transactions as an unmodifiable list.
+   * Returns all the client transactions as an unmodifiable collection.
    * 
-   * @param id
+   * @param cID
    *          client ID.
-   * @return a list with all the client transactions.
+   * @return a collection with all the client transactions.
    * @throws UnknownClientException
    */
-  public List<Sale> getClientTransactions(String id) throws UnknownClientException {
-    return _store.getClientTransactions(id);
+  public Collection<Sale> getClientTransactions(String cID) throws UnknownClientException {
+    return _store.getClientTransactions(cID);
   }
 
   /* -------------------------------------- SUPPLIERS --------------------------------------- */
@@ -335,7 +332,7 @@ public class Storefront {
   /**
    * Registers a supplier in store.
    * 
-   * @param id
+   * @param sID
    *          supplier ID.
    * @param name
    *          supplier name.
@@ -343,33 +340,33 @@ public class Storefront {
    *          supplier address.
    * @throws DuplicateSupplierException
    */
-  public void registerSupplier(String id, String name, String address) throws DuplicateSupplierException {
+  public void registerSupplier(String sID, String name, String address) throws DuplicateSupplierException {
     _save = true;
-    _store.registerSupplier(id, name, address);
+    _store.registerSupplier(sID, name, address);
   }
 
   /**
    * Activates/Deactivates a supplier's ability to perform transactions.
    * 
-   * @param id
+   * @param sID
    *          supplier ID.
    * @return true if supplier is now able to perform transactions; false, otherwise.
    * @throws UnknownSupplierException
    */
-  public boolean toggleSupplierTransactions(String id) throws UnknownSupplierException {
+  public boolean areSupplierTransactionsOn(String sID) throws UnknownSupplierException {
     _save = true;
-    return _store.toggleSupplierTransactions(id);
+    return _store.areSupplierTransactionsOn(sID);
   }
 
   /**
-   * Returns all the supplier transactions as an unmodifiable list.
+   * Returns all the supplier transactions as an unmodifiable collection.
    * 
    * @param sID
    *          supplier ID.
-   * @return a list with all the supplier transactions.
+   * @return a collection with all the supplier transactions.
    * @throws UnknownSupplierException
    */
-  public List<Order> getSupplierTransactions(String sID) throws UnknownSupplierException {
+  public Collection<Order> getSupplierTransactions(String sID) throws UnknownSupplierException {
     return _store.getSupplierTransactions(sID);
   }
 
@@ -378,13 +375,13 @@ public class Storefront {
   /**
    * Returns a transaction given a unique transaction ID.
    * 
-   * @param id
+   * @param tID
    *          transaction unique ID.
    * @return a transaction given its id.
    * @throws UnknownTransactionException
    */
-  public Transaction getTransaction(int id) throws UnknownTransactionException {
-    return _store.getTransaction(id);
+  public Transaction getTransaction(int tID) throws UnknownTransactionException {
+    return _store.getTransaction(tID);
   }
 
   /**
@@ -411,7 +408,7 @@ public class Storefront {
   /**
    * Registers a store order.
    * 
-   * @param supID
+   * @param sID
    *          supplier ID.
    * @param products
    *          map containing product and its quantities ordered.
@@ -420,46 +417,46 @@ public class Storefront {
    * @throws InactiveSupplierException
    * @throws IncorrectSupplierException
    */
-  public void registerOrderTransaction(String supID, Map<String, Integer> products)
+  public void registerOrderTransaction(String sID, Collection<OrderElement> products)
       throws UnknownSupplierException, UnknownProductException, InactiveSupplierException, IncorrectSupplierException {
     _save = true;
-    _store.registerOrderTransaction(supID, products);
+    _store.registerOrderTransaction(sID, products);
   }
 
   /**
-   * Pays a sale given its unique transaction ID.
+   * Pays a transaction given its unique ID.
    * 
-   * @param id
-   *          sale ID.
+   * @param tID
+   *          transaction ID.
    * @throws UnknownTransactionException
    */
-  public void pay(int id) throws UnknownTransactionException {
+  public void pay(int tID) throws UnknownTransactionException {
     _save = true;
-    _store.pay(id);
+    _store.pay(tID);
   }
 
   /* --------------------------------------- LOOKUPS ---------------------------------------- */
 
   /**
-   * Returns a given client's paid sales as an unmodifiable list.
+   * Returns a given client's paid sales as an unmodifiable collection.
    * 
    * @param cID
    *          client ID.
-   * @return a list with client's paid sales.
+   * @return a collection with client's paid sales.
    * @throws UnknownClientException
    */
-  public List<Sale> lookupPaymentsByClient(String cID) throws UnknownClientException {
+  public Collection<Sale> lookupPaymentsByClient(String cID) throws UnknownClientException {
     return _store.lookupPaymentsByClient(cID);
   }
 
   /**
-   * Returns all store products whose price is cheapear than given price as an unmodifiable list.
+   * Returns all store products whose price is cheapear than given price as an unmodifiable collection.
    * 
    * @param price
    *          reference price.
-   * @return a list with all products whose price is under given price.
+   * @return a collection with all products whose price is under given price.
    */
-  public List<Product> lookupProductsUnderPrice(int price) { 
+  public Collection<Product> lookupProductsUnderPrice(int price) { 
     return _store.lookupProductsUnderPrice(price);
   }
 

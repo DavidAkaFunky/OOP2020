@@ -8,8 +8,11 @@ import woo.exceptions.UnknownServTypeException;
  */
 
 public class Box extends Product {
+    /** Serial number for serialization. */
+    private static final long serialVersionUID = 202012040059L;
+
     /** Box service type. */
-    private String _serviceType;
+    private String _boxServiceType;
 
     /** Different box service types available. */
     private enum ServiceTypes {NORMAL, AIR, EXPRESS, PERSONAL};
@@ -23,34 +26,35 @@ public class Box extends Product {
      *          box product ID.
      * @param price
      *          box price.
-     * @param criticalLevel 
-     *          box critical stock level.
+     * @param criticalValue 
+     *          box critical stock value.
      * @param serviceType
      *          box service type.
      * @param amount 
      *          box qty.
      * @throws UnknownServTypeException
      */
-    public Box(Supplier supplier, String id, int price, int criticalLevel, String serviceType, int amount) throws UnknownServTypeException {
-        super(supplier, id, price, criticalLevel, amount);
-        if (validServiceType(serviceType)) {
-            _serviceType = serviceType;
-        } else {
+    public Box(Supplier sup, String prodID, int price, int criticalValue, String serviceType, int amount) throws UnknownServTypeException {
+        super(sup, prodID, price, criticalValue, amount);
+        if (validServiceType(serviceType) == false) {
             throw new UnknownServTypeException(serviceType);
         }
+        _boxServiceType = serviceType;
     }
 
     /**
      * @return the box's service type.
      */
-    public String getServiceType(){
-        return _serviceType;
+    public String getServiceType() {
+        return _boxServiceType;
     }
 
     /**
      * @return the box's payment period variable.
      */
-    public int getN() { return 5; }
+    public int getN() {
+        return 5;
+    }
 
     /**
      * @param serviceType 
@@ -67,10 +71,19 @@ public class Box extends Product {
     }
 
     /**
+     * Returns a string containing all box related attributes.
+     * @return a string with all box attributes.
+     */
+    public String boxInfo() {
+        return super.toString() + "|" + getServiceType();
+    }
+
+    /**
 	 * @see java.lang.Object#toString()
 	 */
     @Override
     public String toString() {
-        return "BOX" + super.toString() + getServiceType();
+        return "BOX" + boxInfo();
     }
+    
 }

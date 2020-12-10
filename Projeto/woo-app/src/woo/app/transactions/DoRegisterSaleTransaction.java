@@ -47,11 +47,11 @@ public class DoRegisterSaleTransaction extends Command<Storefront> {
       _form.parse();
       _receiver.registerSaleTransaction(_clientKey.value(), _limitDate.value(), _productKey.value(), _productQty.value());
     } catch (UnknownClientException e) {
-      throw new UnknownClientKeyException(e.getKey());
+      throw new UnknownClientKeyException(e.getClientKey());
     } catch (UnknownProductException e) {
-      throw new UnknownProductKeyException(e.getKey());
+      throw new UnknownProductKeyException(e.getProductKey());
     } catch (NoEnoughStockProductException e) {
-      throw new UnavailableProductException(e.getKey(), e.getRequested(), e.getAvailable());
+      throw new UnavailableProductException(e.getProductKey(), e.getRequested(), e.getAvailable());
     }
   }
 

@@ -10,14 +10,14 @@ public class UnknownSupplierException extends Exception {
   private String _key;
 
   /** @param key Unknown key to report. */
-  public UnknownSupplierException(String id) {
-    _key = id;
+  public UnknownSupplierException(String key) {
+    _key = key;
   }
 
   /**
    * @return the invalid supplier key.
    */
-  public String getKey() {
+  public String getSupplierKey() {
     return _key;
   }
 

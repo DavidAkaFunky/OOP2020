@@ -12,8 +12,8 @@ public class UnknownSupplierKeyException extends DialogException {
   private String _key;
 
   /** @param key Unknown key to report. */
-  public UnknownSupplierKeyException(String id) {
-    _key = id;
+  public UnknownSupplierKeyException(String key) {
+    _key = key;
   }
 
   /** @see pt.tecnico.po.ui.DialogException#getMessage() */

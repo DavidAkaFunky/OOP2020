@@ -17,7 +17,7 @@ public class UnknownProductException extends Exception {
   /**
    * @return the invalid product key.
    */
-  public String getKey() {
+  public String getProductKey() {
     return _key;
   }
 

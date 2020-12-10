@@ -1,13 +1,18 @@
 package woo;
 
 public class NormalClient extends ClientStatus {
+    /** Serial number for serialization. */
+    private static final long serialVersionUID = 202012040059L;
+    
     /**
      * Constructor.
      * 
      * @param client
      *          client being set as Normal status.
      */
-    public NormalClient(Client client) { super(client); }
+    public NormalClient(Client client) {
+        super(client);
+    }
 
     /**
      * Normal Client P2 Modifier.
@@ -16,7 +21,10 @@ public class NormalClient extends ClientStatus {
      *          difference between current date and limit date.
      * @return modifier to multiply to base sale price relative to period P2.
      */
-    public double p2Modifier(int paymentGap) { return 1.0; }
+    @Override
+    public double p2Modifier(int paymentGap) {
+        return 1.0;
+    }
 
     /**
      * Normal Client P3 Modifier.
@@ -26,7 +34,10 @@ public class NormalClient extends ClientStatus {
      *          difference between current date and limit date.
      * @return modifier to multiply to base sale price relative to period P3.
      */
-    public double p3Modifier(int paymentGap) { return 1.0 + 0.05 * (-paymentGap); }
+    @Override
+    public double p3Modifier(int paymentGap) {
+        return 1.0 + 0.05 * (-paymentGap);
+    }
 
     /**
      * Normal Client P4 Modifier.
@@ -36,7 +47,10 @@ public class NormalClient extends ClientStatus {
      *          difference between current date and limit date.
      * @return modifier to multiply to base sale price relative to period P4.
      */
-    public double p4Modifier(int paymentGap) { return 1.0 + 0.10 * (-paymentGap); }
+    @Override
+    public double p4Modifier(int paymentGap) {
+        return 1.0 + 0.10 * (-paymentGap);
+    }
 
     /**
      * Normal Client pay sale.
@@ -45,15 +59,16 @@ public class NormalClient extends ClientStatus {
      * @param sale
      *          sale being paid.
      */
+    @Override
     public void pay(Sale sale) {
         int paymentGap = sale.getLimitDateGap();
         if (paymentGap >= 0) {
-            _client.setScore(_client.getScore() + 10 * (int) sale.getTotalPrice());
+            _client.updateScore(_client.getScore() + 10 * (int) sale.getTotalPrice());
         }
         if (_client.getScore() > 25000) {
-            _client.setStatus(new EliteClient(_client));
+            _client.updateStatus(new EliteClient(_client));
         } else if (_client.getScore() > 2000) {
-            _client.setStatus(new SelectionClient(_client));
+            _client.updateStatus(new SelectionClient(_client));
         }
     }
 

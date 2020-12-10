@@ -9,8 +9,11 @@ import woo.exceptions.UnknownServLevelException;
  */
 
 public class Container extends Box {
+    /** Serial number for serialization. */
+    private static final long serialVersionUID = 202012040059L;
+    
     /** Container service level. */
-    private String _serviceLevel;
+    private String _containerServiceLevel;
 
     /** Different container service levels available. */
     private enum ServiceLevels {B4, C4, C5, DL};
@@ -35,26 +38,27 @@ public class Container extends Box {
      * @throws UnknownServTypeException
      * @throws UnknownServLevelException
      */
-    public Container(Supplier supplier, String id, int price, int criticalLevel, int amount, String serviceType, String serviceLevel) throws UnknownServTypeException, UnknownServLevelException {
-        super(supplier, id, price, criticalLevel, serviceType, amount);
-        if (validServiceLevel(serviceLevel)) {
-            _serviceLevel = serviceLevel;
-        } else {
+    public Container(Supplier sup, String prodID, int price, int criticalLevel, int amount, String serviceType, String serviceLevel) throws UnknownServTypeException, UnknownServLevelException {
+        super(sup, prodID, price, criticalLevel, serviceType, amount);
+        if (validServiceLevel(serviceLevel) == false) {
             throw new UnknownServLevelException(serviceLevel);
         }
+        _containerServiceLevel = serviceLevel;
     }
 
     /**
      * @return the container's service level.
      */
-    public String getServiceLevel(){
-        return _serviceLevel;
+    public String getServiceLevel() {
+        return _containerServiceLevel;
     }
 
     /**
      * @return the container's payment period variable.
      */
-    public int getN() { return 8; }
+    public int getN() {
+        return 8;
+    }
 
     /**
      * @param level
@@ -75,6 +79,6 @@ public class Container extends Box {
 	 */
     @Override
     public String toString() {
-        return super.toString().replace("BOX", "CONTAINER") + "|" + getServiceLevel();
+        return "CONTAINER" + boxInfo() + "|" + getServiceLevel();
     }
 }

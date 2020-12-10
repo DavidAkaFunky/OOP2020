@@ -29,10 +29,10 @@ public class DoToggleTransactions extends Command<Storefront> {
   public void execute() throws DialogException {
     try {
       _form.parse();
-      _display.popup(_receiver.toggleSupplierTransactions(_supplierKey.value()) == true ? 
+      _display.popup(_receiver.areSupplierTransactionsOn(_supplierKey.value()) ? 
                      Message.transactionsOn(_supplierKey.value()) : Message.transactionsOff(_supplierKey.value()));
     } catch (UnknownSupplierException e) {
-      throw new UnknownSupplierKeyException(e.getKey());
+      throw new UnknownSupplierKeyException(e.getSupplierKey());
     }
   }
 

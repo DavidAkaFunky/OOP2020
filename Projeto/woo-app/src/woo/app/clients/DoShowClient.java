@@ -29,15 +29,9 @@ public class DoShowClient extends Command<Storefront> {
   public void execute() throws DialogException {
     try {
       _form.parse();
-      var client = _receiver.getClient(_clientKey.value());
-      _display.addLine(client.toString());
-      for (var notification : client.getNotifications()) {
-        _display.addLine(notification.toString());
-      } 
-      client.clearNotifications();
-      _display.display();
+      _display.popup(_receiver.getClient(_clientKey.value()).showClient());
     } catch (UnknownClientException e) {
-      throw new UnknownClientKeyException(e.getKey());
+      throw new UnknownClientKeyException(e.getClientKey());
     }
   }
 

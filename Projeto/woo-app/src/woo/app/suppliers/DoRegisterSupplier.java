@@ -39,7 +39,7 @@ public class DoRegisterSupplier extends Command<Storefront> {
       _form.parse();
       _receiver.registerSupplier(_supplierKey.value(), _supplierName.value(), _supplierAddress.value());
     } catch (DuplicateSupplierException e) {
-      throw new DuplicateSupplierKeyException(e.getKey());
+      throw new DuplicateSupplierKeyException(e.getSupplierKey());
     }
   }
 

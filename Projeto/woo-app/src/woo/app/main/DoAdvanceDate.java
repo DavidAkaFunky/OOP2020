@@ -31,7 +31,7 @@ public class DoAdvanceDate extends Command<Storefront> {
       _form.parse();
       _receiver.advanceDate(_daysToAdvance.value());
     } catch (InvalidDaysException e) {
-      throw new InvalidDateException(e.getDate());
+      throw new InvalidDateException(e.getInvalidDays());
     }
   }
 }

@@ -1,17 +1,13 @@
 package woo;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-
 /**
  * Class DefaultDeliveryMode is an app-based notification delivery system.
  * All notifications sent with this strategy are app-leveled.
  */
 
-public class DefaultDeliveryMode implements DeliveryMode {
-    /** The list of notifications associated to client. */
-    private List<Notification> _notifications = new ArrayList<Notification>();
+public class DefaultDeliveryMode implements NotificationDeliveryMode {
+    /** Serial number for serialization. */
+    private static final long serialVersionUID = 202012040059L;
 
     /**
      * Add notification to pending notifications.
@@ -24,27 +20,8 @@ public class DefaultDeliveryMode implements DeliveryMode {
      *          product price.
      */
     @Override
-    public void update(String event, String pID, int price) {
-        _notifications.add(new Notification(event, pID, price));
-    }
-
-    /**
-     * Clears notifications list.
-     * (called when client is shown and notifications are no longer relevant)
-     */
-    @Override
-    public void clearNotifications() {
-        _notifications.clear();
-    }
-
-    /**
-     * Returns pending client notifications as as unmodifiable List.
-     * 
-     * @return a List with the client's pending notifications.
-     */
-    @Override
-    public List<Notification> getNotifications() {
-        return Collections.unmodifiableList(_notifications);
+    public Notification deliverNotification(String event, String pID, int price) {
+        return new Notification("", event, pID, price);
     }
     
 }

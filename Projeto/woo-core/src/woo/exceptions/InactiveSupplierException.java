@@ -17,7 +17,7 @@ public class InactiveSupplierException extends Exception {
     /**
    * @return the inactive supplier key.
    */
-    public String getKey() {
+    public String getSupplierKey() {
       return _key;
     }
   

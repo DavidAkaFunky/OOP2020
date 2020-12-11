@@ -9,24 +9,24 @@ public class WrongSupplierException extends DialogException {
   private static final long serialVersionUID = 202009200054L;
 
   /** Supplier key. */
-  private String _sKey;
+  private String _skey;
 
   /** Product key. */
-  private String _pKey;
+  private String _pkey;
 
   /** 
-   * @param sKey supplier key.
-   * @param pKey product key. 
+   * @param skey supplier key.
+   * @param pkey product key. 
    */
-  public WrongSupplierException(String sKey, String pKey) {
-    _sKey = sKey;
-    _pKey = pKey;
+  public WrongSupplierException(String skey, String pkey) {
+    _skey = skey;
+    _pkey = pkey;
   }
 
   /** @see pt.tecnico.po.ui.DialogException#getMessage() */
   @Override
   public String getMessage() {
-    return Message.wrongSupplier(_sKey, _pKey);
+    return Message.wrongSupplier(_skey, _pkey);
   }
 
 }
